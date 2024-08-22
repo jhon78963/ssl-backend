@@ -3,21 +3,22 @@
 namespace App\Http\Controllers;
 
 use App\Enums\TokenAbility;
-use App\Http\Requests\LoginRequest;
-use App\Http\Requests\RefreshTokenRequest;
+use App\Http\Requests\Auth\UpdatePasswordRequest;
+use App\Http\Requests\Auth\LoginRequest;
+use App\Http\Requests\Auth\RefreshTokenRequest;
+use App\Http\Requests\Auth\TokenRequest;
+use App\Http\Requests\Auth\UpdateMeRequest;
 use App\Models\PersonalAccessToken;
 use App\Models\User;
 use Auth;
 use Carbon\Carbon;
 use Hash;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
     public function login(LoginRequest $request): JsonResponse
     {
-
         $user = User::where("username", $request->username)->first();
 
         if ( !$user || !Hash::check($request->password, $user->password)) {
@@ -45,8 +46,8 @@ class AuthController extends Controller
 
     public function refreshToken(RefreshTokenRequest $request): JsonResponse
     {
-        $refreshToken = PersonalAccessToken::findToken($request->refreshToken);
-        if ( !$refreshToken) {
+        $validateToken = PersonalAccessToken::findToken($request->refreshToken);
+        if ( !$validateToken) {
             return response()->json(['message' => 'Invalid token.'], 401);
         }
 
@@ -67,7 +68,7 @@ class AuthController extends Controller
         return $this->respondWithToken($accessToken, $refreshToken);
     }
 
-    public function me() {
+    public function getMe(): JsonResponse {
         $user = Auth::user();
 
         return response()->json([
@@ -80,17 +81,49 @@ class AuthController extends Controller
         ]);
     }
 
-    protected function respondWithToken($token, $refreshToken): JsonResponse
+    public function updateMe(UpdateMeRequest $request): JsonResponse {
+        Auth::user()->fill($request->only([
+            'username', 'email', 'name', 'surname'
+        ]))->save();
+
+        return response()->json([
+            'message' => 'User updated successfully',
+        ]);
+    }
+
+    public function changePassword(UpdatePasswordRequest $request): JsonResponse {
+        $user = Auth::user();
+        $user->password = Hash::make($request->password);
+        $user->save();
+
+        return response()->json([
+            'message' => 'Password changed successfully',
+        ]);
+    }
+
+    public function logout(TokenRequest $request): JsonResponse {
+        $request->user()->tokens()->delete();
+
+        return response()->json([
+            'message' => 'Logout successfully',
+        ]);
+    }
+
+    private function respondWithToken($token, $refreshToken): JsonResponse
     {
         return response()->json([
             'token' => $token->plainTextToken,
             'refreshToken' => $refreshToken->plainTextToken,
-            'expirationToken'=> $this->calculateExpirationInMilliseconds(config('sanctum.access_token_expiration')),
-            'expirationRefreshToken'=> $this->calculateExpirationInMilliseconds(config('sanctum.refresh_token_expiration')),
+            'expirationToken'=> $this->calculateExpirationInMilliseconds(
+                config('sanctum.access_token_expiration')
+            ),
+            'expirationRefreshToken'=> $this->calculateExpirationInMilliseconds(
+                config('sanctum.refresh_token_expiration')
+            ),
         ]);
     }
 
-    private function calculateExpirationInMilliseconds($expiresAt)
+    private function calculateExpirationInMilliseconds($expiresAt): float
     {
         $expirationDate = Carbon::parse($expiresAt);
         $now = Carbon::now();

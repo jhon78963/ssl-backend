@@ -30,16 +30,6 @@ class PersonalAccessToken extends SanctumPersonalAccessToken
     ];
 
     /**
-     * Get the tokenable model that the access token belongs to.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
-     */
-    public function tokenable()
-    {
-        return $this->morphTo('tokenable');
-    }
-
-    /**
      * Find the token instance matching the given token.
      *
      * @param  string  $token

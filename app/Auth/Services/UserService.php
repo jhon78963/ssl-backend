@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Auth\Services;
+
 use App\Auth\Enums\TokenAbility;
 use App\Auth\Models\PersonalAccessToken;
 use App\Auth\Requests\ChangePasswordRequest;

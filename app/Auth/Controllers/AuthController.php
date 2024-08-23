@@ -2,7 +2,6 @@
 
 namespace App\Auth\Controllers;
 
-
 use App\Auth\Requests\ChangePasswordRequest;
 use App\Auth\Requests\LoginRequest;
 use App\Auth\Requests\RefreshTokenRequest;
@@ -11,8 +10,6 @@ use App\Auth\Requests\UpdateMeRequest;
 use App\Auth\Resources\MeResource;
 use App\Auth\Services\UserService;
 use Auth;
-use Carbon\Carbon;
-use Hash;
 use Illuminate\Http\JsonResponse;
 
 class AuthController extends Controller

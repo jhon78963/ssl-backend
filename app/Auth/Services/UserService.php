@@ -19,7 +19,6 @@ class UserService
     public function validateUser(LoginRequest $request): User
     {
         $user = User::where("username", $request->username)->first();
-
         if ( !$user || !Hash::check($request->password, $user->password)) {
             throw ValidationException::withMessages([
                 'message' => ['The provided credentials are incorrect.'],
@@ -44,7 +43,6 @@ class UserService
     public function createTokens(User $user): array
     {
         $user->tokens()->delete();
-
         $accessToken = $user->createToken(
             'access_token',
             [TokenAbility::ACCESS_API->value],
@@ -69,7 +67,9 @@ class UserService
     {
         $validateToken = PersonalAccessToken::findToken($request->refreshToken);
         if ( !$validateToken) {
-            return response()->json(['message' => 'Invalid token.'], 401);
+            throw ValidationException::withMessages([
+                'message' => 'Invalid token.',
+            ]);
         }
 
         return $request->user();

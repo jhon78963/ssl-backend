@@ -39,7 +39,6 @@ class AuthController extends Controller
     }
 
     public function updateMe(UpdateMeRequest $request): JsonResponse {
-
         $this->userService->updateMe($request);
         return response()->json(['message' => 'User updated successfully']);
     }

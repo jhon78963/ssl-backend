@@ -35,23 +35,22 @@ class AuthController extends Controller
     }
 
     public function getMe(): JsonResponse {
-        $user = Auth::user();
-        return response()->json(new MeResource($user));
+        return response()->json(new MeResource(Auth::user()));
     }
 
     public function updateMe(UpdateMeRequest $request): JsonResponse {
 
-        $updatedUser = $this->userService->updateMe($request);
-        return response()->json($updatedUser);
+        $this->userService->updateMe($request);
+        return response()->json(['message' => 'User updated successfully']);
     }
 
     public function changePassword(ChangePasswordRequest $request): JsonResponse {
-        $updatedUser = $this->userService->changePassword($request);
-        return response()->json($updatedUser);
+        $this->userService->changePassword($request);
+        return response()->json(['message' => 'Password changed successfully']);
     }
 
     public function logout(DeleteTokenRequest $request): JsonResponse {
-        $deletedToken = $this->userService->deleteToken($request);
-        return response()->json($deletedToken);
+        $this->userService->deleteToken($request);
+        return response()->json(['message' => 'Logout successfully']);
     }
 }

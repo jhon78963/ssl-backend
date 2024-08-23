@@ -10,6 +10,7 @@ use App\Auth\Requests\LoginRequest;
 use App\Auth\Requests\RefreshTokenRequest;
 use App\Auth\Requests\UpdateMeRequest;
 use App\User\Models\User;
+use Illuminate\Validation\ValidationException;
 use Carbon\Carbon;
 use Hash;
 
@@ -20,32 +21,24 @@ class UserService
         $user = User::where("username", $request->username)->first();
 
         if ( !$user || !Hash::check($request->password, $user->password)) {
-            return response()->json([
-                'message' => 'The provided credentials are incorrect.',
-            ], 404);
+            throw ValidationException::withMessages([
+                'message' => ['The provided credentials are incorrect.'],
+            ]);
         }
 
         return $user;
     }
 
-    public function updateMe(UpdateMeRequest $request): array {
-        $request->user()->fill($request->only([
-            'username', 'email', 'name', 'surname'
-        ]))->save();
-
-        return [
-            'message' => 'User updated successfully',
-        ];
+    public function updateMe(UpdateMeRequest $request): void {
+        $request->user()->fill(
+            $request->only(['username', 'email', 'name', 'surname'])
+        )->save();
     }
 
-    public function changePassword(ChangePasswordRequest $request): array {
+    public function changePassword(ChangePasswordRequest $request): void {
         $user = $request->user();
         $user->password = Hash::make($request->password);
         $user->save();
-
-        return [
-            'message' => 'Password changed successfully',
-        ];
     }
 
     public function createTokens(User $user): array
@@ -64,19 +57,12 @@ class UserService
             Carbon::now()->addMinutes(config('sanctum.refresh_token_expiration'))
         );
 
-        return $this->respondWithToken([
-            'accessToken' => $accessToken,
-            'refreshToken'=> $refreshToken
-        ]);
+        return $this->generateTokenResponse($accessToken, $refreshToken);
     }
 
-    public function deleteToken(DeleteTokenRequest $request): array
+    public function deleteToken(DeleteTokenRequest $request): void
     {
         $request->user()->tokens()->delete();
-
-        return [
-            'message' => 'Logout successfully',
-        ];
     }
 
     public function validateRefreshToken(RefreshTokenRequest $request): User
@@ -89,11 +75,11 @@ class UserService
         return $request->user();
     }
 
-    public function respondWithToken(array $token): array
+    public function generateTokenResponse($accessToken, $refreshToken): array
     {
         return [
-            'token' => $token['accessToken']->plainTextToken,
-            'refreshToken' => $token['refreshToken']->plainTextToken,
+            'token' => $accessToken->plainTextToken,
+            'refreshToken' => $refreshToken->plainTextToken,
             'expirationToken'=> $this->calculateExpirationInMilliseconds(
                 config('sanctum.access_token_expiration')
             ),
@@ -103,12 +89,8 @@ class UserService
         ];
     }
 
-    private function calculateExpirationInMilliseconds($expiresAt): float
+    private function calculateExpirationInMilliseconds(int $expirationInMinutes): int
     {
-        $expirationDate = Carbon::parse($expiresAt);
-        $now = Carbon::now();
-        $differenceInMilliseconds = $expirationDate->diffInMilliseconds($now);
-
-        return round($differenceInMilliseconds);
+        return Carbon::now()->addMinutes($expirationInMinutes)->diffInMilliseconds();
     }
 }

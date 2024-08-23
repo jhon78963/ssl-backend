@@ -21,8 +21,6 @@ class TokenRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            "token"=> "required",
-        ];
+        return [];
     }
 }

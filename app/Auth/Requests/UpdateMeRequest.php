@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Auth;
+namespace App\Auth\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class TokenRequest extends FormRequest
+class UpdateMeRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -21,6 +21,11 @@ class TokenRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [];
+        return [
+            'username' => 'sometimes|string|max:255|unique:users,email,' . $this->id,
+            'email' => 'sometimes|email|max:255|unique:users,email,' . $this->id,
+            'name' => 'sometimes|string|max:255',
+            'surname' => 'sometimes|string|max:255',
+        ];
     }
 }

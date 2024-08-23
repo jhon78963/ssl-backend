@@ -1,15 +1,16 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Auth\Controllers;
 
-use App\Enums\TokenAbility;
-use App\Http\Requests\Auth\UpdatePasswordRequest;
-use App\Http\Requests\Auth\LoginRequest;
-use App\Http\Requests\Auth\RefreshTokenRequest;
-use App\Http\Requests\Auth\TokenRequest;
-use App\Http\Requests\Auth\UpdateMeRequest;
-use App\Models\PersonalAccessToken;
-use App\Models\User;
+
+use App\Auth\Enums\TokenAbility;
+use App\Auth\Requests\UpdatePasswordRequest;
+use App\Auth\Requests\LoginRequest;
+use App\Auth\Requests\RefreshTokenRequest;
+use App\Auth\Requests\TokenRequest;
+use App\Auth\Requests\UpdateMeRequest;
+use App\Auth\Models\PersonalAccessToken;
+use App\User\Models\User;
 use Auth;
 use Carbon\Carbon;
 use Hash;

@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Models;
+namespace App\Company\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Role extends Model
+class CompanySocialNetwork extends Model
 {
     use HasFactory;
 
@@ -16,7 +16,9 @@ class Role extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'company_id',
         'name',
+        'url',
     ];
 
     /**
@@ -41,7 +43,8 @@ class Role extends Model
      */
     public $timestamps = false;
 
-    public function users(): HasMany {
-        return $this->hasMany(User::class);
+    public function company(): BelongsTo
+    {
+        return $this->belongsTo(Company::class);
     }
 }

@@ -5,10 +5,12 @@ namespace App\Role\Controllers;
 use App\Role\Models\Role;
 use App\Role\Requests\RoleCreateRequest;
 use App\Role\Requests\RoleUpdateRequest;
-use App\Role\Resources\RoleCollection;
 use App\Role\Resources\RoleResource;
-use App\Role\Service\RoleService;
+use App\Role\Services\RoleService;
+use App\Shared\Controllers\Controller;
 use App\Shared\Requests\GetAllRequest;
+use App\Shared\Resources\GetAllCollection;
+use App\Shared\Services\SharedService;
 use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use DB;
@@ -17,10 +19,12 @@ class RoleController extends Controller
 {
 
     protected $roleService;
+    protected $sharedService;
 
-    public function __construct(RoleService $roleService)
+    public function __construct(RoleService $roleService, SharedService $sharedService)
     {
         $this->roleService = $roleService;
+        $this->sharedService = $sharedService;
     }
 
     public function create(RoleCreateRequest $request): JsonResponse
@@ -40,11 +44,10 @@ class RoleController extends Controller
     {
         DB::beginTransaction();
         try {
-            $roleValidated = $this->roleService->validateRole($role);
-            $this->roleService->deleteRole($roleValidated);
+            $roleValidated = $this->sharedService->validateModel($role, 'Role');
+            $this->sharedService->deleteModel($roleValidated);
             DB::commit();
             return response()->json(['message' => 'Role deleted.']);
-
         } catch (\Exception $e) {
             DB::rollback();
             throw new BadRequestException($e->getMessage());
@@ -53,21 +56,21 @@ class RoleController extends Controller
 
     public function get(Role $role): JsonResponse
     {
-        $roleValidated = $this->roleService->validateRole($role);
+        $roleValidated = $this->sharedService->validateModel($role, 'Role');
         return response()->json(new RoleResource($roleValidated));
     }
 
     public function getAll(GetAllRequest  $request): JsonResponse
     {
-        $query = $this->roleService->queryRole($request);
-        return response()->json(new RoleCollection($query['roles'], $query['total'], $query['pages']));
+        $query = $this->sharedService->query($request, 'Role', 'name');
+        return response()->json(new GetAllCollection($query['collection'], $query['total'], $query['pages']));
     }
 
     public function update(RoleUpdateRequest $request, Role $role): JsonResponse
     {
         DB::beginTransaction();
         try {
-            $roleValidated = $this->roleService->validateRole($role);
+            $roleValidated = $this->sharedService->validateModel($role, 'Role');
             $this->roleService->updateRole($roleValidated, $request->validated());
             DB::commit();
             return response()->json(['message' => 'Role updated.']);

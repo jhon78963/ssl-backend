@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Role\Resources;
+namespace App\Shared\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class RoleCollection extends ResourceCollection
+class GetAllCollection extends ResourceCollection
 {
     protected $total;
     protected $pages;
@@ -16,7 +16,6 @@ class RoleCollection extends ResourceCollection
         $this->total = $total;
         $this->pages = $pages;
     }
-
     /**
      * Transform the resource collection into an array.
      *

@@ -15,7 +15,7 @@ use Illuminate\Validation\ValidationException;
 use Carbon\Carbon;
 use Hash;
 
-class UserService
+class AuthService
 {
     public function validateUser(string $password, User $user): User
     {

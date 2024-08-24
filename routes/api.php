@@ -2,6 +2,7 @@
 
 use App\Auth\Controllers\AuthController;
 use App\Role\Controllers\RoleController;
+use App\User\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('auth/login', [AuthController::class, 'login']);
@@ -20,6 +21,14 @@ Route::group([
         Route::patch('/roles/{role}', 'update');
         Route::delete('/roles/{role}', 'delete');
         Route::get('/roles', 'getAll');
-        Route::get('roles/{role}', 'get');
+        Route::get('/roles/{role}', 'get');
+    });
+
+    Route::controller(UserController::class)->group(function() {
+        Route::post('/users', 'create');
+        Route::patch('/users/{user}', 'update');
+        Route::delete('/users/{user}', 'delete');
+        Route::get('/users', 'getAll');
+        Route::get('/users/{user}', 'get');
     });
 });

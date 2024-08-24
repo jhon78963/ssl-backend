@@ -8,8 +8,9 @@ use App\Auth\Requests\RefreshTokenRequest;
 use App\Auth\Requests\DeleteTokenRequest;
 use App\Auth\Requests\UpdateMeRequest;
 use App\Auth\Resources\MeResource;
-use App\Auth\Services\UserService;
+use App\Auth\Services\AuthService;
 use App\User\Models\User;
+use App\Shared\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Auth;
 
@@ -17,7 +18,7 @@ class AuthController extends Controller
 {
     protected $userService;
 
-    public function __construct(UserService $userService)
+    public function __construct(AuthService $userService)
     {
         $this->userService = $userService;
     }

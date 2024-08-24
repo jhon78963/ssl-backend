@@ -82,11 +82,6 @@ class UserService
 
     private function calculateExpirationInMilliseconds(int $expirationInMinutes): int
     {
-        // $expirationDate = Carbon::parse($expirationInMinutes);
-        // $now = Carbon::now();
-        // $differenceInMilliseconds = $expirationDate->diffInMilliseconds($now);
-
-        // return round($differenceInMilliseconds);
         return Carbon::parse($expirationInMinutes)->diffInMilliseconds(Carbon::now());
     }
 }

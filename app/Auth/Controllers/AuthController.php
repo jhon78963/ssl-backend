@@ -9,12 +9,14 @@ use App\Auth\Requests\DeleteTokenRequest;
 use App\Auth\Requests\UpdateMeRequest;
 use App\Auth\Resources\MeResource;
 use App\Auth\Services\UserService;
-use Auth;
+use App\User\Models\User;
 use Illuminate\Http\JsonResponse;
+use Auth;
 
 class AuthController extends Controller
 {
     protected $userService;
+
     public function __construct(UserService $userService)
     {
         $this->userService = $userService;
@@ -22,8 +24,9 @@ class AuthController extends Controller
 
     public function login(LoginRequest $request): JsonResponse
     {
-        $user = $this->userService->validateUser($request);
-        $getTokens = $this->userService->createTokens($user);
+        $user = User::where("username", $request->username)->first();
+        $validatedUser = $this->userService->validateUser($request->password, $user);
+        $getTokens = $this->userService->createTokens($validatedUser);
         return response()->json($getTokens);
     }
 
@@ -44,12 +47,12 @@ class AuthController extends Controller
     }
 
     public function changePassword(ChangePasswordRequest $request): JsonResponse {
-        $this->userService->changePassword($request);
+        $this->userService->changePassword($request->user(), $request->password);
         return response()->json(['message' => 'Password changed successfully']);
     }
 
     public function logout(DeleteTokenRequest $request): JsonResponse {
-        $this->userService->deleteToken($request);
+        $this->userService->deleteToken($request->user());
         return response()->json(['message' => 'Logout successfully']);
     }
 }

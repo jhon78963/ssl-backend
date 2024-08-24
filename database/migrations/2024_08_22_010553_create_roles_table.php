@@ -17,6 +17,7 @@ return new class extends Migration
             $table->integer('creator_user_id')->nullable();
             $table->datetime('last_modification_time')->nullable();
             $table->integer('last_modifier_user_id')->nullable();
+            $table->boolean('is_deleted')->default(false);
             $table->integer('deleter_user_id')->nullable();
             $table->datetime('deletion_time')->nullable();
             $table->string('name', 25);

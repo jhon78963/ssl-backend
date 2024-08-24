@@ -16,25 +16,26 @@ use Auth;
 
 class AuthController extends Controller
 {
-    protected $userService;
+    protected $authService;
 
-    public function __construct(AuthService $userService)
+    public function __construct(AuthService $authService)
     {
-        $this->userService = $userService;
+        $this->authService = $authService;
     }
 
     public function login(LoginRequest $request): JsonResponse
     {
         $user = User::where("username", $request->username)->first();
-        $validatedUser = $this->userService->validateUser($request->password, $user);
-        $getTokens = $this->userService->createTokens($validatedUser);
+        $validatedUser = $this->authService->validateUser($request->password, $user);
+        $getTokens = $this->authService->createTokens($validatedUser);
         return response()->json($getTokens);
     }
 
     public function refreshToken(RefreshTokenRequest $request): JsonResponse
     {
-        $user = $this->userService->validateRefreshToken($request);
-        $getTokens = $this->userService->createTokens($user);
+        $user = $this->authService->validateRefreshToken($request);
+        $this->authService->deleteToken($request->user());
+        $getTokens = $this->authService->createTokens($user);
         return response()->json($getTokens);
     }
 
@@ -43,17 +44,17 @@ class AuthController extends Controller
     }
 
     public function updateMe(UpdateMeRequest $request): JsonResponse {
-        $this->userService->updateMe($request);
+        $this->authService->updateMe($request);
         return response()->json(['message' => 'User updated successfully']);
     }
 
     public function changePassword(ChangePasswordRequest $request): JsonResponse {
-        $this->userService->changePassword($request->user(), $request->password);
+        $this->authService->changePassword($request->user(), $request->password);
         return response()->json(['message' => 'Password changed successfully']);
     }
 
     public function logout(DeleteTokenRequest $request): JsonResponse {
-        $this->userService->deleteToken($request->user());
+        $this->authService->deleteToken($request->user());
         return response()->json(['message' => 'Logout successfully']);
     }
 }

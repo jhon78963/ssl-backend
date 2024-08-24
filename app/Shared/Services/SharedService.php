@@ -2,6 +2,7 @@
 namespace App\Shared\Services;
 
 use App\Shared\Requests\GetAllRequest;
+use App\User\Resources\UserResource;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Auth;

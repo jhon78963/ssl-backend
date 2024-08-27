@@ -24,3 +24,12 @@ php artisan migrate --seed
 ```
 php artisan serve
 ```
+
+# Comandos Bootstrap y Cache
+```
+sudo chown -R www-data:www-data /var/www/html
+sudo chown -R $USER:www-data storage
+sudo chown -R $USER:www-data bootstrap/cache
+chmod -R 775 storage
+chmod -R 775 bootstrap/cache
+```

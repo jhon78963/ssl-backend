@@ -27,9 +27,15 @@ php artisan serve
 
 # Comandos Bootstrap y Cache
 ```
+sudo a2enmod rewrite
 sudo chown -R www-data:www-data /var/www/html
 sudo chown -R $USER:www-data storage
 sudo chown -R $USER:www-data bootstrap/cache
 chmod -R 775 storage
 chmod -R 775 bootstrap/cache
+sudo systemctl restart apache2
+php artisan optimize:clear
+php artisan route:cache
+php artisan view:cache
+php artisan config:cache
 ```

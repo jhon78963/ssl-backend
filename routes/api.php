@@ -5,6 +5,10 @@ use App\Role\Controllers\RoleController;
 use App\User\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTION');
+header('Access-Control-Allow-Headers: Origin, Content-Type, Accept, Authorization, X-Auth-Token');
+
 Route::post('auth/login', [AuthController::class, 'login']);
 
 Route::group([

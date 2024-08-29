@@ -12,6 +12,7 @@ use App\Auth\Services\AuthService;
 use App\User\Models\User;
 use App\Shared\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Auth;
 
 class AuthController extends Controller
@@ -34,7 +35,7 @@ class AuthController extends Controller
     public function refreshToken(RefreshTokenRequest $request): JsonResponse
     {
         $user = $this->authService->validateRefreshToken($request);
-        $this->authService->deleteToken($request->user());
+        $this->authService->deleteToken($user);
         $getTokens = $this->authService->createTokens($user);
         return response()->json($getTokens);
     }

@@ -62,8 +62,9 @@ class AuthService
     public function validateRefreshToken(RefreshTokenRequest $request): User
     {
         $validateToken = PersonalAccessToken::findToken($request->refreshToken);
+        $user = User::find($validateToken->tokenable_id);
         if ( !$validateToken) throw new InvalidTokenException();
-        return $request->user();
+        return  $user;
     }
 
     public function generateTokenResponse(string $accessToken, string $refreshToken): array

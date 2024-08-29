@@ -11,6 +11,7 @@ header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTION');
 header('Access-Control-Allow-Headers: Origin, Content-Type, Accept, Authorization, X-Auth-Token');
 
 Route::post('auth/login', [AuthController::class, 'login']);
+Route::post('auth/refresh-token', [AuthController::class, 'refreshToken']);
 
 Route::group([
     'middleware' => 'auth:sanctum',
@@ -19,7 +20,6 @@ Route::group([
     Route::post('auth/me', [AuthController::class, 'getMe']);
     Route::post('auth/change-password', [AuthController::class,'changePassword']);
     Route::post('auth/logout', [AuthController::class,'logout']);
-    Route::post('auth/refresh-token', [AuthController::class, 'refreshToken']);
 
     Route::controller(RoleController::class)->group(function() {
         Route::post('/roles', 'create');

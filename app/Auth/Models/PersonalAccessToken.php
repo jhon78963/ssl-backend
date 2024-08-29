@@ -18,6 +18,7 @@ class PersonalAccessToken extends SanctumPersonalAccessToken
         'name',
         'token',
         'abilities',
+        'expires_at',
     ];
 
     /**
@@ -25,9 +26,7 @@ class PersonalAccessToken extends SanctumPersonalAccessToken
      *
      * @var array
      */
-    protected $hidden = [
-        'token',
-    ];
+    protected $hidden = [];
 
     /**
      * Find the token instance matching the given token.

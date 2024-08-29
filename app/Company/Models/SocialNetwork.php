@@ -6,9 +6,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class CompanySocialNetwork extends Model
+class SocialNetwork extends Model
 {
     use HasFactory;
+
+    protected $table = 'company_social_networks';
 
     /**
      * The attributes that are mass assignable.

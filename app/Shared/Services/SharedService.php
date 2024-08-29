@@ -20,12 +20,13 @@ class SharedService {
         $model->save();
     }
 
-    public function query(GetAllRequest  $request, string $modelName, string $columnSearch): array {
+    public function query(GetAllRequest  $request, string $entityName, string $modelName, string $columnSearch): array {
         $limit = $request->query('limit', $this->limit);
         $page = $request->query('page', $this->page);
         $search = $request->query('search', $this->search);
 
-        $modelClass = "App\\$modelName\\Models\\$modelName";
+        $modelClass = "App\\$entityName\\Models\\$modelName";
+
         $query = $modelClass::query();
 
         if ($search) {

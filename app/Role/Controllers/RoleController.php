@@ -62,7 +62,7 @@ class RoleController extends Controller
 
     public function getAll(GetAllRequest  $request): JsonResponse
     {
-        $query = $this->sharedService->query($request, 'Role', 'name');
+        $query = $this->sharedService->query($request, 'Role', 'Role', 'name');
         return response()->json(new GetAllCollection(
             RoleResource::collection($query['collection']),
             $query['total'],

@@ -8,7 +8,8 @@ use App\User\Requests\UserUpdateRequest;
 use Auth;
 use Hash;
 
-class UserService {
+class UserService
+{
     public function uploadProfilePicture(UserCreateRequest | UserUpdateRequest $request): ?string
     {
         return ($request->hasFile("profilePicture"))

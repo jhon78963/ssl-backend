@@ -62,7 +62,7 @@ class UserController extends Controller
 
     public function getAll(GetAllRequest  $request): JsonResponse
     {
-        $query = $this->sharedService->query($request, 'User', 'name');
+        $query = $this->sharedService->query($request, 'User', 'User', 'name');
         return response()->json(new GetAllCollection(
             UserResource::collection($query['collection']),
             $query['total'],

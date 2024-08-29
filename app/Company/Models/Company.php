@@ -16,6 +16,7 @@ class Company extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'id',
         'business_name',
         'representative_legal',
         'address',
@@ -48,6 +49,6 @@ class Company extends Model
 
     public function socialNetworks(): HasMany
     {
-        return $this->hasMany(CompanySocialNetwork::class);
+        return $this->hasMany(SocialNetwork::class);
     }
 }

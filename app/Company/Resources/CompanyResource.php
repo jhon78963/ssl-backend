@@ -17,11 +17,11 @@ class CompanyResource extends JsonResource
         return [
             'id' => $this->id,
             'businessName' => $this->business_name,
-            'resentativeLegalssNamel' => $this->representative_lega,
+            'representativeLegal' => $this->representative_legal,
             'address' => $this->address,
             'phoneNumber' => $this->phone_number,
             'email' => $this->email,
-            'googleMmapsLocation' => $this->google_maps_location,
+            'googleMapsLocation' => $this->google_maps_location,
         ];
     }
 }

@@ -7,7 +7,6 @@ use App\Company\Models\SocialNetwork;
 use App\Company\Requests\CompanyUpdateRequest;
 use App\Company\Requests\SocialNetworkAddRequest;
 use App\Company\Requests\SocialNetworkEditRequest;
-use App\Company\Requests\SocialNetworkRemoveRequest;
 use App\Company\Resources\CompanyResource;
 use App\Company\Resources\SocialNetworkResource;
 use App\Company\Services\CompanyService;

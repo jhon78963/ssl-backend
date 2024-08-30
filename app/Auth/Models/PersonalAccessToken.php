@@ -19,6 +19,7 @@ class PersonalAccessToken extends SanctumPersonalAccessToken
         'token',
         'abilities',
         'expires_at',
+        'tokenable_id',
     ];
 
     /**

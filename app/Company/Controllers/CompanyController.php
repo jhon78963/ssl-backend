@@ -21,17 +21,14 @@ use DB;
 class CompanyController
 {
     protected $companyService;
-    protected $socialNetworkService;
     protected $sharedService;
 
     public function __construct(
         CompanyService $companyService,
-        SocialNetworkService $socialNetworkService,
         SharedService $sharedService,
     )
     {
         $this->companyService = $companyService;
-        $this->socialNetworkService = $socialNetworkService;
         $this->sharedService = $sharedService;
     }
 
@@ -52,63 +49,6 @@ class CompanyController
             );
             DB::commit();
             return response()->json(['message' => 'Company updated.']);
-        } catch (\Exception $e) {
-            DB::rollback();
-            throw new BadRequestException($e->getMessage());
-        }
-    }
-
-    public function addSocialNetwork(SocialNetworkAddRequest $request): JsonResponse
-    {
-        DB::beginTransaction();
-        try {
-            $this->socialNetworkService->add($request->validated());
-            DB::commit();
-            return response()->json(['message' => 'Social Netwrok added.']);
-        } catch (\Exception $e) {
-            DB::rollback();
-            throw new BadRequestException($e->getMessage());
-        }
-    }
-
-    public function editSocialNetwork(SocialNetworkEditRequest $request, SocialNetwork $socialNetwork): JsonResponse
-    {
-        DB::beginTransaction();
-        try {
-            $socialNetworkValidated = $this->sharedService->validateModel($socialNetwork, 'SocialNetwork');
-            $this->socialNetworkService->update($socialNetworkValidated, $request->validated());
-            DB::commit();
-            return response()->json(['message' => 'Social Netwrok updated.']);
-        } catch (\Exception $e) {
-            DB::rollback();
-            throw new BadRequestException($e->getMessage());
-        }
-    }
-
-    public function getSocialNetwork(SocialNetwork $socialNetwork): JsonResponse
-    {
-        $socialNetworkValidated = $this->sharedService->validateModel($socialNetwork, 'SocialNetwork');
-        return response()->json(new SocialNetworkResource($socialNetworkValidated));
-    }
-
-    public function getAllSocialNetwork(GetAllRequest  $request): JsonResponse
-    {
-        $query = $this->sharedService->query($request, 'Company', 'SocialNetwork', 'name');
-        return response()->json(new GetAllCollection(
-            SocialNetworkResource::collection($query['collection']),
-            $query['total'],
-            $query['pages'],
-        ));
-    }
-
-    public function removeSocialNetwork(SocialNetwork $socialNetwork): JsonResponse
-    {
-        DB::beginTransaction();
-        try {
-            $socialNetworkValidated = $this->sharedService->validateModel($socialNetwork, 'SocialNetwork');
-            $this->sharedService->deleteModel($socialNetworkValidated);
-            DB::commit();
-            return response()->json(['message' => 'Social Netwrok removed.']);
         } catch (\Exception $e) {
             DB::rollback();
             throw new BadRequestException($e->getMessage());

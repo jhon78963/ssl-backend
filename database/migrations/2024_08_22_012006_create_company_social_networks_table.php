@@ -26,6 +26,7 @@ return new class extends Migration
             $table->integer('company_id');
             $table->foreign('company_id')->references('id')->on('companies');
             $table->string('name');
+            $table->string('icon');
             $table->string('url');
         });
     }

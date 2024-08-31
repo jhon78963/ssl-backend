@@ -23,6 +23,7 @@ class SocialNetworkEditRequest extends FormRequest
     {
         return [
             'name' => 'sometimes|string|max:255',
+            'icon' => 'sometimes|string|max:255',
             'url' => 'sometimes|url|max:255',
         ];
     }

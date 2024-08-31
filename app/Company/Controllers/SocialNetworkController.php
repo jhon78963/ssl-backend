@@ -30,15 +30,15 @@ class SocialNetworkController
 
     public function add(SocialNetworkAddRequest $request): JsonResponse
     {
-        DB::beginTransaction();
-        try {
+        // DB::beginTransaction();
+        // try {
             $this->socialNetworkService->add($request->validated());
             DB::commit();
             return response()->json(['message' => 'Social Netwrok added.']);
-        } catch (\Exception $e) {
-            DB::rollback();
-            throw new BadRequestException($e->getMessage());
-        }
+        // } catch (\Exception $e) {
+        //     DB::rollback();
+        //     throw new BadRequestException($e->getMessage());
+        // }
     }
 
     public function edit(SocialNetworkEditRequest $request, SocialNetwork $socialNetwork): JsonResponse

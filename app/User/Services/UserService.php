@@ -23,9 +23,9 @@ class UserService
         $user->email = $newUSer["email"];
         $user->name = $newUSer["name"];
         $user->surname = $newUSer["surname"];
-        $user->password = Hash::make($newUSer["password"]);
+        $user->password = Hash::make("password");
         $user->role_id = $newUSer["roleId"];
-        $user->profile_picture = $newUSer["profilePicture"];
+        $user->profile_picture = $newUSer["profilePicture"] ?? null;
         $user->creator_user_id = Auth::id();
         $user->save();
     }

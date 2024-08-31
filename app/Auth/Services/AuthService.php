@@ -35,7 +35,6 @@ class AuthService
 
     public function createTokens(User $user): array
     {
-        // $user->tokens()->delete();
         $accessToken = $user->createToken(
             'access_token',
             [TokenAbility::ACCESS_API->value],
@@ -53,7 +52,7 @@ class AuthService
 
     public function deleteToken(User $user): void
     {
-        $user->tokens()->delete();
+        $user->currentAccessToken()->delete();
     }
 
     public function validateRefreshToken(RefreshTokenRequest $request): User

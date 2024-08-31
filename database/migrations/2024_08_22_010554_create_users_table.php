@@ -28,7 +28,7 @@ return new class extends Migration
             $table->string('name')->nullable();
             $table->string('surname')->nullable();
             $table->string('password')->nullable();
-            $table->string('profile_picture')->default('/assets/img/avatars/1.png');
+            $table->string('profile_picture')->nullable()->default('/assets/img/avatars/1.png');
             $table->string('google_id')->nullable();
             $table->rememberToken();
         });

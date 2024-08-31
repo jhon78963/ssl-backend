@@ -27,7 +27,6 @@ class UserCreateRequest extends FormRequest
             'email' => 'required|email|max:190',
             'name' => 'required|string|max:25',
             'surname' => 'required|string|max:25',
-            'password' => ['required','confirmed', Password::defaults()],
             'roleId' => 'required',
         ];
     }

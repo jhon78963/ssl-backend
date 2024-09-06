@@ -12,8 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('room_picture', function (Blueprint $table) {
-            $table->unsignedBigInteger('room_id')->nullable();
-            $table->unsignedBigInteger('picture_id')->nullable();
+            $table->unsignedBigInteger('room_id');
+            $table->foreign('room_id')->references('id')->on('rooms');
+            $table->unsignedBigInteger('picture_id');
+            $table->foreign('picture_id')->references('id')->on('pictures');
             $table->primary(['room_id', 'picture_id']);
             $table->datetime('creation_time')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->integer('creator_user_id')->nullable();
@@ -25,8 +27,6 @@ return new class extends Migration
             $table->integer('deleter_user_id')->nullable();
             $table->foreign('deleter_user_id')->references('id')->on('users');
             $table->datetime('deletion_time')->nullable();
-            $table->foreign('room_id')->references('id')->on('rooms');
-            $table->foreign('picture_id')->references('id')->on('pictures');
         });
     }
 

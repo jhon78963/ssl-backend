@@ -12,7 +12,6 @@ use App\Shared\Resources\GetAllCollection;
 use App\Shared\Services\SharedService;
 use Illuminate\Http\JsonResponse;
 use DB;
-use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 
 class RoomTypeController extends Controller
 {

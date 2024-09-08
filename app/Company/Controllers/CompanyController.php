@@ -3,20 +3,12 @@
 namespace App\Company\Controllers;
 
 use App\Company\Models\Company;
-use App\Company\Models\SocialNetwork;
 use App\Company\Requests\CompanyUpdateRequest;
-use App\Company\Requests\SocialNetworkAddRequest;
-use App\Company\Requests\SocialNetworkEditRequest;
 use App\Company\Resources\CompanyResource;
-use App\Company\Resources\SocialNetworkResource;
 use App\Company\Services\CompanyService;
-use App\Company\Services\SocialNetworkService;
 use App\Shared\Controllers\Controller;
-use App\Shared\Requests\GetAllRequest;
-use App\Shared\Resources\GetAllCollection;
 use App\Shared\Services\SharedService;
 use Illuminate\Http\JsonResponse;
-use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use DB;
 
 class CompanyController extends Controller

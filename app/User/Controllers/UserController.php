@@ -12,7 +12,6 @@ use App\Shared\Requests\GetAllRequest;
 use App\Shared\Resources\GetAllCollection;
 use App\Shared\Services\SharedService;
 use Illuminate\Http\JsonResponse;
-use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use DB;
 
 class UserController extends Controller

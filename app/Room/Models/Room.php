@@ -18,9 +18,10 @@ class Room extends Model
      */
     protected $fillable = [
         'id',
+        'room_number',
+        'capacity',
+        'status',
         'room_type_id',
-        'name',
-        'capacity'
     ];
 
     /**
@@ -37,6 +38,14 @@ class Room extends Model
         'deleter_user_id',
         'deletion_time',
     ];
+
+    /**
+     * Indicates if the model should be timestamped.
+     *
+     * @var bool
+     */
+
+     public $timestamps = false;
 
     public function roomType(): BelongsTo {
         return $this->belongsTo(RoomType::class);

@@ -5,6 +5,7 @@ use App\Company\Controllers\CompanyController;
 use App\Company\Controllers\SocialNetworkController;
 use App\Company\Models\SocialNetwork;
 use App\Role\Controllers\RoleController;
+use App\Room\Controllers\RoomTypeController;
 use App\User\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -50,5 +51,13 @@ Route::group([
         Route::delete('/companies/remove/social-network/{socialNetwork}', 'remove');
         Route::get('/companies/get/social-network/{socialNetwork}', 'get');
         Route::get('/companies/getAll/social-network/', 'getAll');
+    });
+
+    Route::controller(RoomTypeController::class)->group(function() {
+        Route::post('/room-types', 'create');
+        Route::patch('/room-types/{roomType}', 'update');
+        Route::delete('/room-types/{roomType}', 'delete');
+        Route::get('/room-types', 'getAll');
+        Route::get('/room-types/{roomType}', 'get');
     });
 });

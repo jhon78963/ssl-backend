@@ -10,7 +10,7 @@ class RoleService
     public function createRole(array $newRole): void
     {
         $role = new Role();
-        $role->name = $newRole["name"];
+        $role->name = $newRole['name'];
         $role->creator_user_id = Auth::id();
         $role->save();
     }

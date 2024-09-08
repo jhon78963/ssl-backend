@@ -11,6 +11,7 @@ use App\Company\Resources\CompanyResource;
 use App\Company\Resources\SocialNetworkResource;
 use App\Company\Services\CompanyService;
 use App\Company\Services\SocialNetworkService;
+use App\Shared\Controllers\Controller;
 use App\Shared\Requests\GetAllRequest;
 use App\Shared\Resources\GetAllCollection;
 use App\Shared\Services\SharedService;
@@ -18,7 +19,7 @@ use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use DB;
 
-class CompanyController
+class CompanyController extends Controller
 {
     protected $companyService;
     protected $sharedService;
@@ -51,7 +52,7 @@ class CompanyController
             return response()->json(['message' => 'Company updated.']);
         } catch (\Exception $e) {
             DB::rollback();
-            throw new BadRequestException($e->getMessage());
+            return response()->json(['error' =>  $e->getMessage()]);
         }
     }
 }

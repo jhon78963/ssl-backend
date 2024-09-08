@@ -36,7 +36,7 @@ class RoleController extends Controller
             return response()->json(['message' => 'Role created.'], 201);
         } catch (\Exception $e) {
             DB::rollback();
-            throw new BadRequestException($e->getMessage());
+            return response()->json(['error' =>  $e->getMessage()]);
         }
     }
 
@@ -50,7 +50,7 @@ class RoleController extends Controller
             return response()->json(['message' => 'Role deleted.']);
         } catch (\Exception $e) {
             DB::rollback();
-            throw new BadRequestException($e->getMessage());
+            return response()->json(['error' =>  $e->getMessage()]);
         }
     }
 
@@ -80,7 +80,7 @@ class RoleController extends Controller
             return response()->json(['message' => 'Role updated.']);
         } catch (\Exception $e) {
             DB::rollback();
-            throw new BadRequestException($e->getMessage());
+            return response()->json(['error' =>  $e->getMessage()]);
         }
     }
 }

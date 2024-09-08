@@ -7,6 +7,7 @@ use App\Company\Requests\SocialNetworkAddRequest;
 use App\Company\Requests\SocialNetworkEditRequest;
 use App\Company\Resources\SocialNetworkResource;
 use App\Company\Services\SocialNetworkService;
+use App\Shared\Controllers\Controller;
 use App\Shared\Requests\GetAllRequest;
 use App\Shared\Resources\GetAllCollection;
 use App\Shared\Services\SharedService;
@@ -14,7 +15,7 @@ use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use DB;
 
-class SocialNetworkController
+class SocialNetworkController extends Controller
 {
     protected $socialNetworkService;
     protected $sharedService;
@@ -37,7 +38,7 @@ class SocialNetworkController
             return response()->json(['message' => 'Social Netwrok added.']);
         } catch (\Exception $e) {
             DB::rollback();
-            throw new BadRequestException($e->getMessage());
+            return response()->json(['error' =>  $e->getMessage()]);
         }
     }
 
@@ -51,7 +52,7 @@ class SocialNetworkController
             return response()->json(['message' => 'Social Netwrok updated.']);
         } catch (\Exception $e) {
             DB::rollback();
-            throw new BadRequestException($e->getMessage());
+            return response()->json(['error' =>  $e->getMessage()]);
         }
     }
 
@@ -81,7 +82,7 @@ class SocialNetworkController
             return response()->json(['message' => 'Social Netwrok removed.']);
         } catch (\Exception $e) {
             DB::rollback();
-            throw new BadRequestException($e->getMessage());
+            return response()->json(['error' =>  $e->getMessage()]);
         }
     }
 }

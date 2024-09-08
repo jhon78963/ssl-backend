@@ -27,18 +27,18 @@ class UserController extends Controller
     }
     public function create(UserCreateRequest $request): JsonResponse
     {
-        // DB::beginTransaction();
-        // try {
+        DB::beginTransaction();
+        try {
             $validatedUser = $this->userService->checkUser($request->email, $request->username);
             if ($validatedUser) return response()->json($validatedUser);
             $profilePicture = $this->userService->uploadProfilePicture($request);
             $this->userService->createUser($request->validated() + ['profilePicture' => $profilePicture]);
             DB::commit();
             return response()->json(['message' => 'User created.'], 201);
-        // } catch (\Exception $e) {
-        //     DB::rollback();
-        //     throw new BadRequestException($e->getMessage());
-        // }
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json(['error' =>  $e->getMessage()]);
+        }
     }
 
     public function delete(User $user): JsonResponse {
@@ -50,7 +50,7 @@ class UserController extends Controller
             return response()->json(['message' => 'User deleted.']);
         } catch (\Exception $e) {
             DB::rollback();
-            throw new BadRequestException($e->getMessage());
+            return response()->json(['error' =>  $e->getMessage()]);
         }
     }
 
@@ -84,7 +84,7 @@ class UserController extends Controller
             return response()->json(['message' => 'User updated.']);
         } catch (\Exception $e) {
             DB::rollback();
-            throw new BadRequestException($e->getMessage());
+            return response()->json(['error' =>  $e->getMessage()]);
         }
     }
 }

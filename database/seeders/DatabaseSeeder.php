@@ -16,6 +16,8 @@ class DatabaseSeeder extends Seeder
             RoleSeed::class,
             UserSeed::class,
             RoomTypeSeeder::class,
+            RateHourSeeder::class,
+            RateDaySeeder::class,
         ]);
     }
 }

@@ -9,6 +9,7 @@ use App\Rate\Controllers\RateDayController;
 use App\Rate\Controllers\RateHourController;
 use App\Review\Controllers\ReviewController;
 use App\Role\Controllers\RoleController;
+use App\Room\Controllers\RoomAmenityController;
 use App\Room\Controllers\RoomController;
 use App\Room\Controllers\RoomImageController;
 use App\Room\Controllers\RoomTypeController;
@@ -113,6 +114,11 @@ Route::group([
         Route::delete('/amenities/{amenity}', 'delete');
         Route::get('/amenities', 'getAll');
         Route::get('/amenities/{amenity}', 'get');
+    });
+
+    Route::controller(RoomAmenityController::class)->group(function() {
+        Route::post('/amenities/{room}/add', 'add');
+        Route::delete('/amenities/{room}/remove', 'remove');
     });
 
     Route::controller(RoomImageController::class)->group(function() {

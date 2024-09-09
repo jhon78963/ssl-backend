@@ -10,6 +10,7 @@ use App\Rate\Controllers\RateHourController;
 use App\Review\Controllers\ReviewController;
 use App\Role\Controllers\RoleController;
 use App\Room\Controllers\RoomController;
+use App\Room\Controllers\RoomImageController;
 use App\Room\Controllers\RoomTypeController;
 use App\User\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -112,5 +113,9 @@ Route::group([
         Route::delete('/amenities/{amenity}', 'delete');
         Route::get('/amenities', 'getAll');
         Route::get('/amenities/{amenity}', 'get');
+    });
+
+    Route::controller(RoomImageController::class)->group(function() {
+        Route::post('/upload-picture/{room}', 'uploadImageRooms');
     });
 });

@@ -1,28 +1,25 @@
 <?php
 
-namespace App\Room\Models;
+namespace App\Shared\Models;
 
-use App\Shared\Models\Picture;
+use App\Room\Models\Room;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-class Room extends Model
+class Picture extends Model
 {
     use HasFactory;
 
-    /**
+     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
     protected $fillable = [
         'id',
-        'room_number',
-        'capacity',
-        'status',
-        'room_type_id',
+        'file_name',
+        'file_path',
     ];
 
     /**
@@ -46,14 +43,11 @@ class Room extends Model
      * @var bool
      */
 
-     public $timestamps = false;
+    public $timestamps = false;
 
-    public function roomType(): BelongsTo {
-        return $this->belongsTo(RoomType::class);
-    }
-
-    public function images(): BelongsToMany
+    public function rooms(): BelongsToMany
     {
-        return $this->belongsToMany(Picture::class);
+        return $this->belongsToMany(Room::class);
     }
+
 }

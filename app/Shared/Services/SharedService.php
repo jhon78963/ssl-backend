@@ -1,11 +1,13 @@
 <?php
 namespace App\Shared\Services;
 
+use App\Shared\Models\Picture;
 use App\Shared\Requests\GetAllRequest;
-use App\User\Resources\UserResource;
+use App\Shared\Requests\ImageUploadRequest;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Auth;
+use Storage;
 
 class SharedService {
     private int $limit = 10;
@@ -59,5 +61,37 @@ class SharedService {
         }
 
         return $model;
+    }
+
+    public function uploadImage(ImageUploadRequest $request, String $pathFile): ?string
+    {
+        return ($request->hasFile("image"))
+            ? $request->file("image")->store($pathFile)
+            : NULL;
+    }
+
+    public function getImage($filePath): ?string
+    {
+        return Storage::disk('public')->exists($filePath)
+            ? Storage::disk('public')->path($filePath)
+            : NULL;
+    }
+
+    public function deleteImage($filePath): ?string
+    {
+        return Storage::disk('public')->exists($filePath)
+            ? Storage::disk('public')->delete($filePath)
+            : NULL;
+    }
+
+    public function saveImage(string $fileName, string $filePath): Picture
+    {
+        $picture = new Picture();
+        $picture->file_name = $fileName;
+        $picture->file_path = $filePath;
+        $picture->creator_user_id = Auth::id();
+        $picture->save();
+
+        return $picture;
     }
 }

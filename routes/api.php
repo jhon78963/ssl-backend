@@ -1,11 +1,13 @@
 <?php
 
+use App\Amenity\Controllers\AmenityController;
 use App\Auth\Controllers\AuthController;
 use App\Company\Controllers\CompanyController;
 use App\Company\Controllers\SocialNetworkController;
 use App\Rate\Controllers\RateController;
 use App\Rate\Controllers\RateDayController;
 use App\Rate\Controllers\RateHourController;
+use App\Review\Controllers\ReviewController;
 use App\Role\Controllers\RoleController;
 use App\Room\Controllers\RoomController;
 use App\Room\Controllers\RoomTypeController;
@@ -94,5 +96,21 @@ Route::group([
         Route::delete('/rates/{rate}', 'delete');
         Route::get('/rates', 'getAll');
         Route::get('/rates/{rate}', 'get');
+    });
+
+    Route::controller(ReviewController::class)->group(function() {
+        Route::post('/reviews', 'create');
+        Route::patch('/reviews/{review}', 'update');
+        Route::delete('/reviews/{review}', 'delete');
+        Route::get('/reviews', 'getAll');
+        Route::get('/reviews/{review}', 'get');
+    });
+
+    Route::controller(AmenityController::class)->group(function() {
+        Route::post('/amenities', 'create');
+        Route::patch('/amenities/{amenity}', 'update');
+        Route::delete('/amenities/{amenity}', 'delete');
+        Route::get('/amenities', 'getAll');
+        Route::get('/amenities/{amenity}', 'get');
     });
 });

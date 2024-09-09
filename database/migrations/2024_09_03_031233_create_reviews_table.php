@@ -24,7 +24,7 @@ return new class extends Migration
             $table->foreign('deleter_user_id')->references('id')->on('users');
             $table->datetime('deletion_time')->nullable();
             $table->string('customer_name');
-            $table->string('review');
+            $table->string('description');
             $table->enum('rating', [1, 2, 3, 4, 5]);
         });
     }

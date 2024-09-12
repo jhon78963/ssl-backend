@@ -8,7 +8,6 @@ use App\Shared\Models\Picture;
 use App\Shared\Requests\FileUploadRequest;
 use App\Shared\Services\FileService;
 use App\Shared\Services\ImageService;
-use App\Shared\Services\SharedService;
 use Illuminate\Http\JsonResponse;
 
 class RoomImageController extends Controller

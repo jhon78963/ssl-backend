@@ -4,6 +4,7 @@ namespace App\Room\Resources;
 
 use App\Amenity\Resources\AmenityResource;
 use App\Rate\Resources\RateResource;
+use App\Review\Resources\ReviewResource;
 use App\Shared\Resources\FileResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -26,6 +27,7 @@ class RoomResource extends JsonResource
             'images' => FileResource::collection($this->images),
             'amenities' => AmenityResource::collection($this->amenities),
             'rates' => RateResource::collection($this->rates),
+            'reviews' => ReviewResource::collection($this->reviews),
         ];
     }
 }

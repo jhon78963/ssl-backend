@@ -13,6 +13,7 @@ use App\Room\Controllers\RoomAmenityController;
 use App\Room\Controllers\RoomController;
 use App\Room\Controllers\RoomImageController;
 use App\Room\Controllers\RoomRateController;
+use App\Room\Controllers\RoomReviewController;
 use App\Room\Controllers\RoomTypeController;
 use App\User\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -130,5 +131,10 @@ Route::group([
     Route::controller(RoomRateController::class)->group(function() {
         Route::post('/rates/{room}/add', 'add');
         Route::delete('/rates/{room}/remove/{rate}', 'remove');
+    });
+
+    Route::controller(RoomReviewController::class)->group(function() {
+        Route::post('/reviews/{room}/add', 'add');
+        Route::delete('/reviews/{room}/remove/{review}', 'remove');
     });
 });

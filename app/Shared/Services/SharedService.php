@@ -4,7 +4,7 @@ namespace App\Shared\Services;
 use App\Room\Models\Room;
 use App\Shared\Models\Picture;
 use App\Shared\Requests\GetAllRequest;
-use App\Shared\Requests\ImageUploadRequest;
+use App\Shared\Requests\FileUploadRequest;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Auth;
@@ -62,26 +62,5 @@ class SharedService {
         }
 
         return $model;
-    }
-
-    public function uploadImage(ImageUploadRequest $request, String $filePath): ?string
-    {
-        return ($request->hasFile("image"))
-            ? $request->file("image")->store($filePath, 'public')
-            : NULL;
-    }
-
-    public function getImage(string $filePath): ?string
-    {
-        return Storage::disk('public')->exists($filePath)
-            ? Storage::disk('public')->path($filePath)
-            : NULL;
-    }
-
-    public function deleteImage(string $filePath): ?string
-    {
-        return Storage::disk('public')->exists($filePath)
-            ? Storage::disk('public')->delete($filePath)
-            : NULL;
     }
 }

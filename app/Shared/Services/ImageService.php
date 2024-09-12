@@ -1,7 +1,6 @@
 <?php
 namespace App\Shared\Services;
 
-use App\Room\Models\Room;
 use App\Shared\Models\Picture;
 use Auth;
 

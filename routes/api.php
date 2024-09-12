@@ -12,6 +12,7 @@ use App\Role\Controllers\RoleController;
 use App\Room\Controllers\RoomAmenityController;
 use App\Room\Controllers\RoomController;
 use App\Room\Controllers\RoomImageController;
+use App\Room\Controllers\RoomRateController;
 use App\Room\Controllers\RoomTypeController;
 use App\User\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -118,11 +119,16 @@ Route::group([
 
     Route::controller(RoomAmenityController::class)->group(function() {
         Route::post('/amenities/{room}/add', 'add');
-        Route::delete('/amenities/{room}/remove', 'remove');
+        Route::delete('/amenities/{room}/remove/{amenity}', 'remove');
     });
 
     Route::controller(RoomImageController::class)->group(function() {
         Route::post('/images/{room}/add', 'add');
         Route::delete('/images/{room}/remove/{picture}', 'remove');
+    });
+
+    Route::controller(RoomRateController::class)->group(function() {
+        Route::post('/rates/{room}/add', 'add');
+        Route::delete('/rates/{room}/remove/{rate}', 'remove');
     });
 });

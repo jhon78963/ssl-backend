@@ -1,24 +1,24 @@
 <?php
 
 namespace App\Room\Controllers;
-use App\Amenity\Models\Amenity;
-use App\Amenity\Requests\AmenityAddRequest;
-use App\Amenity\Requests\AmenityRemoveRequest;
+
+use App\Rate\Models\Rate;
+use App\Rate\Requests\RateAddRequest;
 use App\Room\Models\Room;
 use App\Shared\Controllers\Controller;
-use DB;
 use Illuminate\Http\JsonResponse;
+use DB;
 
-class RoomAmenityController extends Controller
+class RoomRateController extends Controller
 {
-    public function add(AmenityAddRequest $request, Room $room): JsonResponse
+    public function add(RateAddRequest $request, Room $room): JsonResponse
     {
         DB::beginTransaction();
         try {
-            $room->amenities()->attach($request->input('amenityId'));
+            $room->rates()->attach($request->input('rateId'));
             DB::commit();
             return response()->json([
-                'message' => 'Amenity added to the room.',
+                'message' => 'Rate added to the room.',
             ], 201);
         } catch (\Exception $e) {
             DB::rollback();
@@ -26,13 +26,14 @@ class RoomAmenityController extends Controller
         }
     }
 
-    public function remove(Room $room, Amenity $amenity): JsonResponse {
+    public function remove(Room $room, Rate $rate): JsonResponse
+    {
         DB::beginTransaction();
         try {
-            $room->amenities()->detach($amenity->id);
+            $room->rates()->detach($rate->id);
             DB::commit();
             return response()->json([
-                'message' => 'Amenity removed from the room.',
+                'message' => 'Rate removed from the room.',
             ], 201);
         } catch (\Exception $e) {
             DB::rollback();

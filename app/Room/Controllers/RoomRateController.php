@@ -5,39 +5,28 @@ namespace App\Room\Controllers;
 use App\Rate\Models\Rate;
 use App\Rate\Requests\RateAddRequest;
 use App\Room\Models\Room;
+use App\Room\Services\RoomRelationService;
 use App\Shared\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use DB;
 
 class RoomRateController extends Controller
 {
+    protected RoomRelationService $roomRelationService;
+
+    public function __construct(RoomRelationService $roomRelationService)
+    {
+        $this->roomRelationService = $roomRelationService;
+    }
     public function add(RateAddRequest $request, Room $room): JsonResponse
     {
-        DB::beginTransaction();
-        try {
-            $room->rates()->attach($request->input('rateId'));
-            DB::commit();
-            return response()->json([
-                'message' => 'Rate added to the room.',
-            ], 201);
-        } catch (\Exception $e) {
-            DB::rollback();
-            return response()->json(['error' =>  $e->getMessage()]);
-        }
+        $result = $this->roomRelationService->attach($room, 'rates', $request->input('rateId'));
+        return response()->json(['message' => $result['message']], $result['status']);
     }
 
     public function remove(Room $room, Rate $rate): JsonResponse
     {
-        DB::beginTransaction();
-        try {
-            $room->rates()->detach($rate->id);
-            DB::commit();
-            return response()->json([
-                'message' => 'Rate removed from the room.',
-            ], 201);
-        } catch (\Exception $e) {
-            DB::rollback();
-            return response()->json(['error' =>  $e->getMessage()]);
-        }
+        $result = $this->roomRelationService->detach($room, 'rates', $rate->id);
+        return response()->json(['message' => $result['message']], $result['status']);
     }
 }

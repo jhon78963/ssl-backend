@@ -16,8 +16,8 @@ use DB;
 
 class RateHourController extends Controller
 {
-    protected $rateHourService;
-    protected $sharedService;
+    protected RateHourService $rateHourService;
+    protected SharedService $sharedService;
 
     public function __construct(RateHourService $rateHourService, SharedService $sharedService)
     {

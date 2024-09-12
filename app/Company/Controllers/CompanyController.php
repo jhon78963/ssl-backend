@@ -13,13 +13,10 @@ use DB;
 
 class CompanyController extends Controller
 {
-    protected $companyService;
-    protected $sharedService;
+    protected CompanyService $companyService;
+    protected SharedService $sharedService;
 
-    public function __construct(
-        CompanyService $companyService,
-        SharedService $sharedService,
-    )
+    public function __construct(CompanyService $companyService, SharedService $sharedService)
     {
         $this->companyService = $companyService;
         $this->sharedService = $sharedService;

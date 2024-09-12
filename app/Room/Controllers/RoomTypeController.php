@@ -15,12 +15,12 @@ use DB;
 
 class RoomTypeController extends Controller
 {
-    protected $rommTypeService;
+    protected $roomTypeService;
     protected $sharedService;
 
-    public function __construct(RoomTypeService $rommTypeService, SharedService $sharedService)
+    public function __construct(RoomTypeService $roomTypeService, SharedService $sharedService)
     {
-        $this->rommTypeService = $rommTypeService;
+        $this->roomTypeService = $roomTypeService;
         $this->sharedService = $sharedService;
     }
 
@@ -28,7 +28,7 @@ class RoomTypeController extends Controller
     {
         DB::beginTransaction();
         try {
-            $this->rommTypeService->createRoomType($request->validated());
+            $this->roomTypeService->createRoomType($request->validated());
             DB::commit();
             return response()->json(['message' => 'Room type created.'], 201);
         } catch (\Exception $e) {
@@ -72,7 +72,7 @@ class RoomTypeController extends Controller
         DB::beginTransaction();
         try {
             $roomTypeValidated = $this->sharedService->validateModel($roomType, 'RoomType');
-            $this->rommTypeService->updateRoomType($roomTypeValidated, $request->validated());
+            $this->roomTypeService->updateRoomType($roomTypeValidated, $request->validated());
             DB::commit();
             return response()->json(['message' => 'Room type updated.']);
         } catch (\Exception $e) {

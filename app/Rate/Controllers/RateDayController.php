@@ -11,13 +11,13 @@ use App\Shared\Controllers\Controller;
 use App\Shared\Requests\GetAllRequest;
 use App\Shared\Resources\GetAllCollection;
 use App\Shared\Services\SharedService;
-use DB;
 use Illuminate\Http\JsonResponse;
+use DB;
 
 class RateDayController extends Controller
 {
-    protected $rateDayService;
-    protected $sharedService;
+    protected RateDayService $rateDayService;
+    protected SharedService $sharedService;
 
     public function __construct(RateDayService $rateDayService, SharedService $sharedService)
     {

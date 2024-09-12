@@ -17,8 +17,8 @@ use DB;
 
 class ReviewController extends Controller
 {
-    protected $reviewService;
-    protected $sharedService;
+    protected ReviewService $reviewService;
+    protected SharedService $sharedService;
 
     public function __construct(ReviewService $reviewService, SharedService $sharedService)
     {

@@ -16,8 +16,8 @@ use DB;
 
 class AmenityController extends Controller
 {
-    protected $amenityService;
-    protected $sharedService;
+    protected AmenityService $amenityService;
+    protected SharedService $sharedService;
 
     public function __construct(AmenityService $amenityService, SharedService $sharedService)
     {

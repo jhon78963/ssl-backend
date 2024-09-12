@@ -17,8 +17,8 @@ use DB;
 class RoleController extends Controller
 {
 
-    protected $roleService;
-    protected $sharedService;
+    protected RoleService $roleService;
+    protected SharedService $sharedService;
 
     public function __construct(RoleService $roleService, SharedService $sharedService)
     {

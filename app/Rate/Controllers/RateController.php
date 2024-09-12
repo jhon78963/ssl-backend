@@ -16,8 +16,8 @@ use DB;
 
 class RateController  extends Controller
 {
-    protected $rateService;
-    protected $sharedService;
+    protected RateService $rateService;
+    protected SharedService $sharedService;
 
     public function __construct(RateService $rateService, SharedService $sharedService)
     {

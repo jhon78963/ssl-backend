@@ -14,11 +14,15 @@ class RoomResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $baseUrl = config('app.url') . '/storage';
         return [
             'roomNumber' => $this->room_number,
             'capacity' => $this->capacity,
             'status' => $this->status,
             'roomType' => $this->roomType->description,
+            'images' => $this->images->map(function ($image) use ($baseUrl): string {
+                return "$baseUrl/$image->file_path";
+            }),
         ];
     }
 }

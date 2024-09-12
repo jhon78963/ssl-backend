@@ -122,6 +122,7 @@ Route::group([
     });
 
     Route::controller(RoomImageController::class)->group(function() {
-        Route::post('/upload-picture/{room}', 'uploadImageRooms');
+        Route::post('/images/{room}/add', 'add');
+        Route::delete('/images/{room}/remove/{picture}', 'remove');
     });
 });

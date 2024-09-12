@@ -1,6 +1,7 @@
 <?php
 namespace App\Shared\Services;
 
+use App\Room\Models\Room;
 use App\Shared\Models\Picture;
 use App\Shared\Requests\GetAllRequest;
 use App\Shared\Requests\ImageUploadRequest;
@@ -63,35 +64,24 @@ class SharedService {
         return $model;
     }
 
-    public function uploadImage(ImageUploadRequest $request, String $pathFile): ?string
+    public function uploadImage(ImageUploadRequest $request, String $filePath): ?string
     {
         return ($request->hasFile("image"))
-            ? $request->file("image")->store($pathFile)
+            ? $request->file("image")->store($filePath, 'public')
             : NULL;
     }
 
-    public function getImage($filePath): ?string
+    public function getImage(string $filePath): ?string
     {
         return Storage::disk('public')->exists($filePath)
             ? Storage::disk('public')->path($filePath)
             : NULL;
     }
 
-    public function deleteImage($filePath): ?string
+    public function deleteImage(string $filePath): ?string
     {
         return Storage::disk('public')->exists($filePath)
             ? Storage::disk('public')->delete($filePath)
             : NULL;
-    }
-
-    public function saveImage(string $fileName, string $filePath): Picture
-    {
-        $picture = new Picture();
-        $picture->file_name = $fileName;
-        $picture->file_path = $filePath;
-        $picture->creator_user_id = Auth::id();
-        $picture->save();
-
-        return $picture;
     }
 }

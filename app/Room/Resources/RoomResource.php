@@ -16,6 +16,7 @@ class RoomResource extends JsonResource
     {
         $baseUrl = config('app.url') . '/storage';
         return [
+            'id'=> $this->id,
             'roomNumber' => $this->room_number,
             'capacity' => $this->capacity,
             'status' => $this->status,

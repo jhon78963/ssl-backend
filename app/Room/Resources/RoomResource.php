@@ -17,7 +17,6 @@ class RoomResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $baseUrl = config('app.url') . '/storage';
         return [
             'id'=> $this->id,
             'roomNumber' => $this->room_number,

@@ -1,14 +1,10 @@
 <?php
 namespace App\Shared\Services;
 
-use App\Room\Models\Room;
-use App\Shared\Models\Picture;
 use App\Shared\Requests\GetAllRequest;
-use App\Shared\Requests\FileUploadRequest;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Auth;
-use Storage;
 
 class SharedService {
     private int $limit = 10;

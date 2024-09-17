@@ -8,7 +8,6 @@ use App\Room\Models\Room;
 use App\Room\Services\RoomRelationService;
 use App\Shared\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
-use DB;
 
 class RoomRateController extends Controller
 {

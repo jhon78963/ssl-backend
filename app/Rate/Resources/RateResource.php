@@ -17,7 +17,9 @@ class RateResource extends JsonResource
         return [
             'id' => $this->id,
             'price' => $this->price,
+            'hourId' => $this->hour_id,
             'hour' => $this->hour->duration,
+            'dayId' => $this->day_id,
             'day' => $this->day->name,
         ];
     }

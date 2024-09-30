@@ -22,7 +22,7 @@ class RateHourUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'duration' => 'sometimes|integer',
+            'durationNumber' => 'sometimes|integer',
         ];
     }
 }

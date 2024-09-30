@@ -17,7 +17,7 @@ class RateHourResource extends JsonResource
         return [
             'id' => $this->id,
             'durationNumber'=> $this->duration,
-            'duration'=> $this->duration == 1 ? $this->duration . ' día' : $this->duration . ' días',
+            'duration'=> $this->duration == 1 ? $this->duration . ' hora' : $this->duration . ' horas',
         ];
     }
 }

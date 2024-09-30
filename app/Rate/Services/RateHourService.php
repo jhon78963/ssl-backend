@@ -10,14 +10,14 @@ class RateHourService
     public function createRateHour(array $newrateHour): void
     {
         $rateHour = new RateHour();
-        $rateHour->duration = $newrateHour['duration'];
+        $rateHour->duration = $newrateHour['durationNumber'];
         $rateHour->creator_user_id = Auth::id();
         $rateHour->save();
     }
 
     public function updateRateHour(RateHour $rateHour, array $editrateHour): void
     {
-        $rateHour->duration = $editrateHour['duration'] ?? $rateHour->duration;
+        $rateHour->duration = $editrateHour['durationNumber'] ?? $rateHour->duration;
         $rateHour->last_modification_time = now()->format('Y-m-d H:i:s');
         $rateHour->last_modifier_user_id = Auth::id();
         $rateHour->save();

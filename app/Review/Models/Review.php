@@ -5,7 +5,9 @@ namespace App\Review\Models;
 use App\Room\Models\Room;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Review extends Model
 {
@@ -57,9 +59,7 @@ class Review extends Model
         ];
     }
 
-
-    public function rooms(): BelongsToMany
-    {
-        return $this->belongsToMany(Room::class);
+    public function room(): BelongsTo {
+        return $this->belongsTo(Room::class);
     }
 }

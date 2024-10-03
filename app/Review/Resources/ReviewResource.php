@@ -19,6 +19,7 @@ class ReviewResource extends JsonResource
             'customerName' => $this->customer_name,
             'description' => $this->description,
             'rating' => $this->rating,
+            'room' => "Habitación N° " . $this->room->room_number,
         ];
     }
 }

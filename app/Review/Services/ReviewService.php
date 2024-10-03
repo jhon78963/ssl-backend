@@ -13,6 +13,7 @@ class ReviewService
         $review->customer_name = $newReview['customerName'];
         $review->description = $newReview['description'];
         $review->rating = $newReview['rating'];
+        $review->room_id = $newReview['roomId'];
         $review->creator_user_id = Auth::id();
         $review->save();
     }

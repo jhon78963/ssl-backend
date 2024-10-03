@@ -22,9 +22,10 @@ class ReviewCreateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'customerName' => 'sometimes|string',
-            'description' => 'sometimes|string',
-            'rating' => 'sometimes|string',
+            'customerName' => 'required|string',
+            'description' => 'required|string',
+            'rating' => 'required|string',
+            'roomId' => 'required|integer',
         ];
     }
 }

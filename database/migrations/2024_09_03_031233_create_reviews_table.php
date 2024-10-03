@@ -26,6 +26,8 @@ return new class extends Migration
             $table->string('customer_name');
             $table->string('description');
             $table->enum('rating', [1, 2, 3, 4, 5]);
+            $table->unsignedBigInteger('room_id');
+            $table->foreign('room_id')->references('id')->on('rooms');
         });
     }
 

@@ -24,7 +24,7 @@ class ReviewUpdateRequest extends FormRequest
         return [
             'customerName' => 'sometimes|string',
             'description' => 'sometimes|string',
-            'rating' => 'sometimes|string',
+            'rating' => 'sometimes|integer',
         ];
     }
 }

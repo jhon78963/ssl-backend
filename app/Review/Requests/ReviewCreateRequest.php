@@ -24,7 +24,7 @@ class ReviewCreateRequest extends FormRequest
         return [
             'customerName' => 'required|string',
             'description' => 'required|string',
-            'rating' => 'required|string',
+            'rating' => 'required|integer',
             'roomId' => 'required|integer',
         ];
     }

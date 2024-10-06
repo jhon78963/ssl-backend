@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Shared\Models;
+namespace App\Image\Models;
 
 use App\Room\Models\Room;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-class Picture extends Model
+class Image extends Model
 {
     use HasFactory;
 
@@ -18,8 +18,8 @@ class Picture extends Model
      */
     protected $fillable = [
         'id',
-        'file_name',
-        'file_path',
+        'name',
+        'path',
     ];
 
     /**

@@ -3,9 +3,9 @@
 namespace App\Room\Models;
 
 use App\Amenity\Models\Amenity;
+use App\Image\Models\Image;
 use App\Rate\Models\Rate;
 use App\Review\Models\Review;
-use App\Shared\Models\Picture;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -58,7 +58,7 @@ class Room extends Model
 
     public function images(): BelongsToMany
     {
-        return $this->belongsToMany(Picture::class);
+        return $this->belongsToMany(Image::class);
     }
 
     public function amenities(): BelongsToMany

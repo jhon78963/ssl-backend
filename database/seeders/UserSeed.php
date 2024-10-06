@@ -3,8 +3,8 @@
 namespace Database\Seeders;
 
 use App\User\Models\User;
-use Hash;
 use Illuminate\Database\Seeder;
+use Hash;
 
 class UserSeed extends Seeder
 {

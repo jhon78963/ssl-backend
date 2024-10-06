@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Room\Services;
+
 use App\Room\Models\RoomType;
 use Auth;
 

@@ -35,7 +35,7 @@ class AuthService
 
     public function createTokens(User $user): array
     {
-        // $user->tokens()->delete();
+        $user->tokens()->delete();
         $accessToken = $user->createToken(
             'access_token',
             [TokenAbility::ACCESS_API->value],

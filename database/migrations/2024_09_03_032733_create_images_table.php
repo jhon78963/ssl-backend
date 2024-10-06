@@ -11,12 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('picture_room', function (Blueprint $table) {
-            $table->unsignedBigInteger('room_id');
-            $table->foreign('room_id')->references('id')->on('rooms');
-            $table->unsignedBigInteger('picture_id');
-            $table->foreign('picture_id')->references('id')->on('pictures');
-            $table->primary(['room_id', 'picture_id']);
+        Schema::create('images', function (Blueprint $table) {
+            $table->id();
             $table->datetime('creation_time')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->integer('creator_user_id')->nullable();
             $table->foreign('creator_user_id')->references('id')->on('users');
@@ -27,6 +23,8 @@ return new class extends Migration
             $table->integer('deleter_user_id')->nullable();
             $table->foreign('deleter_user_id')->references('id')->on('users');
             $table->datetime('deletion_time')->nullable();
+            $table->string('name');
+            $table->string('path');
         });
     }
 
@@ -35,6 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('picture_room');
+        Schema::dropIfExists('images');
     }
 };

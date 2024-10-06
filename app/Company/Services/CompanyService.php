@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Company\Services;
+
 use App\Company\Models\Company;
 use Auth;
 

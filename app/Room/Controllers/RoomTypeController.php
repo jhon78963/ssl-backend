@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Room\Controllers;
+
 use App\Room\Models\RoomType;
 use App\Room\Requests\RoomTypeCreateRequest;
 use App\Room\Requests\RoomTypeUpdateRequest;

@@ -3,7 +3,6 @@
 namespace App\User\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rules\Password;
 
 class UserCreateRequest extends FormRequest
 {

@@ -4,6 +4,7 @@ use App\Amenity\Controllers\AmenityController;
 use App\Auth\Controllers\AuthController;
 use App\Company\Controllers\CompanyController;
 use App\Company\Controllers\SocialNetworkController;
+use App\Image\Controllers\ImageController;
 use App\Rate\Controllers\RateController;
 use App\Rate\Controllers\RateDayController;
 use App\Rate\Controllers\RateHourController;
@@ -116,6 +117,10 @@ Route::group([
         Route::delete('/amenities/{amenity}', 'delete');
         Route::get('/amenities', 'getAll');
         Route::get('/amenities/{amenity}', 'get');
+    });
+
+    Route::controller(ImageController::class)->group(function() {
+        Route::get('/images', 'getAll');
     });
 
     Route::controller(RoomAmenityController::class)->group(function() {

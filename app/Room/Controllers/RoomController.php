@@ -3,6 +3,7 @@
 namespace App\Room\Controllers;
 
 use App\Room\Models\Room;
+use App\Room\Requests\RoomChangeStatus;
 use App\Room\Requests\RoomCreateRequest;
 use App\Room\Requests\RoomUpdateRequest;
 use App\Room\Resources\RoomResource;
@@ -32,6 +33,20 @@ class RoomController extends Controller
             $this->roomService->createRoom($request->validated());
             DB::commit();
             return response()->json(['message' => 'Room created.'], 201);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json(['error' =>  $e->getMessage()]);
+        }
+    }
+
+    public function changeStatus(RoomChangeStatus $request, Room $room): JsonResponse
+    {
+        DB::beginTransaction();
+        try {
+            $roomValidated = $this->sharedService->validateModel($room, 'Room');
+            $this->roomService->changeStatusRoom($roomValidated, $request->validated());
+            DB::commit();
+            return response()->json(['message' => 'Room status changed.'], 201);
         } catch (\Exception $e) {
             DB::rollback();
             return response()->json(['error' =>  $e->getMessage()]);

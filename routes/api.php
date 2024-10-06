@@ -73,6 +73,7 @@ Route::group([
 
     Route::controller(RoomController::class)->group(function() {
         Route::post('/rooms', 'create');
+        Route::patch('/rooms/change-status/{room}', 'changeStatus');
         Route::patch('/rooms/{room}', 'update');
         Route::delete('/rooms/{room}', 'delete');
         Route::get('/rooms', 'getAll');

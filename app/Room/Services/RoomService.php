@@ -27,4 +27,12 @@ class RoomService
         $room->last_modifier_user_id = Auth::id();
         $room->save();
     }
+
+    public function changeStatusRoom(Room $room, array $editRoom): void
+    {
+        $room->status = $editRoom['status'];
+        $room->last_modification_time = now()->format('Y-m-d H:i:s');
+        $room->last_modifier_user_id = Auth::id();
+        $room->save();
+    }
 }

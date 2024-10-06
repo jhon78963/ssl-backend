@@ -24,7 +24,6 @@ return new class extends Migration
             $table->foreign('deleter_user_id')->references('id')->on('users');
             $table->datetime('deletion_time')->nullable();
             $table->string('description');
-            $table->enum('status', ['ACTIVO','INACTIVO'])->default('ACTIVO');
         });
     }
 

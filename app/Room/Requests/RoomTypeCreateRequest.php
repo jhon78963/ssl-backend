@@ -23,7 +23,6 @@ class RoomTypeCreateRequest extends FormRequest
     {
         return [
             'description' => 'required|string',
-            'status' => 'required|string'
         ];
     }
 }

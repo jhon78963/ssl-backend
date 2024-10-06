@@ -23,6 +23,7 @@ class ReviewService
         $review->customer_name = $editReview['customerName'] ?? $review->customer_name;
         $review->description = $editReview['description'] ?? $review->description;
         $review->rating = $editReview['rating'] ?? $review->rating;
+        $review->room_id = $editReview['roomId'] ?? $review->room_id;
         $review->last_modification_time = now()->format('Y-m-d H:i:s');
         $review->last_modifier_user_id = Auth::id();
         $review->save();

@@ -60,7 +60,7 @@ class RoomController extends Controller
 
     public function getAll(GetAllRequest  $request): JsonResponse
     {
-        $query = $this->sharedService->query($request, 'Room', 'Room', 'name');
+        $query = $this->sharedService->query($request, 'Room', 'Room', 'room_number');
         return response()->json(new GetAllCollection(
             RoomResource::collection($query['collection']),
             $query['total'],

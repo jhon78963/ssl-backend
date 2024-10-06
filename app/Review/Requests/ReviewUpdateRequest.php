@@ -25,6 +25,7 @@ class ReviewUpdateRequest extends FormRequest
             'customerName' => 'sometimes|string',
             'description' => 'sometimes|string',
             'rating' => 'sometimes|integer',
+            'roomId' => 'sometimes|integer',
         ];
     }
 }

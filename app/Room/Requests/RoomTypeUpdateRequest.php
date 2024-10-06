@@ -23,7 +23,6 @@ class RoomTypeUpdateRequest extends FormRequest
     {
         return [
             'description' => 'sometimes|string',
-            'status' => 'sometimes|string'
         ];
     }
 }

@@ -14,22 +14,18 @@ class RoomTypeSeeder extends Seeder
     {
         $roomType = new RoomType();
         $roomType->description = 'VIP';
-        $roomType->status = 'ACTIVO';
         $roomType->save();
 
         $roomType = new RoomType();
         $roomType->description = 'SUITE';
-        $roomType->status = 'ACTIVO';
         $roomType->save();
 
         $roomType = new RoomType();
         $roomType->description = 'MATRI';
-        $roomType->status = 'ACTIVO';
         $roomType->save();
 
         $roomType = new RoomType();
         $roomType->description = 'SIMPLE';
-        $roomType->status = 'ACTIVO';
         $roomType->save();
     }
 }

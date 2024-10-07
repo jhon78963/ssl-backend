@@ -28,17 +28,19 @@ class RoomImageController extends Controller
     public function add(FileUploadRequest $request, Room $room): JsonResponse
     {
         $roomImagePath = $this->fileService->upload($request, $this->path_images);
-        $roomImage = basename($roomImagePath);
-        $roomImage = $this->imageService->save($roomImage, $roomImagePath);
+        $roomImageName = $this->imageService->getFileName($roomImagePath);
+        $roomImage = $this->imageService->save($roomImageName, $roomImagePath);
         $result = $this->roomRelationService->attach($room, 'images', $roomImage->id);
-        return response()->json(['message' => $result['message']], $result['status']);
+        return $result && isset($result['error'])
+            ? response()->json(['message' => $result['error']])
+            : response()->json(['message' => 'Image added to the room.'], 201);
     }
 
     public function remove(Room $room, Image $image): JsonResponse
     {
-        $this->fileService->delete($image->path);
-        $this->imageService->delete($image);
         $result = $this->roomRelationService->detach($room, 'images', $image->id);
-        return response()->json(['message' => $result['message']], $result['status']);
+        return $result && isset($result['error'])
+            ? response()->json(['message' => $result['error']])
+            : response()->json(['message' => 'Image removed from the room']);
     }
 }

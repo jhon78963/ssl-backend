@@ -121,6 +121,7 @@ Route::group([
     });
 
     Route::controller(ImageController::class)->group(function() {
+        Route::delete('/images/{image}', 'delete');
         Route::get('/images', 'getAll');
     });
 
@@ -131,7 +132,7 @@ Route::group([
 
     Route::controller(RoomImageController::class)->group(function() {
         Route::post('/images/{room}/add', 'add');
-        Route::delete('/images/{room}/remove/{picture}', 'remove');
+        Route::delete('/images/{room}/remove/{image}', 'remove');
     });
 
     Route::controller(RoomRateController::class)->group(function() {

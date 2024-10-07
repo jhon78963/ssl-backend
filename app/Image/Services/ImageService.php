@@ -12,6 +12,12 @@ class ImageService {
     {
         $this->sharedService = $sharedService;
     }
+
+    public function getFileName(string $filePath): string
+    {
+        return basename($filePath);
+    }
+
     public function save(string $fileName, string $filePath): Image
     {
         $image = new Image();

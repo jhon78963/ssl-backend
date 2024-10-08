@@ -127,8 +127,10 @@ Route::group([
     });
 
     Route::controller(RoomAmenityController::class)->group(function() {
-        Route::post('/amenities/{room}/add', 'add');
+        Route::post('/amenities/{room}/add/{amenity}', 'add');
         Route::delete('/amenities/{room}/remove/{amenity}', 'remove');
+        Route::get('/amenities/{room}/all', 'getAll');
+        Route::get('/amenities/{room}/left', 'getLeft');
     });
 
     Route::controller(RoomImageController::class)->group(function() {
@@ -136,7 +138,7 @@ Route::group([
         Route::post('/images/{room}/add/{image}', 'add');
         Route::delete('/images/{room}/remove/{image}', 'remove');
         Route::get('/images/{room}/all', 'getAll');
-        Route::get('/images/{room}/left', 'getAllImageLeft');
+        Route::get('/images/{room}/left', 'getLeft');
     });
 
     Route::controller(RoomRateController::class)->group(function() {

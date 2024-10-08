@@ -59,7 +59,7 @@ class RoomImageController extends Controller
         return response()->json( ImageResource::collection($images));
     }
 
-    public function getAllImageLeft(Room $room): JsonResponse
+    public function getLeft(Room $room): JsonResponse
     {
         $allImages = Image::where('is_deleted', false)->get();
         $associatedImages = $room->images()->pluck('id')->toArray();

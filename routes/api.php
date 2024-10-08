@@ -123,6 +123,7 @@ Route::group([
     Route::controller(ImageController::class)->group(function() {
         Route::delete('/images/{image}', 'delete');
         Route::get('/images', 'getAll');
+        Route::get('/images/{image}', 'get');
     });
 
     Route::controller(RoomAmenityController::class)->group(function() {
@@ -133,6 +134,7 @@ Route::group([
     Route::controller(RoomImageController::class)->group(function() {
         Route::post('/images/{room}/add', 'add');
         Route::delete('/images/{room}/remove/{image}', 'remove');
+        Route::get('/images/{room}/all', 'getAll');
     });
 
     Route::controller(RoomRateController::class)->group(function() {

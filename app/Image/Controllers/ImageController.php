@@ -34,6 +34,12 @@ class ImageController extends Controller
         ]);
     }
 
+    public function get(Image $image): JsonResponse
+    {
+        $imageValidated = $this->sharedService->validateModel($image, 'Image');
+        return response()->json(new ImageResource($imageValidated));
+    }
+
     public function getAll(GetAllRequest $request): JsonResponse
     {
         $query = $this->sharedService->query($request, 'Image', 'Image', 'name');

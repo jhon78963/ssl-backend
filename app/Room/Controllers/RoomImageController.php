@@ -3,6 +3,7 @@
 namespace App\Room\Controllers;
 
 use App\Image\Models\Image;
+use App\Image\Resources\ImageResource;
 use App\Image\Services\ImageService;
 use App\Room\Models\Room;
 use App\Room\Services\RoomRelationService;
@@ -25,15 +26,29 @@ class RoomImageController extends Controller
         $this->roomRelationService = $roomRelationService;
     }
 
-    public function add(FileUploadRequest $request, Room $room): JsonResponse
+    public function add(FileUploadRequest $request, Room $room)
     {
-        $roomImagePath = $this->fileService->upload($request, $this->path_images);
-        $roomImageName = $this->imageService->getFileName($roomImagePath);
-        $roomImage = $this->imageService->save($roomImageName, $roomImagePath);
-        $result = $this->roomRelationService->attach($room, 'images', $roomImage->id);
-        return $result && isset($result['error'])
-            ? response()->json(['message' => $result['error']])
-            : response()->json(['message' => 'Image added to the room.'], 201);
+        $uploadedImages = $this->fileService->uploadMultiple($request, $this->path_images);
+        $savedImages = [];
+        foreach ($uploadedImages as $roomImagePath) {
+            $roomImageName = $this->imageService->getFileName($roomImagePath);
+            $roomImage = $this->imageService->save($roomImageName, $roomImagePath);
+            $result = $this->roomRelationService->attach($room, 'images', $roomImage->id);
+            if ($result && isset($result['error'])) {
+                return response()->json(['message' => $result['error']]);
+            }
+            $savedImages[] = $roomImage;
+        }
+        return response()->json([
+            'message' => 'Images added to the room.',
+            'images' => $savedImages,
+        ], 201);
+    }
+
+    public function getAll(Room $room): JsonResponse
+    {
+        $images = $room->images()->orderBy('id', 'desc')->get();
+        return response()->json( ImageResource::collection($images));
     }
 
     public function remove(Room $room, Image $image): JsonResponse

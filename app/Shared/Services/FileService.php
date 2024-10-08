@@ -14,6 +14,17 @@ class FileService
             : NULL;
     }
 
+    public function uploadMultiple(FileUploadRequest $request, String $filePath): array
+    {
+        $uploadedPaths = [];
+        if ($request->hasFile('file')) {
+            foreach ($request->file('file') as $file) {
+                $uploadedPaths[] = $file->store($filePath, 'public');
+            }
+        }
+        return $uploadedPaths;
+    }
+
     public function get(string $filePath): ?string
     {
         return Storage::disk('public')->exists($filePath)

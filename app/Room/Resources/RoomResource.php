@@ -27,7 +27,7 @@ class RoomResource extends JsonResource
             'roomStatus' => $this->getLabelStatus($this->status),
             'roomTypeId' => $this->room_type_id,
             'roomType' => $this->roomType->description,
-            'images' => ImageResource::collection($this->images),
+            'images' => ImageResource::collection($this->orderDesc()),
             'amenities' => AmenityResource::collection($this->amenities),
             'rates' => RateResource::collection($this->rates),
             'reviews' => ReviewResource::collection($this->reviews),
@@ -41,5 +41,9 @@ class RoomResource extends JsonResource
             'EN_LIMPIEZA'  => 'En Limpieza',
             default        => 'Estado desconocido',
         };
+    }
+
+    private function orderDesc() {
+        return $this->images()->orderBy('id', 'desc')->get();
     }
 }

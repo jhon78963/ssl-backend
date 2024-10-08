@@ -32,5 +32,11 @@ class ImageService {
     public function delete(Image $image): void
     {
         $this->sharedService->deleteModel($image);
+        $this->detachFromAllPivotTables($image);
+    }
+
+    private function detachFromAllPivotTables(Image $image): void
+    {
+        $image->rooms()->detach();
     }
 }

@@ -26,7 +26,15 @@ class RoomImageController extends Controller
         $this->roomRelationService = $roomRelationService;
     }
 
-    public function add(FileUploadRequest $request, Room $room)
+    public function add(Room $room, Image $image): JsonResponse
+    {
+        $result = $this->roomRelationService->attach($room, 'images', $image->id);
+        return $result && isset($result['error'])
+            ? response()->json(['message' => $result['error']])
+            : response()->json(['message' => 'Image added to the room.'], 201);
+    }
+
+    public function multipleAdd(FileUploadRequest $request, Room $room)
     {
         $uploadedImages = $this->fileService->uploadMultiple($request, $this->path_images);
         $savedImages = [];
@@ -49,6 +57,14 @@ class RoomImageController extends Controller
     {
         $images = $room->images()->orderBy('id', 'desc')->get();
         return response()->json( ImageResource::collection($images));
+    }
+
+    public function getAllImageLeft(Room $room): JsonResponse
+    {
+        $allImages = Image::where('is_deleted', false)->get();
+        $associatedImages = $room->images()->pluck('id')->toArray();
+        $leftImages = $allImages->whereNotIn('id', $associatedImages);
+        return response()->json( ImageResource::collection($leftImages));
     }
 
     public function remove(Room $room, Image $image): JsonResponse

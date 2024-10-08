@@ -132,9 +132,11 @@ Route::group([
     });
 
     Route::controller(RoomImageController::class)->group(function() {
-        Route::post('/images/{room}/add', 'add');
+        Route::post('/images/{room}/multiple-add', 'multipleAdd');
+        Route::post('/images/{room}/add/{image}', 'add');
         Route::delete('/images/{room}/remove/{image}', 'remove');
         Route::get('/images/{room}/all', 'getAll');
+        Route::get('/images/{room}/left', 'getAllImageLeft');
     });
 
     Route::controller(RoomRateController::class)->group(function() {

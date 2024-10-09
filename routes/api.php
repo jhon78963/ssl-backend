@@ -142,12 +142,15 @@ Route::group([
     });
 
     Route::controller(RoomRateController::class)->group(function() {
-        Route::post('/rates/{room}/add', 'add');
+        Route::post('/rates/{room}/add/{rate}', 'add');
         Route::delete('/rates/{room}/remove/{rate}', 'remove');
+        Route::get('/rates/{room}/all', 'getAll');
+        Route::get('/rates/{room}/left', 'getLeft');
     });
 
     Route::controller(RoomReviewController::class)->group(function() {
         Route::post('/reviews/{room}/add', 'add');
         Route::delete('/reviews/{room}/remove/{review}', 'remove');
+        Route::get('/reviews/{room}/all', 'getAll');
     });
 });

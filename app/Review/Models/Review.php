@@ -21,6 +21,7 @@ class Review extends Model
         'customer_name',
         'description',
         'rating',
+        'creation_time',
     ];
 
     /**
@@ -29,7 +30,6 @@ class Review extends Model
      * @var array<int, string>
      */
     protected $hidden = [
-        'creation_time',
         'creator_user_id',
         'last_modification_time',
         'last_modifier_user_id',

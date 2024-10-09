@@ -14,6 +14,7 @@ class ReviewResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $imagePath = config('app.url') ."/storage/images/rooms/ZqhZYXbEYhpBtzYHrnWymBkTD4lEw6AKjAjdogJw.png";
         return [
             'id' => $this->id,
             'customerName' => $this->customer_name,
@@ -21,6 +22,8 @@ class ReviewResource extends JsonResource
             'rating' => $this->rating,
             'roomId' => $this->room_id,
             'room' => "Habitación N° " . $this->room->room_number,
+            'date' => \Carbon\Carbon::parse($this->creation_time)->translatedFormat('d \d\e F \d\e Y H:i:s'),
+            'image' => $imagePath,
         ];
     }
 }

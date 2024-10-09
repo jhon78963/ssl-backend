@@ -4,6 +4,7 @@ namespace App\Room\Controllers;
 
 use App\Review\Models\Review;
 use App\Review\Requests\ReviewAddRequest;
+use App\Review\Resources\ReviewResource;
 use App\Room\Models\Room;
 use App\Room\Services\RoomRelationService;
 use App\Shared\Controllers\Controller;
@@ -22,6 +23,12 @@ class RoomReviewController extends Controller
     {
         $result = $this->roomRelationService->attach($room, 'reviews', $request->input('reviewId'));
         return response()->json(['message' => $result['message']], $result['status']);
+    }
+
+    public function getAll(Room $room): JsonResponse
+    {
+        $reviews = $room->reviews()->where('is_deleted', false)->orderBy('id', 'desc')->get();
+        return response()->json( ReviewResource::collection($reviews));
     }
 
     public function remove(Room $room, Review $review): JsonResponse

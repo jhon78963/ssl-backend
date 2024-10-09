@@ -24,7 +24,7 @@ class RoomAmenityController extends Controller
         $result = $this->roomRelationService->attach($room, 'amenities', $amenity->id);
         return $result && isset($result['error'])
             ? response()->json(['message' => $result['error']])
-            : response()->json(['message' => 'Image added to the room.'], 201);
+            : response()->json(['message' => 'Amenity added to the room.'], 201);
     }
 
     public function getAll(Room $room): JsonResponse
@@ -46,6 +46,6 @@ class RoomAmenityController extends Controller
         $result = $this->roomRelationService->detach($room, 'amenities', $amenity->id);
         return $result && isset($result['error'])
             ? response()->json(['message' => $result['error']])
-            : response()->json(['message' => 'Image removed from the room']);
+            : response()->json(['message' => 'Amenity removed from the room']);
     }
 }

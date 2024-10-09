@@ -13,16 +13,7 @@ class RateHourSeeder extends Seeder
     public function run(): void
     {
         $rateHour = new RateHour();
-        $rateHour->duration = 2;
-        $rateHour->save();
-
-        $rateHour = new RateHour();
-        $rateHour->duration = 3;
-        $rateHour->save();
-
-        $rateHour = new RateHour();
         $rateHour->duration = 4;
         $rateHour->save();
-
     }
 }

@@ -23,7 +23,6 @@ class RoomCreateRequest extends FormRequest
     {
         return [
             'roomNumber' => 'required|integer|min:1',
-            'capacity' => 'required|integer|min:1|max:6',
             'roomTypeId' => 'required|integer',
         ];
     }

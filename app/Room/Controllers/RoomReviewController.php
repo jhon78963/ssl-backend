@@ -6,22 +6,22 @@ use App\Review\Models\Review;
 use App\Review\Requests\ReviewAddRequest;
 use App\Review\Resources\ReviewResource;
 use App\Room\Models\Room;
-use App\Room\Services\RoomRelationService;
 use App\Shared\Controllers\Controller;
+use App\Shared\Services\ModelRelationService;
 use Illuminate\Http\JsonResponse;
 
 class RoomReviewController extends Controller
 {
-    protected RoomRelationService $roomRelationService;
+    protected ModelRelationService $modelRelationService;
 
-    public function __construct(RoomRelationService $roomRelationService)
+    public function __construct(ModelRelationService $modelRelationService)
     {
-        $this->roomRelationService = $roomRelationService;
+        $this->modelRelationService = $modelRelationService;
     }
 
     public function add(ReviewAddRequest $request, Room $room): JsonResponse
     {
-        $result = $this->roomRelationService->attach($room, 'reviews', $request->input('reviewId'));
+        $result = $this->modelRelationService->attach($room, 'reviews', $request->input('reviewId'));
         return response()->json(['message' => $result['message']], $result['status']);
     }
 
@@ -33,7 +33,7 @@ class RoomReviewController extends Controller
 
     public function remove(Room $room, Review $review): JsonResponse
     {
-        $result = $this->roomRelationService->detach($room, 'reviews', $review->id);
+        $result = $this->modelRelationService->detach($room, 'reviews', $review->id);
         return response()->json(['message' => $result['message']], $result['status']);
     }
 }

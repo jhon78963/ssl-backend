@@ -28,8 +28,8 @@ class RoomResource extends JsonResource
             'roomTypeId' => $this->room_type_id,
             'roomType' => $this->roomType->description,
             'images' => ImageResource::collection($this->orderDesc()),
-            'amenities' => AmenityResource::collection($this->amenities),
-            'rates' => RateResource::collection($this->rates),
+            'amenities' => AmenityResource::collection($this->roomType->amenities),
+            'rates' => RateResource::collection($this->roomType->rates),
             'reviews' => ReviewResource::collection($this->reviews),
         ];
     }

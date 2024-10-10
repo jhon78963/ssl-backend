@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Room\Services;
+namespace App\Shared\Services;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
-class RoomRelationService
+class ModelRelationService
 {
-    public function attach(Model $room, string $relation, int $id): ?array
+    public function attach(Model $model, string $relation, int $id): ?array
     {
         DB::beginTransaction();
         try {
-            $room->$relation()->attach($id);
+            $model->$relation()->attach($id);
             DB::commit();
             return null;
         } catch (\Exception $e) {
@@ -20,11 +20,11 @@ class RoomRelationService
         }
     }
 
-    public function detach(Model $room, string $relation, int $id): ?array
+    public function detach(Model $model, string $relation, int $id): ?array
     {
         DB::beginTransaction();
         try {
-            $room->$relation()->detach($id);
+            $model->$relation()->detach($id);
             DB::commit();
             return null;
         } catch (\Exception $e) {

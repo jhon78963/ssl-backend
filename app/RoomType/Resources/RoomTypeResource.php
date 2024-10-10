@@ -1,7 +1,9 @@
 <?php
 
-namespace App\Room\Resources;
+namespace App\RoomType\Resources;
 
+use App\Amenity\Resources\AmenityResource;
+use App\Rate\Resources\RateResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -25,6 +27,8 @@ class RoomTypeResource extends JsonResource
             'pricePerAdditionalPersonTable'=>"S/ $this->price_per_additional_person",
             'ageFree'=> $this->age_free,
             'ageFreeTable'=> $this->getAgeLabel($this->age_free),
+            'amenities' => AmenityResource::collection($this->amenities),
+            'rates' => RateResource::collection($this->rates),
         ];
     }
 

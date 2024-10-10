@@ -2,10 +2,9 @@
 
 namespace App\Room\Models;
 
-use App\Amenity\Models\Amenity;
 use App\Image\Models\Image;
-use App\Rate\Models\Rate;
 use App\Review\Models\Review;
+use App\RoomType\Models\RoomType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -24,8 +23,8 @@ class Room extends Model
     protected $fillable = [
         'id',
         'room_number',
-        'status',
         'room_type_id',
+        'status',
     ];
 
     /**
@@ -58,16 +57,6 @@ class Room extends Model
     public function images(): BelongsToMany
     {
         return $this->belongsToMany(Image::class);
-    }
-
-    public function amenities(): BelongsToMany
-    {
-        return $this->belongsToMany(Amenity::class);
-    }
-
-    public function rates(): BelongsToMany
-    {
-        return $this->belongsToMany(Rate::class);
     }
 
     public function reviews(): HasMany {

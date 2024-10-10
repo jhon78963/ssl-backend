@@ -2,7 +2,7 @@
 
 namespace App\Rate\Models;
 
-use App\Room\Models\Room;
+use App\RoomType\Models\RoomType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -54,7 +54,8 @@ class Rate extends Model
         return $this->belongsTo(RateDay::class);
     }
 
-    public function rooms(): BelongsToMany {
-        return $this->belongsToMany(Room::class);
+    public function roomTypes(): BelongsToMany
+    {
+        return $this->belongsToMany(RoomType::class);
     }
 }

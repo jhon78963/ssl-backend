@@ -10,12 +10,12 @@ use App\Rate\Controllers\RateDayController;
 use App\Rate\Controllers\RateHourController;
 use App\Review\Controllers\ReviewController;
 use App\Role\Controllers\RoleController;
-use App\Room\Controllers\RoomAmenityController;
 use App\Room\Controllers\RoomController;
 use App\Room\Controllers\RoomImageController;
-use App\Room\Controllers\RoomRateController;
 use App\Room\Controllers\RoomReviewController;
-use App\Room\Controllers\RoomTypeController;
+use App\RoomType\Controllers\RoomTypeAmenityController;
+use App\RoomType\Controllers\RoomTypeController;
+use App\RoomType\Controllers\RoomTypeRateController;
 use App\User\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -126,11 +126,11 @@ Route::group([
         Route::get('/images/{image}', 'get');
     });
 
-    Route::controller(RoomAmenityController::class)->group(function() {
-        Route::post('/amenities/{room}/add/{amenity}', 'add');
-        Route::delete('/amenities/{room}/remove/{amenity}', 'remove');
-        Route::get('/amenities/{room}/all', 'getAll');
-        Route::get('/amenities/{room}/left', 'getLeft');
+    Route::controller(RoomTypeAmenityController::class)->group(function() {
+        Route::post('/amenities/{roomType}/add/{amenity}', 'add');
+        Route::delete('/amenities/{roomType}/remove/{amenity}', 'remove');
+        Route::get('/amenities/{roomType}/all', 'getAll');
+        Route::get('/amenities/{roomType}/left', 'getLeft');
     });
 
     Route::controller(RoomImageController::class)->group(function() {
@@ -141,11 +141,11 @@ Route::group([
         Route::get('/images/{room}/left', 'getLeft');
     });
 
-    Route::controller(RoomRateController::class)->group(function() {
-        Route::post('/rates/{room}/add/{rate}', 'add');
-        Route::delete('/rates/{room}/remove/{rate}', 'remove');
-        Route::get('/rates/{room}/all', 'getAll');
-        Route::get('/rates/{room}/left', 'getLeft');
+    Route::controller(RoomTypeRateController::class)->group(function() {
+        Route::post('/rates/{roomType}/add/{rate}', 'add');
+        Route::delete('/rates/{roomType}/remove/{rate}', 'remove');
+        Route::get('/rates/{roomType}/all', 'getAll');
+        Route::get('/rates/{roomType}/left', 'getLeft');
     });
 
     Route::controller(RoomReviewController::class)->group(function() {

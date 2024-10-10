@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Room\Controllers;
+namespace App\RoomType\Controllers;
 
-use App\Room\Models\RoomType;
-use App\Room\Requests\RoomTypeCreateRequest;
-use App\Room\Requests\RoomTypeUpdateRequest;
-use App\Room\Resources\RoomTypeResource;
-use App\Room\Services\RoomTypeService;
+use App\RoomType\Models\RoomType;
+use App\RoomType\Requests\RoomTypeCreateRequest;
+use App\RoomType\Requests\RoomTypeUpdateRequest;
+use App\RoomType\Resources\RoomTypeResource;
+use App\RoomType\Services\RoomTypeService;
 use App\Shared\Controllers\Controller;
 use App\Shared\Requests\GetAllRequest;
 use App\Shared\Resources\GetAllCollection;
@@ -60,7 +60,7 @@ class RoomTypeController extends Controller
 
     public function getAll(GetAllRequest  $request): JsonResponse
     {
-        $query = $this->sharedService->query($request, 'Room', 'RoomType', 'name');
+        $query = $this->sharedService->query($request, 'RoomType', 'RoomType', 'name');
         return response()->json(new GetAllCollection(
             RoomTypeResource::collection($query['collection']),
             $query['total'],

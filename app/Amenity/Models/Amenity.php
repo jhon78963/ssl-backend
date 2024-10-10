@@ -2,7 +2,7 @@
 
 namespace App\Amenity\Models;
 
-use App\Room\Models\Room;
+use App\RoomType\Models\RoomType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -43,8 +43,8 @@ class Amenity extends Model
      */
     public $timestamps = false;
 
-    public function rooms(): BelongsToMany
+    public function roomTypes(): BelongsToMany
     {
-        return $this->belongsToMany(Room::class);
+        return $this->belongsToMany(RoomType::class);
     }
 }

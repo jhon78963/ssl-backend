@@ -13,7 +13,7 @@ class UserService
     public function uploadProfilePicture(UserCreateRequest | UserUpdateRequest $request): ?string
     {
         return ($request->hasFile("profilePicture"))
-            ? $request->file("profilePicture")->store("public/profiles")
+            ? $request->file("profilePicture")->store("public/images/profiles")
             : NULL;
     }
     public function createUser(array $newUSer)

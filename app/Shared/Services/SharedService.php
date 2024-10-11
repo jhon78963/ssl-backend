@@ -19,7 +19,12 @@ class SharedService {
         $model->save();
     }
 
-    public function query(GetAllRequest  $request, string $entityName, string $modelName, string $columnSearch): array {
+    public function query(
+        GetAllRequest  $request,
+        string $entityName,
+        string $modelName,
+        string $columnSearch
+    ): array {
         $limit = $request->query('limit', $this->limit);
         $page = $request->query('page', $this->page);
         $search = $request->query('search', $this->search);
@@ -32,7 +37,12 @@ class SharedService {
             $query = $this->searchFilter($query, $search, $columnSearch);
         }
 
-        $models = $query->where('is_deleted', false)->skip(($page - 1) * $limit)->take($limit)->get();
+        $models = $query->where('is_deleted', false)
+                    ->skip(($page - 1) * $limit)
+                    ->take($limit)
+                    ->orderBy('id', 'asc')
+                    ->get();
+
         $total = $query->where('is_deleted', false)->count();
         $pages = ceil($total / $limit);
 

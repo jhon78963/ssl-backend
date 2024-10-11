@@ -27,13 +27,16 @@ class RoomTypeRateController extends Controller
 
     public function getAll(RoomType $roomType): JsonResponse
     {
-        $rates = $roomType->rates()->orderBy('id', 'desc')->get();
+        $rates = $roomType->rates()->orderBy('id', 'asc')->get();
         return response()->json( RateResource::collection($rates));
     }
 
     public function getLeft(RoomType $roomType): JsonResponse
     {
-        $allRates = Rate::where('is_deleted', false)->get();
+        $allRates = Rate::where('is_deleted', false)
+            ->orderBy('price', 'asc')
+            ->orderBy('day_id', 'asc')
+            ->get();
         $associatedRates = $roomType->rates()->pluck('id')->toArray();
         $leftRates = $allRates->whereNotIn('id', $associatedRates);
         return response()->json( RateResource::collection($leftRates));

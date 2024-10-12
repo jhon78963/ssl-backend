@@ -19,6 +19,8 @@ class DatabaseSeeder extends Seeder
             RateHourSeeder::class,
             RateDaySeeder::class,
             RateSeeder::class,
+            GenderSeeder::class,
+            LockerSeeder::class,
         ]);
     }
 }

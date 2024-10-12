@@ -4,6 +4,7 @@ use App\Amenity\Controllers\AmenityController;
 use App\Auth\Controllers\AuthController;
 use App\Company\Controllers\CompanyController;
 use App\Company\Controllers\SocialNetworkController;
+use App\Gender\Controllers\GenderController;
 use App\Image\Controllers\ImageController;
 use App\Rate\Controllers\RateController;
 use App\Rate\Controllers\RateDayController;
@@ -152,5 +153,10 @@ Route::group([
         Route::post('/reviews/{room}/add', 'add');
         Route::delete('/reviews/{room}/remove/{review}', 'remove');
         Route::get('/reviews/{room}/all', 'getAll');
+    });
+
+    Route::controller(GenderController::class)->group(function() {
+        Route::get('/genders', 'getAll');
+        Route::get('/genders/{gender}', 'get');
     });
 });

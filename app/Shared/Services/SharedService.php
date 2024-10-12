@@ -53,7 +53,7 @@ class SharedService {
         ];
     }
 
-    private function searchFilter($query, string $searchTerm, string $columnSearch)
+    private function searchFilter($query, string $searchTerm, string $columnSearch): mixed
     {
         $searchTerm = strtolower($searchTerm);
         return $query->where(function ($query) use ($searchTerm, $columnSearch) {
@@ -61,7 +61,7 @@ class SharedService {
         });
     }
 
-    public function validateModel($model, string $modelName)
+    public function validateModel($model, string $modelName): mixed
     {
         if ($model->is_deleted == true) {
             throw new ModelNotFoundException("$modelName does not exists.");

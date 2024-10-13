@@ -5,6 +5,7 @@ namespace App\Shared\Services;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Illuminate\Support\Arr;
 use Auth;
 
 class ModelRelationService
@@ -60,13 +61,12 @@ class ModelRelationService
         }
     }
 
-    public function convertCamelToSnake(array $data): array
+    public function convertCamelToSnake(array $data)
     {
-        $converted = [];
-        foreach ($data as $key => $value) {
-            $converted[Str::snake($key)] = $value;
-        }
-        return $converted;
+
+        return Arr::mapWithKeys($data, function ($value, $key) {
+            return [Str::snake($key) => $value];
+        });
     }
 
     private static function setCreationAuditFields(Model $model): void

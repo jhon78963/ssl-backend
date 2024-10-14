@@ -11,9 +11,9 @@ class SharedService {
     private int $page = 1;
     private string $search = '';
 
-    public function convertCamelToSnake(array $data)
+    public function convertCamelToSnake(array $data): array
     {
-        return Arr::mapWithKeys($data, function ($value, $key) {
+        return Arr::mapWithKeys($data, function ($value, $key): array {
             return [Str::snake($key) => $value];
         });
     }
@@ -55,7 +55,7 @@ class SharedService {
     private function searchFilter(Builder $query, string $searchTerm, string $columnSearch): Builder
     {
         $searchTerm = strtolower($searchTerm);
-        return $query->where(function ($query) use ($searchTerm, $columnSearch) {
+        return $query->where(function ($query) use ($searchTerm, $columnSearch): void {
             $query->whereRaw("LOWER($columnSearch) LIKE ?", ['%' . $searchTerm . '%']);
         });
     }

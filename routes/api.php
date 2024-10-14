@@ -21,16 +21,16 @@ use App\RoomType\Controllers\RoomTypeRateController;
 use App\User\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
-// header('Access-Control-Allow-Origin: *');
-// header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTION');
-// header('Access-Control-Allow-Headers: Origin, Content-Type, Accept, Authorization, X-Auth-Token');
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTION');
+header('Access-Control-Allow-Headers: Origin, Content-Type, Accept, Authorization, X-Auth-Token');
 
 Route::post('auth/login', [AuthController::class, 'login']);
 Route::post('auth/refresh-token', [AuthController::class, 'refreshToken']);
 
 Route::group([
     'middleware' => 'auth:sanctum',
-], function () {
+], function (): void {
     Route::patch('auth/me', [AuthController::class, 'updateMe']);
     Route::post('auth/me', [AuthController::class, 'getMe']);
     Route::post('auth/change-password', [AuthController::class,'changePassword']);

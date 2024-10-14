@@ -4,6 +4,7 @@ namespace App\Gender\Controllers;
 
 use App\Gender\Models\Gender;
 use App\Gender\Resources\GenderResource;
+use App\Gender\Services\GenderService;
 use App\Shared\Requests\GetAllRequest;
 use App\Shared\Resources\GetAllCollection;
 use App\Shared\Services\SharedService;
@@ -11,16 +12,18 @@ use Illuminate\Http\JsonResponse;
 
 class GenderController
 {
+    protected GenderService $genderService;
     protected SharedService $sharedService;
 
-    public function __construct(SharedService $sharedService)
+    public function __construct(GenderService $genderService, SharedService $sharedService)
     {
+        $this->genderService = $genderService;
         $this->sharedService = $sharedService;
     }
 
     public function get(Gender $gender): JsonResponse
     {
-        $genderValidated = $this->sharedService->validateModel($gender, 'Gender');
+        $genderValidated = $this->genderService->validate($gender, 'Gender');
         return response()->json(new GenderResource($genderValidated));
     }
 

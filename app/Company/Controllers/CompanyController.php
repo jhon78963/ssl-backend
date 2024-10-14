@@ -7,7 +7,6 @@ use App\Company\Requests\CompanyUpdateRequest;
 use App\Company\Resources\CompanyResource;
 use App\Company\Services\CompanyService;
 use App\Shared\Controllers\Controller;
-use App\Shared\Services\ModelService;
 use App\Shared\Services\SharedService;
 use Illuminate\Http\JsonResponse;
 use DB;
@@ -15,16 +14,13 @@ use DB;
 class CompanyController extends Controller
 {
     protected CompanyService $companyService;
-    protected ModelService $modelService;
     protected SharedService $sharedService;
 
     public function __construct(
         CompanyService $companyService,
-        ModelService $modelService,
         SharedService $sharedService,
     ) {
         $this->companyService = $companyService;
-        $this->modelService = $modelService;
         $this->sharedService = $sharedService;
     }
 

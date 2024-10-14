@@ -13,15 +13,9 @@ class ImageService {
         $this->modelService = $modelService;
     }
 
-    public function create(string $fileName, string $filePath): Image
+    public function create(array $newImage): Image
     {
-        $image = new Image();
-        $image->name = $fileName;
-        $image->path = $filePath;
-        $image->creator_user_id = Auth::id();
-        $image->save();
-
-        return $image;
+        return $this->modelService->create(new Image(), $newImage);
     }
 
     public function delete(Image $image): void

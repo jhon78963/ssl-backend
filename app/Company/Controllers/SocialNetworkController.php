@@ -16,16 +16,16 @@ use DB;
 
 class SocialNetworkController extends Controller
 {
-    protected $socialNetworkService;
-    protected $sharedService;
+    protected SharedService $sharedService;
+    protected SocialNetworkService $socialNetworkService;
 
     public function __construct(
-        SocialNetworkService $socialNetworkService,
         SharedService $sharedService,
+        SocialNetworkService $socialNetworkService,
     )
     {
-        $this->socialNetworkService = $socialNetworkService;
         $this->sharedService = $sharedService;
+        $this->socialNetworkService = $socialNetworkService;
     }
 
     public function add(SocialNetworkAddRequest $request): JsonResponse

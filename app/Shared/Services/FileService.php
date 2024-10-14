@@ -2,19 +2,19 @@
 
 namespace App\Shared\Services;
 
-use App\Shared\Requests\FileUploadRequest;
+use App\Shared\Requests\FileMultipleUploadRequest;
 use Storage;
 
 class FileService
 {
-    public function upload(FileUploadRequest $request, String $filePath): ?string
+    public function upload($request, String $filePath): ?string
     {
         return ($request->hasFile("file"))
             ? $request->file("file")->store($filePath, 'public')
             : NULL;
     }
 
-    public function uploadMultiple(FileUploadRequest $request, String $filePath): array
+    public function uploadMultiple(FileMultipleUploadRequest $request, String $filePath): array
     {
         $uploadedPaths = [];
         if ($request->hasFile('file')) {

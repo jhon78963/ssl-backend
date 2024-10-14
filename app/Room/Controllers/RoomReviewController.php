@@ -8,8 +8,8 @@ use App\Review\Resources\ReviewResource;
 use App\Room\Models\Room;
 use App\Shared\Controllers\Controller;
 use App\Shared\Services\ModelService;
-use DB;
 use Illuminate\Http\JsonResponse;
+use DB;
 
 class RoomReviewController extends Controller
 {

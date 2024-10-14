@@ -7,8 +7,8 @@ use App\Amenity\Resources\AmenityResource;
 use App\RoomType\Models\RoomType;
 use App\Shared\Controllers\Controller;
 use App\Shared\Services\ModelService;
-use DB;
 use Illuminate\Http\JsonResponse;
+use DB;
 
 class RoomTypeAmenityController extends Controller
 {

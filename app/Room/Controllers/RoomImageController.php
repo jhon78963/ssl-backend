@@ -7,11 +7,11 @@ use App\Image\Resources\ImageResource;
 use App\Image\Services\ImageService;
 use App\Room\Models\Room;
 use App\Shared\Controllers\Controller;
-use App\Shared\Requests\FileUploadRequest;
+use App\Shared\Requests\FileMultipleUploadRequest;
 use App\Shared\Services\FileService;
 use App\Shared\Services\ModelService;
-use DB;
 use Illuminate\Http\JsonResponse;
+use DB;
 
 class RoomImageController extends Controller
 {
@@ -40,14 +40,17 @@ class RoomImageController extends Controller
         }
     }
 
-    public function multipleAdd(FileUploadRequest $request, Room $room)
+    public function multipleAdd(FileMultipleUploadRequest $request, Room $room)
     {
         DB::beginTransaction();
         try {
             $uploadedImages = $this->fileService->uploadMultiple($request, $this->path_images);
             foreach ($uploadedImages as $roomImagePath) {
                 $roomImageName = $this->imageService->getFileName($roomImagePath);
-                $roomImage = $this->imageService->create($roomImageName, $roomImagePath);
+                $roomImage = $this->imageService->create([
+                    'name' => $roomImageName,
+                    'path' => $roomImagePath
+                ]);
                 $this->modelService->attach($room, 'images', $roomImage->id);
             }
             DB::commit();

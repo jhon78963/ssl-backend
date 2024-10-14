@@ -4,9 +4,6 @@ namespace App\Shared\Services;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
-use Illuminate\Support\Arr;
 use Auth;
 
 class ModelService

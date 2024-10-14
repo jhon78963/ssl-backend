@@ -4,25 +4,15 @@ namespace App\User\Services;
 
 use App\Shared\Services\ModelService;
 use App\User\Models\User;
-use App\User\Requests\UserCreateRequest;
-use App\User\Requests\UserUpdateRequest;
-use Auth;
-use Hash;
 
 class UserService
 {
+
     protected ModelService $modelService;
 
     public function __construct(ModelService $modelService)
     {
         $this->modelService = $modelService;
-    }
-
-    public function uploadProfilePicture(UserCreateRequest | UserUpdateRequest $request): ?string
-    {
-        return ($request->hasFile("profilePicture"))
-            ? $request->file("profilePicture")->store("public/images/profiles")
-            : NULL;
     }
 
     public function create(array $newUser)

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\User\Requests;
+namespace App\Shared\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UserUpdateRequest extends FormRequest
+class FileMultipleUploadRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,9 +22,7 @@ class UserUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'sometimes',
-            'surname' => 'sometimes',
-            'file' => 'sometimes|max:2048',
+            'file.*' => 'required|max:2048',
         ];
     }
 }

@@ -35,14 +35,14 @@ class SharedService {
             $query = $this->searchFilter($query, $search, $columnSearch);
         }
 
+        $total = $query->count();
+        $pages = ceil($total / $limit);
+
         $models = $query->where('is_deleted', false)
                     ->skip(($page - 1) * $limit)
                     ->take($limit)
                     ->orderBy('id', 'asc')
                     ->get();
-
-        $total = $query->where('is_deleted', false)->count();
-        $pages = ceil($total / $limit);
 
         return [
             'collection' => $models,

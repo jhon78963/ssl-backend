@@ -29,7 +29,7 @@ class SocialNetworkService
         $this->modelService->update($socialNetwork, $editSocialNetwork);
     }
 
-    public function validate(SocialNetwork $socialNetwork, string $modelName): mixed
+    public function validate(SocialNetwork $socialNetwork, string $modelName): SocialNetwork
     {
         return $this->modelService->validate($socialNetwork, $modelName);
     }

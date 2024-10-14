@@ -35,7 +35,7 @@ class RateHourService
         );
     }
 
-    public function validate(RateHour $rateHour, string $modelName): mixed
+    public function validate(RateHour $rateHour, string $modelName): RateHour
     {
         return $this->modelService->validate($rateHour, $modelName);
     }

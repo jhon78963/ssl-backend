@@ -68,7 +68,7 @@ class LockerController
         ));
     }
 
-    public function update(LockerUpdateRequest $request, Locker $locker)
+    public function update(LockerUpdateRequest $request, Locker $locker): JsonResponse
     {
         DB::beginTransaction();
         try {

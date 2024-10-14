@@ -3,6 +3,7 @@ namespace App\Shared\Services;
 
 use App\Shared\Requests\GetAllRequest;
 use Arr;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use Str;
 
 class SharedService {
@@ -51,7 +52,7 @@ class SharedService {
         ];
     }
 
-    private function searchFilter($query, string $searchTerm, string $columnSearch): mixed
+    private function searchFilter(Builder $query, string $searchTerm, string $columnSearch): Builder
     {
         $searchTerm = strtolower($searchTerm);
         return $query->where(function ($query) use ($searchTerm, $columnSearch) {

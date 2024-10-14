@@ -29,7 +29,7 @@ class ImageService {
         return basename($filePath);
     }
 
-    public function validate(Image $image, string $modelName): mixed
+    public function validate(Image $image, string $modelName): Image
     {
         return $this->modelService->validate($image, $modelName);
     }

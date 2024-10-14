@@ -35,7 +35,7 @@ class RateDayService
         );
     }
 
-    public function validate(RateDay $rateDay, string $modelName): mixed
+    public function validate(RateDay $rateDay, string $modelName): RateDay
     {
         return $this->modelService->validate($rateDay, $modelName);
     }

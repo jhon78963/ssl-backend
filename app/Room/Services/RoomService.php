@@ -29,7 +29,7 @@ class RoomService
         $this->modelService->update($room, $editRoom);
     }
 
-    public function validate(Room $room, string $modelName): mixed
+    public function validate(Room $room, string $modelName): Room
     {
         return $this->modelService->validate($room, $modelName);
     }

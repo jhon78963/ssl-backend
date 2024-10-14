@@ -13,7 +13,7 @@ class GenderService
         $this->modelService = $modelService;
     }
 
-    public function validate(Gender $gender, string $modelName): mixed
+    public function validate(Gender $gender, string $modelName): Gender
     {
         return $this->modelService->validate($gender, $modelName);
     }

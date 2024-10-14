@@ -2,6 +2,7 @@
 
 namespace App\Shared\Services;
 
+use App\User\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Auth;
@@ -40,7 +41,7 @@ class ModelService
         return $model;
     }
 
-    public function validate($model, string $modelName): mixed
+    public function validate(User | Model $model, string $modelName): User | Model
     {
         if ($model->is_deleted == true) {
             throw new ModelNotFoundException("$modelName does not exists.");

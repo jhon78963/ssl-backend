@@ -35,7 +35,7 @@ class RateService
         );
     }
 
-    public function validate(Rate $rate, string $modelName): mixed
+    public function validate(Rate $rate, string $modelName): Rate
     {
         return $this->modelService->validate($rate, $modelName);
     }

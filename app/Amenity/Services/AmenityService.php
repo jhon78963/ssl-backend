@@ -35,7 +35,7 @@ class AmenityService
         );
     }
 
-    public function validate(Amenity $amenity, string $modelName): mixed
+    public function validate(Amenity $amenity, string $modelName): Amenity
     {
         return $this->modelService->validate($amenity, $modelName);
     }

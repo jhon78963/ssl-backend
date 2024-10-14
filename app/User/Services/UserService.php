@@ -15,7 +15,7 @@ class UserService
         $this->modelService = $modelService;
     }
 
-    public function create(array $newUser)
+    public function create(array $newUser): void
     {
         $this->modelService->create(new User(), $newUser);
     }
@@ -51,7 +51,7 @@ class UserService
             ->exists();
     }
 
-    public function validate(User $user, string $modelName): mixed
+    public function validate(User $user, string $modelName): User
     {
         return $this->modelService->validate($user, $modelName);
     }

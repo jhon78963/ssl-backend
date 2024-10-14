@@ -22,7 +22,7 @@ class CompanyService
         );
     }
 
-    public function validate(Company $company, string $modelName): mixed
+    public function validate(Company $company, string $modelName): Company
     {
         return $this->modelService->validate($company, $modelName);
     }

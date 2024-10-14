@@ -29,7 +29,7 @@ class RoleService
         $this->modelService->update($role, $editRole);
     }
 
-    public function validate(Role $role, string $modelName): mixed
+    public function validate(Role $role, string $modelName): Role
     {
         return $this->modelService->validate($role, $modelName);
     }

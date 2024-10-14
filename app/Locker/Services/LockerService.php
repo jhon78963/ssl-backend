@@ -28,7 +28,7 @@ class LockerService
         $this->modelService->update($locker, $editLocker);
     }
 
-    public function validate(Locker $locker, string $modelName): mixed
+    public function validate(Locker $locker, string $modelName): Locker
     {
         return $this->modelService->validate($locker, $modelName);
     }

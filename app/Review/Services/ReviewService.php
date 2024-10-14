@@ -29,7 +29,7 @@ class ReviewService
         $this->modelService->update($review, $editReview);
     }
 
-    public function validate(Review $review, string $modelName): mixed
+    public function validate(Review $review, string $modelName): Review
     {
         return $this->modelService->validate($review, $modelName);
     }

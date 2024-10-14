@@ -29,7 +29,8 @@ class RateDayController extends Controller
     {
         DB::beginTransaction();
         try {
-            $this->rateDayService->createRateDay($request->validated());
+            $newRateDay = $this->sharedService->convertCamelToSnake($request->validated());
+            $this->rateDayService->create($newRateDay);
             DB::commit();
             return response()->json(['message' => 'Rate day created.'], 201);
         } catch (\Exception $e) {
@@ -42,8 +43,8 @@ class RateDayController extends Controller
     {
         DB::beginTransaction();
         try {
-            $rateDayValidated = $this->sharedService->validateModel($rateDay, 'RateDay');
-            $this->sharedService->deleteModel($rateDayValidated);
+            $rateDayValidated = $this->rateDayService->validate($rateDay, 'RateDay');
+            $this->rateDayService->delete($rateDayValidated);
             DB::commit();
             return response()->json(['message' => 'Rate day deleted.']);
         } catch (\Exception $e) {
@@ -54,13 +55,19 @@ class RateDayController extends Controller
 
     public function get(RateDay $rateDay): JsonResponse
     {
-        $rateDayValidated = $this->sharedService->validateModel($rateDay, 'RateDay');
+        $rateDayValidated = $this->rateDayService->validate($rateDay, 'RateDay');
         return response()->json(new RateDayResource($rateDayValidated));
     }
 
     public function getAll(GetAllRequest  $request): JsonResponse
     {
-        $query = $this->sharedService->query($request, 'Rate', 'RateDay', 'duration');
+        $query = $this->sharedService->query(
+            $request,
+            'Rate',
+            'RateDay',
+            'duration'
+        );
+
         return response()->json(new GetAllCollection(
             RateDayResource::collection($query['collection']),
             $query['total'],
@@ -72,8 +79,9 @@ class RateDayController extends Controller
     {
         DB::beginTransaction();
         try {
-            $rateDayValidated = $this->sharedService->validateModel($rateDay, 'RateDay');
-            $this->rateDayService->updateRateDay($rateDayValidated, $request->validated());
+            $editRateDay = $this->sharedService->convertCamelToSnake($request->validated());
+            $rateDayValidated = $this->rateDayService->validate($rateDay, 'RateDay');
+            $this->rateDayService->update($rateDayValidated, $editRateDay);
             DB::commit();
             return response()->json(['message' => 'Rate day updated.']);
         } catch (\Exception $e) {

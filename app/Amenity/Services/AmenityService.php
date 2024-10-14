@@ -3,23 +3,40 @@
 namespace App\Amenity\Services;
 
 use App\Amenity\Models\Amenity;
-use Auth;
+use App\Shared\Services\ModelService;
 
 class AmenityService
 {
-    public function createAmenity(array $newAmenity): void
+    protected ModelService $modelService;
+
+    public function __construct(ModelService $modelService)
     {
-        $amenity = new Amenity();
-        $amenity->description = $newAmenity['description'];
-        $amenity->creator_user_id = Auth::id();
-        $amenity->save();
+        $this->modelService = $modelService;
     }
 
-    public function updateAmenity(Amenity $amenity, array $editAmenity): void
+    public function create(array $newAmenity): void
     {
-        $amenity->description = $editAmenity['description'] ?? $amenity->description;
-        $amenity->last_modification_time = now()->format('Y-m-d H:i:s');
-        $amenity->last_modifier_user_id = Auth::id();
-        $amenity->save();
+        $this->modelService->create(
+            new Amenity(),
+            $newAmenity,
+        );
+    }
+
+    public function delete(Amenity $amenity): void
+    {
+        $this->modelService->delete($amenity);
+    }
+
+    public function update(Amenity $amenity, array $editAmenity): void
+    {
+       $this->modelService->update(
+            $amenity,
+            $editAmenity,
+        );
+    }
+
+    public function validate(Amenity $amenity, string $modelName): mixed
+    {
+        return $this->modelService->validate($amenity, $modelName);
     }
 }

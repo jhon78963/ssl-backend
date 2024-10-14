@@ -17,11 +17,13 @@ use DB;
 
 class RoomController extends Controller
 {
-    protected $roomService;
-    protected $sharedService;
+    protected RoomService $roomService;
+    protected SharedService $sharedService;
 
-    public function __construct(RoomService $roomService, SharedService $sharedService)
-    {
+    public function __construct(
+        RoomService $roomService,
+        SharedService $sharedService
+    ) {
         $this->roomService = $roomService;
         $this->sharedService = $sharedService;
     }
@@ -30,7 +32,8 @@ class RoomController extends Controller
     {
         DB::beginTransaction();
         try {
-            $this->roomService->createRoom($request->validated());
+            $newRoom = $this->sharedService->convertCamelToSnake($request->validated());
+            $this->roomService->create($newRoom);
             DB::commit();
             return response()->json(['message' => 'Room created.'], 201);
         } catch (\Exception $e) {
@@ -43,8 +46,9 @@ class RoomController extends Controller
     {
         DB::beginTransaction();
         try {
-            $roomValidated = $this->sharedService->validateModel($room, 'Room');
-            $this->roomService->changeStatusRoom($roomValidated, $request->validated());
+            $editRoom = $this->sharedService->convertCamelToSnake($request->validated());
+            $roomValidated = $this->roomService->validate($room, 'Room');
+            $this->roomService->update($roomValidated, $editRoom);
             DB::commit();
             return response()->json(['message' => 'Room status changed.'], 201);
         } catch (\Exception $e) {
@@ -57,8 +61,8 @@ class RoomController extends Controller
     {
         DB::beginTransaction();
         try {
-            $roomValidated = $this->sharedService->validateModel($room, 'Room');
-            $this->sharedService->deleteModel($roomValidated);
+            $roomValidated = $this->roomService->validate($room, 'Room');
+            $this->roomService->delete($roomValidated);
             DB::commit();
             return response()->json(['message' => 'Room deleted.']);
         } catch (\Exception $e) {
@@ -69,13 +73,19 @@ class RoomController extends Controller
 
     public function get(Room  $room): JsonResponse
     {
-        $roomValidated = $this->sharedService->validateModel($room, 'Room');
+        $roomValidated = $this->roomService->validate($room, 'Room');
         return response()->json(new RoomResource( $roomValidated));
     }
 
     public function getAll(GetAllRequest  $request): JsonResponse
     {
-        $query = $this->sharedService->query($request, 'Room', 'Room', 'room_number');
+        $query = $this->sharedService->query(
+            $request,
+            'Room',
+            'Room',
+            'room_number'
+        );
+
         return response()->json(new GetAllCollection(
             RoomResource::collection($query['collection']),
             $query['total'],
@@ -87,8 +97,9 @@ class RoomController extends Controller
     {
         DB::beginTransaction();
         try {
-            $roomValidated = $this->sharedService->validateModel($room, 'Room');
-            $this->roomService->updateRoom($roomValidated, $request->validated());
+            $editRoom = $this->sharedService->convertCamelToSnake($request->validated());
+            $roomValidated = $this->roomService->validate($room, 'Room');
+            $this->roomService->update($roomValidated, $editRoom);
             DB::commit();
             return response()->json(['message' => 'Room updated.']);
         } catch (\Exception $e) {

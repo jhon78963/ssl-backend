@@ -29,7 +29,8 @@ class AmenityController extends Controller
     {
         DB::beginTransaction();
         try {
-            $this->amenityService->createAmenity($request->validated());
+            $newAmenity = $this->sharedService->convertCamelToSnake($request->validated());
+            $this->amenityService->create($newAmenity);
             DB::commit();
             return response()->json(['message' => 'Amenity created.'], 201);
         } catch (\Exception $e) {
@@ -42,8 +43,8 @@ class AmenityController extends Controller
     {
         DB::beginTransaction();
         try {
-            $amenityValidated = $this->sharedService->validateModel($amenity, 'Amenity');
-            $this->sharedService->deleteModel($amenityValidated);
+            $amenityValidated = $this->amenityService->validate($amenity, 'Amenity');
+            $this->amenityService->delete($amenityValidated);
             DB::commit();
             return response()->json(['message' => 'Amenity deleted.']);
         } catch (\Exception $e) {
@@ -54,13 +55,19 @@ class AmenityController extends Controller
 
     public function get(Amenity $amenity): JsonResponse
     {
-        $amenityValidated = $this->sharedService->validateModel($amenity, 'Amenity');
+        $amenityValidated = $this->amenityService->validate($amenity, 'Amenity');
         return response()->json(new AmenityResource($amenityValidated));
     }
 
     public function getAll(GetAllRequest $request): JsonResponse
     {
-        $query = $this->sharedService->query($request, 'Amenity', 'Amenity', 'description');
+        $query = $this->sharedService->query(
+            $request,
+            'Amenity',
+            'Amenity',
+            'description'
+        );
+
         return response()->json(new GetAllCollection(
             AmenityResource::collection($query['collection']),
             $query['total'],
@@ -72,8 +79,9 @@ class AmenityController extends Controller
     {
         DB::beginTransaction();
         try {
-            $AmenityValidated = $this->sharedService->validateModel($Amenity, 'Amenity');
-            $this->amenityService->updateAmenity($AmenityValidated, $request->validated());
+            $AmenityValidated = $this->amenityService->validate($Amenity, 'Amenity');
+            $editAmenity = $this->sharedService->convertCamelToSnake($request->validated());
+            $this->amenityService->update($AmenityValidated, $editAmenity);
             DB::commit();
             return response()->json(['message' => 'Amenity updated.']);
         } catch (\Exception $e) {

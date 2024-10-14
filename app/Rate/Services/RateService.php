@@ -3,27 +3,40 @@
 namespace App\Rate\Services;
 
 use App\Rate\Models\Rate;
-use Auth;
+use App\Shared\Services\ModelService;
 
 class RateService
 {
-    public function createRate(array $newRate): void
+    protected ModelService $modelService;
+
+    public function __construct(ModelService $modelService)
     {
-        $rate = new Rate();
-        $rate->price = $newRate['price'];
-        $rate->hour_id = $newRate['hourId'];
-        $rate->day_id = $newRate['dayId'];
-        $rate->creator_user_id = Auth::id();
-        $rate->save();
+        $this->modelService = $modelService;
     }
 
-    public function updateRate(Rate $rate, array $editRate): void
+    public function create(array $newRate): void
     {
-        $rate->price = $editRate['price'] ?? $rate->price;
-        $rate->hour_id = $editRate['hourId'] ?? $rate->hour_id;
-        $rate->day_id = $editRate['dayId'] ?? $rate->day_id;
-        $rate->last_modification_time = now()->format('Y-m-d H:i:s');
-        $rate->last_modifier_user_id = Auth::id();
-        $rate->save();
+        $this->modelService->create(
+            new Rate(),
+            $newRate,
+        );
+    }
+
+    public function delete(Rate $rate): void
+    {
+        $this->modelService->delete($rate);
+    }
+
+    public function update(Rate $rate, array $editRate): void
+    {
+        $this->modelService->update(
+            $rate,
+            $editRate,
+        );
+    }
+
+    public function validate(Rate $rate, string $modelName): mixed
+    {
+        return $this->modelService->validate($rate, $modelName);
     }
 }

@@ -1,35 +1,35 @@
 <?php
 namespace App\Locker\Services;
+
 use App\Locker\Models\Locker;
-use App\Shared\Services\ModelRelationService;
-use Auth;
+use App\Shared\Services\ModelService;
 
 class LockerService
 {
-    protected ModelRelationService $modelRelationService;
+    protected ModelService $modelService;
 
-    public function __construct(ModelRelationService $modelRelationService)
+    public function __construct(ModelService $modelService)
     {
-        $this->modelRelationService = $modelRelationService;
+        $this->modelService = $modelService;
     }
 
-    public function createLocker(array $newLocker): void
+    public function create(array $newLocker): void
     {
-        $newLocker = $this->modelRelationService->convertCamelToSnake($newLocker);
-        $this->modelRelationService->create(
-            new Locker(),
-            ['number', 'gender_id'],
-            $newLocker,
-        );
+        $this->modelService->create(new Locker(), $newLocker);
     }
 
-    public function updateLocker(Locker $locker, array $editLocker)
+    public function delete(Locker $locker): void
     {
-        $editLocker = $this->modelRelationService->convertCamelToSnake($editLocker);
-        $this->modelRelationService->update(
-            $locker,
-            ['number', 'gender_id'],
-            $editLocker,
-        );
+        $this->modelService->delete($locker);
+    }
+
+    public function update(Locker $locker, array $editLocker): void
+    {
+        $this->modelService->update($locker, $editLocker);
+    }
+
+    public function validate(Locker $locker, string $modelName): mixed
+    {
+        return $this->modelService->validate($locker, $modelName);
     }
 }

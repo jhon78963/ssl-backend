@@ -3,23 +3,34 @@
 namespace App\Role\Services;
 
 use App\Role\Models\Role;
-use Auth;
+use App\Shared\Services\ModelService;
 
 class RoleService
 {
-    public function createRole(array $newRole): void
+    protected ModelService $modelService;
+
+    public function __construct(ModelService $modelService)
     {
-        $role = new Role();
-        $role->name = $newRole['name'];
-        $role->creator_user_id = Auth::id();
-        $role->save();
+        $this->modelService = $modelService;
     }
 
-    public function updateRole(Role $role, array $editRole): void
+    public function create(array $newRole): void
     {
-        $role->name = $editRole['name'];
-        $role->last_modification_time = now()->format('Y-m-d H:i:s');
-        $role->last_modifier_user_id = Auth::id();
-        $role->save();
+        $this->modelService->create(new Role(), $newRole);
+    }
+
+    public function delete(Role $role): void
+    {
+        $this->modelService->delete($role);
+    }
+
+    public function update(Role $role, array $editRole): void
+    {
+        $this->modelService->update($role, $editRole);
+    }
+
+    public function validate(Role $role, string $modelName): mixed
+    {
+        return $this->modelService->validate($role, $modelName);
     }
 }

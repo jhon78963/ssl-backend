@@ -21,6 +21,7 @@ class Review extends Model
         'customer_name',
         'description',
         'rating',
+        'room_id',
         'creation_time',
     ];
 

@@ -3,34 +3,34 @@
 namespace App\Room\Services;
 
 use App\Room\Models\Room;
-use Auth;
+use App\Shared\Services\ModelService;
 
 class RoomService
 {
-    public function createRoom(array $newRoom): void
+    protected ModelService $modelService;
+
+    public function __construct(ModelService $modelService)
     {
-        $room = new Room();
-        $room->room_number = $newRoom['roomNumber'];
-        $room->room_type_id = $newRoom['roomTypeId'];
-        $room->status = 'DISPONIBLE';
-        $room->creator_user_id = Auth::id();
-        $room->save();
+        $this->modelService = $modelService;
     }
 
-    public function updateRoom(Room $room, array $editRoom): void
+    public function create(array $newRoom): void
     {
-        $room->room_number = $editRoom['roomNumber'] ?? $room->room_number;
-        $room->room_type_id = $editRoom['roomTypeId'] ?? $room->room_type_id;
-        $room->last_modification_time = now()->format('Y-m-d H:i:s');
-        $room->last_modifier_user_id = Auth::id();
-        $room->save();
+        $this->modelService->create(new Room(), $newRoom);
     }
 
-    public function changeStatusRoom(Room $room, array $editRoom): void
+    public function delete(Room $room): void
     {
-        $room->status = $editRoom['status'];
-        $room->last_modification_time = now()->format('Y-m-d H:i:s');
-        $room->last_modifier_user_id = Auth::id();
-        $room->save();
+        $this->modelService->delete($room);
+    }
+
+    public function update(Room $room, array $editRoom): void
+    {
+        $this->modelService->update($room, $editRoom);
+    }
+
+    public function validate(Room $room, string $modelName): mixed
+    {
+        return $this->modelService->validate($room, $modelName);
     }
 }

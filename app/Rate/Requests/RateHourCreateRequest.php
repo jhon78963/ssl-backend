@@ -22,7 +22,7 @@ class RateHourCreateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'durationNumber' => 'required|integer',
+            'duration' => 'required|integer',
         ];
     }
 }

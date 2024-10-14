@@ -2,23 +2,18 @@
 namespace App\Image\Services;
 
 use App\Image\Models\Image;
-use App\Shared\Services\SharedService;
+use App\Shared\Services\ModelService;
 use Auth;
 
 class ImageService {
-    protected $sharedService;
+    protected ModelService $modelService;
 
-    public function __construct(SharedService $sharedService)
+    public function __construct(ModelService $modelService)
     {
-        $this->sharedService = $sharedService;
+        $this->modelService = $modelService;
     }
 
-    public function getFileName(string $filePath): string
-    {
-        return basename($filePath);
-    }
-
-    public function save(string $fileName, string $filePath): Image
+    public function create(string $fileName, string $filePath): Image
     {
         $image = new Image();
         $image->name = $fileName;
@@ -31,8 +26,18 @@ class ImageService {
 
     public function delete(Image $image): void
     {
-        $this->sharedService->deleteModel($image);
+        $this->modelService->delete($image);
         $this->detachFromAllPivotTables($image);
+    }
+
+    public function getFileName(string $filePath): string
+    {
+        return basename($filePath);
+    }
+
+    public function validate(Image $image, string $modelName): mixed
+    {
+        return $this->modelService->validate($image, $modelName);
     }
 
     private function detachFromAllPivotTables(Image $image): void

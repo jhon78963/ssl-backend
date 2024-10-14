@@ -3,28 +3,34 @@
 namespace App\Company\Services;
 
 use App\Company\Models\SocialNetwork;
-use Auth;
+use App\Shared\Services\ModelService;
 
 class SocialNetworkService
 {
+    protected ModelService $modelService;
+
+    public function __construct(ModelService $modelService)
+    {
+        $this->modelService = $modelService;
+    }
+
     public function add(array $newSocialNetwork): void
     {
-        $socialNetwork = new SocialNetwork();
-        $socialNetwork->name = $newSocialNetwork['name'];
-        $socialNetwork->url = $newSocialNetwork['url'];
-        $socialNetwork->icon = $newSocialNetwork['icon'];
-        $socialNetwork->company_id = $newSocialNetwork['companyId'];
-        $socialNetwork->creator_user_id = Auth::id();
-        $socialNetwork->save();
+        $this->modelService->create(new SocialNetwork(), $newSocialNetwork);
+    }
+
+    public function delete(SocialNetwork $socialNetwork): void
+    {
+        $this->modelService->delete($socialNetwork);
     }
 
     public function update(SocialNetwork $socialNetwork, array $editSocialNetwork): void
     {
-        $socialNetwork->name = $editSocialNetwork['name'] ?? $socialNetwork->nam;
-        $socialNetwork->url = $editSocialNetwork['url'] ?? $socialNetwork->url;
-        $socialNetwork->icon = $editSocialNetwork['icon'] ?? $socialNetwork->icon;
-        $socialNetwork->last_modification_time = now()->format('Y-m-d H:i:s');
-        $socialNetwork->last_modifier_user_id = Auth::id();
-        $socialNetwork->save();
+        $this->modelService->update($socialNetwork, $editSocialNetwork);
+    }
+
+    public function validate(SocialNetwork $socialNetwork, string $modelName): mixed
+    {
+        return $this->modelService->validate($socialNetwork, $modelName);
     }
 }

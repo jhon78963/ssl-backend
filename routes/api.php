@@ -6,6 +6,7 @@ use App\Company\Controllers\CompanyController;
 use App\Company\Controllers\SocialNetworkController;
 use App\Gender\Controllers\GenderController;
 use App\Image\Controllers\ImageController;
+use App\Locker\Controllers\LockerController;
 use App\Rate\Controllers\RateController;
 use App\Rate\Controllers\RateDayController;
 use App\Rate\Controllers\RateHourController;
@@ -20,9 +21,9 @@ use App\RoomType\Controllers\RoomTypeRateController;
 use App\User\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
-header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTION');
-header('Access-Control-Allow-Headers: Origin, Content-Type, Accept, Authorization, X-Auth-Token');
+// header('Access-Control-Allow-Origin: *');
+// header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTION');
+// header('Access-Control-Allow-Headers: Origin, Content-Type, Accept, Authorization, X-Auth-Token');
 
 Route::post('auth/login', [AuthController::class, 'login']);
 Route::post('auth/refresh-token', [AuthController::class, 'refreshToken']);
@@ -158,5 +159,13 @@ Route::group([
     Route::controller(GenderController::class)->group(function() {
         Route::get('/genders', 'getAll');
         Route::get('/genders/{gender}', 'get');
+    });
+
+    Route::controller(LockerController::class)->group(function() {
+        Route::post('/lockers', 'create');
+        Route::patch('/lockers/{locker}', 'update');
+        Route::delete('/lockers/{locker}', 'delete');
+        Route::get('/lockers', 'getAll');
+        Route::get('/lockers/{locker}', 'get');
     });
 });

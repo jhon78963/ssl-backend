@@ -2,21 +2,19 @@
 namespace App\Shared\Services;
 
 use App\Shared\Requests\GetAllRequest;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Auth;
+use Arr;
+use Str;
 
 class SharedService {
     private int $limit = 10;
     private int $page = 1;
     private string $search = '';
 
-    public function deleteModel(Model $model): void
+    public function convertCamelToSnake(array $data)
     {
-        $model->is_deleted = true;
-        $model->deleter_user_id = Auth::id();
-        $model->deletion_time = now()->format('Y-m-d H:i:s');
-        $model->save();
+        return Arr::mapWithKeys($data, function ($value, $key) {
+            return [Str::snake($key) => $value];
+        });
     }
 
     public function query(
@@ -59,14 +57,5 @@ class SharedService {
         return $query->where(function ($query) use ($searchTerm, $columnSearch) {
             $query->whereRaw("LOWER($columnSearch) LIKE ?", ['%' . $searchTerm . '%']);
         });
-    }
-
-    public function validateModel($model, string $modelName): mixed
-    {
-        if ($model->is_deleted == true) {
-            throw new ModelNotFoundException("$modelName does not exists.");
-        }
-
-        return $model;
     }
 }

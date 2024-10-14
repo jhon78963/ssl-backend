@@ -30,7 +30,8 @@ class RoleController extends Controller
     {
         DB::beginTransaction();
         try {
-            $this->roleService->createRole($request->validated());
+            $newRole = $this->sharedService->convertCamelToSnake($request->validated());
+            $this->roleService->create($newRole);
             DB::commit();
             return response()->json(['message' => 'Role created.'], 201);
         } catch (\Exception $e) {
@@ -43,8 +44,8 @@ class RoleController extends Controller
     {
         DB::beginTransaction();
         try {
-            $roleValidated = $this->sharedService->validateModel($role, 'Role');
-            $this->sharedService->deleteModel($roleValidated);
+            $roleValidated = $this->roleService->validate($role, 'Role');
+            $this->roleService->delete($roleValidated);
             DB::commit();
             return response()->json(['message' => 'Role deleted.']);
         } catch (\Exception $e) {
@@ -55,13 +56,19 @@ class RoleController extends Controller
 
     public function get(Role $role): JsonResponse
     {
-        $roleValidated = $this->sharedService->validateModel($role, 'Role');
+        $roleValidated = $this->roleService->validate($role, 'Role');
         return response()->json(new RoleResource($roleValidated));
     }
 
     public function getAll(GetAllRequest  $request): JsonResponse
     {
-        $query = $this->sharedService->query($request, 'Role', 'Role', 'name');
+        $query = $this->sharedService->query(
+            $request,
+            'Role',
+            'Role',
+            'name'
+        );
+
         return response()->json(new GetAllCollection(
             RoleResource::collection($query['collection']),
             $query['total'],
@@ -73,8 +80,9 @@ class RoleController extends Controller
     {
         DB::beginTransaction();
         try {
-            $roleValidated = $this->sharedService->validateModel($role, 'Role');
-            $this->roleService->updateRole($roleValidated, $request->validated());
+            $editRole = $this->sharedService->convertCamelToSnake($request->validated());
+            $roleValidated = $this->roleService->validate($role, 'Role');
+            $this->roleService->update($roleValidated, $editRole);
             DB::commit();
             return response()->json(['message' => 'Role updated.']);
         } catch (\Exception $e) {

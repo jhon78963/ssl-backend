@@ -3,29 +3,34 @@
 namespace App\Review\Services;
 
 use App\Review\Models\Review;
-use Auth;
+use App\Shared\Services\ModelService;
 
 class ReviewService
 {
-    public function createReview(array $newReview): void
+    protected ModelService $modelService;
+
+    public function __construct(ModelService $modelService)
     {
-        $review = new Review();
-        $review->customer_name = $newReview['customerName'];
-        $review->description = $newReview['description'];
-        $review->rating = $newReview['rating'];
-        $review->room_id = $newReview['roomId'];
-        $review->creator_user_id = Auth::id();
-        $review->save();
+        $this->modelService = $modelService;
     }
 
-    public function updateReview(Review $review, array $editReview): void
+    public function create(array $newReview): void
     {
-        $review->customer_name = $editReview['customerName'] ?? $review->customer_name;
-        $review->description = $editReview['description'] ?? $review->description;
-        $review->rating = $editReview['rating'] ?? $review->rating;
-        $review->room_id = $editReview['roomId'] ?? $review->room_id;
-        $review->last_modification_time = now()->format('Y-m-d H:i:s');
-        $review->last_modifier_user_id = Auth::id();
-        $review->save();
+        $this->modelService->create(new Review(), $newReview);
+    }
+
+    public function delete(Review $review): void
+    {
+        $this->modelService->delete($review);
+    }
+
+    public function update(Review $review, array $editReview): void
+    {
+        $this->modelService->update($review, $editReview);
+    }
+
+    public function validate(Review $review, string $modelName): mixed
+    {
+        return $this->modelService->validate($review, $modelName);
     }
 }

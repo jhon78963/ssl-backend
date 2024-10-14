@@ -28,10 +28,24 @@ class UserController extends Controller
     {
         DB::beginTransaction();
         try {
-            $validatedUser = $this->userService->checkUser($request->email, $request->username);
-            if ($validatedUser) return response()->json($validatedUser);
+            [$emailExists, $usernameExists] = $this->userService->checkUser(
+                $request->email,
+                $request->username,
+            );
+
+            if ($errorResponse = $this->generateErrorResponse(
+                $emailExists,
+                $usernameExists)
+            ) {
+                return response()->json($errorResponse);
+            }
+
             $profilePicture = $this->userService->uploadProfilePicture($request);
-            $this->userService->createUser($request->validated() + ['profilePicture' => $profilePicture]);
+            $newUser = $this->prepareNewUserData(
+                $request->validated(),
+                $profilePicture
+            );
+            $this->userService->create($newUser);
             DB::commit();
             return response()->json(['message' => 'User created.'], 201);
         } catch (\Exception $e) {
@@ -43,8 +57,8 @@ class UserController extends Controller
     public function delete(User $user): JsonResponse {
         DB::beginTransaction();
         try {
-            $userValidated = $this->sharedService->validateModel($user, 'User');
-            $this->sharedService->deleteModel($userValidated);
+            $userValidated = $this->userService->validate($user, 'User');
+            $this->userService->delete($userValidated);
             DB::commit();
             return response()->json(['message' => 'User deleted.']);
         } catch (\Exception $e) {
@@ -55,13 +69,19 @@ class UserController extends Controller
 
     public function get(User $user): JsonResponse
     {
-        $userValidated = $this->sharedService->validateModel($user, 'User');
+        $userValidated = $this->userService->validate($user, 'User');
         return response()->json(new UserResource($userValidated));
     }
 
     public function getAll(GetAllRequest  $request): JsonResponse
     {
-        $query = $this->sharedService->query($request, 'User', 'User', 'name');
+        $query = $this->sharedService->query(
+            $request,
+            'User',
+            'User',
+            'name'
+        );
+
         return response()->json(new GetAllCollection(
             UserResource::collection($query['collection']),
             $query['total'],
@@ -73,17 +93,47 @@ class UserController extends Controller
     {
         DB::beginTransaction();
         try {
-            $userValidated = $this->sharedService->validateModel($user, 'User');
+            $userValidated = $this->userService->validate($user, 'User');
             $profilePicture = $this->userService->uploadProfilePicture($request);
-            $this->userService->updateUser(
-                $userValidated,
-                $request->validated() + ['profilePicture' => $profilePicture]
+            $editUser = $this->prepareNewUserData(
+                $request->validated(),
+                $profilePicture
             );
+            $this->userService->update($userValidated, $editUser);
             DB::commit();
             return response()->json(['message' => 'User updated.']);
         } catch (\Exception $e) {
             DB::rollback();
             return response()->json(['error' =>  $e->getMessage()]);
         }
+    }
+
+    private function generateErrorResponse(bool $emailExists, bool $usernameExists): ?array
+    {
+        $errors = [];
+
+        if ($emailExists) {
+            $errors['email'] = 'El email ya existe.';
+        }
+
+        if ($usernameExists) {
+            $errors['username'] = 'El username ya existe.';
+        }
+
+        if (!empty($errors)) {
+            return [
+                'status' => 'error',
+                'message' => 'El email y/o username ya existen.',
+                'errors' => $errors
+            ];
+        }
+
+        return null; // No hay errores
+    }
+
+    private function prepareNewUserData(array $validatedData, ?string $profilePicture): array
+    {
+        $userData = $validatedData + ['profilePicture' => $profilePicture];
+        return $this->sharedService->convertCamelToSnake($userData);
     }
 }

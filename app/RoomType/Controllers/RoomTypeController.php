@@ -29,7 +29,8 @@ class RoomTypeController extends Controller
     {
         DB::beginTransaction();
         try {
-            $this->roomTypeService->createRoomType($request->validated());
+            $newRoomType = $this->sharedService->convertCamelToSnake($request->validated());
+            $this->roomTypeService->create($newRoomType);
             DB::commit();
             return response()->json(['message' => 'Room type created.'], 201);
         } catch (\Exception $e) {
@@ -42,8 +43,8 @@ class RoomTypeController extends Controller
     {
         DB::beginTransaction();
         try {
-            $roomTypelidated = $this->sharedService->validateModel($roomType, 'RoomType');
-            $this->sharedService->deleteModel($roomTypelidated);
+            $roomTypelidated = $this->roomTypeService->validate($roomType, 'RoomType');
+            $this->roomTypeService->delete($roomTypelidated);
             DB::commit();
             return response()->json(['message' => 'Room type deleted.']);
         } catch (\Exception $e) {
@@ -54,13 +55,19 @@ class RoomTypeController extends Controller
 
     public function get(RoomType $roomType): JsonResponse
     {
-        $roomTypeValidated = $this->sharedService->validateModel($roomType, 'RoomType');
+        $roomTypeValidated = $this->roomTypeService->validate($roomType, 'RoomType');
         return response()->json(new RoomTypeResource($roomTypeValidated));
     }
 
     public function getAll(GetAllRequest  $request): JsonResponse
     {
-        $query = $this->sharedService->query($request, 'RoomType', 'RoomType', 'name');
+        $query = $this->sharedService->query(
+            $request,
+            'RoomType',
+            'RoomType',
+            'name',
+        );
+
         return response()->json(new GetAllCollection(
             RoomTypeResource::collection($query['collection']),
             $query['total'],
@@ -72,8 +79,9 @@ class RoomTypeController extends Controller
     {
         DB::beginTransaction();
         try {
-            $roomTypeValidated = $this->sharedService->validateModel($roomType, 'RoomType');
-            $this->roomTypeService->updateRoomType($roomTypeValidated, $request->validated());
+            $editRoomType = $this->sharedService->convertCamelToSnake($request->validated());
+            $roomTypeValidated = $this->roomTypeService->validate($roomType, 'RoomType');
+            $this->roomTypeService->update($roomTypeValidated, $editRoomType);
             DB::commit();
             return response()->json(['message' => 'Room type updated.']);
         } catch (\Exception $e) {

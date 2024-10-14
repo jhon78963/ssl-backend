@@ -9,7 +9,8 @@ use App\Room\Models\Room;
 use App\Shared\Controllers\Controller;
 use App\Shared\Requests\FileUploadRequest;
 use App\Shared\Services\FileService;
-use App\Shared\Services\ModelRelationService;
+use App\Shared\Services\ModelService;
+use DB;
 use Illuminate\Http\JsonResponse;
 
 class RoomImageController extends Controller
@@ -17,40 +18,44 @@ class RoomImageController extends Controller
     private string $path_images = 'images/rooms';
     protected FileService $fileService;
     protected ImageService $imageService;
-    protected ModelRelationService $modelRelationService;
+    protected ModelService $modelService;
 
-    public function __construct(FileService $fileService, ImageService $imageService, ModelRelationService $modelRelationService)
+    public function __construct(FileService $fileService, ImageService $imageService, ModelService $modelService)
     {
         $this->fileService = $fileService;
         $this->imageService = $imageService;
-        $this->modelRelationService = $modelRelationService;
+        $this->modelService = $modelService;
     }
 
     public function add(Room $room, Image $image): JsonResponse
     {
-        $result = $this->modelRelationService->attach($room, 'images', $image->id);
-        return $result && isset($result['error'])
-            ? response()->json(['message' => $result['error']])
-            : response()->json(['message' => 'Image added to the room.'], 201);
+        DB::beginTransaction();
+        try {
+            $this->modelService->attach($room, 'images', $image->id);
+            DB::commit();
+            return response()->json(['message' => 'Image added to the room.'], 201);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json($e->getMessage());
+        }
     }
 
     public function multipleAdd(FileUploadRequest $request, Room $room)
     {
-        $uploadedImages = $this->fileService->uploadMultiple($request, $this->path_images);
-        $savedImages = [];
-        foreach ($uploadedImages as $roomImagePath) {
-            $roomImageName = $this->imageService->getFileName($roomImagePath);
-            $roomImage = $this->imageService->save($roomImageName, $roomImagePath);
-            $result = $this->modelRelationService->attach($room, 'images', $roomImage->id);
-            if ($result && isset($result['error'])) {
-                return response()->json(['message' => $result['error']]);
+        DB::beginTransaction();
+        try {
+            $uploadedImages = $this->fileService->uploadMultiple($request, $this->path_images);
+            foreach ($uploadedImages as $roomImagePath) {
+                $roomImageName = $this->imageService->getFileName($roomImagePath);
+                $roomImage = $this->imageService->create($roomImageName, $roomImagePath);
+                $this->modelService->attach($room, 'images', $roomImage->id);
             }
-            $savedImages[] = $roomImage;
+            DB::commit();
+            return response()->json(['message' => 'Images added to the room.'], 201);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json($e->getMessage());
         }
-        return response()->json([
-            'message' => 'Images added to the room.',
-            'images' => $savedImages,
-        ], 201);
     }
 
     public function getAll(Room $room): JsonResponse
@@ -69,9 +74,14 @@ class RoomImageController extends Controller
 
     public function remove(Room $room, Image $image): JsonResponse
     {
-        $result = $this->modelRelationService->detach($room, 'images', $image->id);
-        return $result && isset($result['error'])
-            ? response()->json(['message' => $result['error']])
-            : response()->json(['message' => 'Image removed from the room']);
+        DB::beginTransaction();
+        try {
+            $this->modelService->detach($room, 'images', $image->id);
+            DB::commit();
+            return response()->json(['message' => 'Image removed from the room']);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json(['error' => $e->getMessage()]);
+        }
     }
 }

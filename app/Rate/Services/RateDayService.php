@@ -3,25 +3,40 @@
 namespace App\Rate\Services;
 
 use App\Rate\Models\RateDay;
-use Auth;
+use App\Shared\Services\ModelService;
 
 class RateDayService
 {
-    public function createRateDay(array $newRateDay): void
+    protected ModelService $modelService;
+
+    public function __construct(ModelService $modelService)
     {
-        $rateDay = new RateDay();
-        $rateDay->name = $newRateDay['name'];
-        $rateDay->abbreviation = $newRateDay['abbreviation'];
-        $rateDay->creator_user_id = Auth::id();
-        $rateDay->save();
+        $this->modelService = $modelService;
     }
 
-    public function updateRateDay(RateDay $rateDay, array $editRateDay): void
+    public function create(array $newRateDay): void
     {
-        $rateDay->name = $editRateDay['name'] ?? $rateDay->name;
-        $rateDay->abbreviation = $editRateDay['abbreviation'] ?? $rateDay->abbreviation;
-        $rateDay->last_modification_time = now()->format('Y-m-d H:i:s');
-        $rateDay->last_modifier_user_id = Auth::id();
-        $rateDay->save();
+        $this->modelService->create(
+            new RateDay(),
+            $newRateDay,
+        );
+    }
+
+    public function delete(RateDay $rateDay): void
+    {
+        $this->modelService->delete($rateDay);
+    }
+
+    public function update(RateDay $rateDay, array $editRateDay): void
+    {
+        $this->modelService->update(
+            $rateDay,
+            $editRateDay,
+        );
+    }
+
+    public function validate(RateDay $rateDay, string $modelName): mixed
+    {
+        return $this->modelService->validate($rateDay, $modelName);
     }
 }

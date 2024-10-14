@@ -18,8 +18,11 @@ class ImageController extends Controller
     protected ImageService $imageService;
     protected SharedService $sharedService;
 
-    public function __construct(FileService $fileService, ImageService $imageService, SharedService $sharedService)
-    {
+    public function __construct(
+        FileService $fileService,
+        ImageService $imageService,
+        SharedService $sharedService,
+    ) {
         $this->fileService = $fileService;
         $this->imageService = $imageService;
         $this->sharedService = $sharedService;
@@ -36,7 +39,7 @@ class ImageController extends Controller
 
     public function get(Image $image): JsonResponse
     {
-        $imageValidated = $this->sharedService->validateModel($image, 'Image');
+        $imageValidated = $this->imageService->validate($image, 'Image');
         return response()->json(new ImageResource($imageValidated));
     }
 

@@ -28,7 +28,8 @@ class LockerController
     {
         DB::beginTransaction();
         try {
-            $this->lockerService->createLocker($request->validated());
+            $newLocker = $this->sharedService->convertCamelToSnake($request->validated());
+            $this->lockerService->create($newLocker);
             DB::commit();
             return response()->json(['message' => 'Locker created.'], 201);
         } catch (\Exception $e) {
@@ -41,8 +42,8 @@ class LockerController
     {
         DB::beginTransaction();
         try {
-            $lockerValidated = $this->sharedService->validateModel($locker, 'Locker');
-            $this->sharedService->deleteModel($lockerValidated);
+            $lockerValidated = $this->lockerService->validate($locker, 'Locker');
+            $this->lockerService->delete($lockerValidated);
             DB::commit();
             return response()->json(['message' => 'Locker deleted.']);
         } catch (\Exception $e) {
@@ -53,7 +54,7 @@ class LockerController
 
     public function get(Locker $locker): JsonResponse
     {
-        $lockerValidated = $this->sharedService->validateModel($locker, 'Locker');
+        $lockerValidated = $this->lockerService->validate($locker, 'Locker');
         return response()->json(new LockerResource($lockerValidated));
     }
 
@@ -71,8 +72,9 @@ class LockerController
     {
         DB::beginTransaction();
         try {
-            $lockerValidated = $this->sharedService->validateModel($locker, 'Locker');
-            $this->lockerService->updateLocker($lockerValidated, $request->validated());
+            $editLocker = $this->sharedService->convertCamelToSnake($request->validated());
+            $lockerValidated = $this->lockerService->validate($locker, 'Locker');
+            $this->lockerService->update($lockerValidated, $editLocker);
             DB::commit();
             return response()->json(['message' => 'Locker updated.']);
         } catch (\Exception $e) {

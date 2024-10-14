@@ -2,6 +2,7 @@
 
 namespace App\User\Services;
 
+use App\Shared\Services\ModelService;
 use App\User\Models\User;
 use App\User\Requests\UserCreateRequest;
 use App\User\Requests\UserUpdateRequest;
@@ -10,86 +11,58 @@ use Hash;
 
 class UserService
 {
+    protected ModelService $modelService;
+
+    public function __construct(ModelService $modelService)
+    {
+        $this->modelService = $modelService;
+    }
+
     public function uploadProfilePicture(UserCreateRequest | UserUpdateRequest $request): ?string
     {
         return ($request->hasFile("profilePicture"))
             ? $request->file("profilePicture")->store("public/images/profiles")
             : NULL;
     }
-    public function createUser(array $newUSer)
+
+    public function create(array $newUser)
     {
-        $user = new User();
-        $user->username = $newUSer["username"];
-        $user->email = $newUSer["email"];
-        $user->name = $newUSer["name"];
-        $user->surname = $newUSer["surname"];
-        $user->password = Hash::make("password");
-        $user->role_id = $newUSer["roleId"];
-        $user->profile_picture = $newUSer["profilePicture"] ?? null;
-        $user->creator_user_id = Auth::id();
-        $user->save();
+        $this->modelService->create(new User(), $newUser);
     }
 
-    public function updateUser(User $user, array $editUser): void
+    public function delete(User $user): void
     {
-        $user->name = $editUser['name'];
-        $user->surname = $editUser['surname'];
-        $user->profile_picture = $editUser["profilePicture"] ?? $user->profile_picture;
-        $user->last_modification_time = now()->format('Y-m-d H:i:s');
-        $user->last_modifier_user_id = Auth::id();
-        $user->save();
+        $this->modelService->delete($user);
+    }
+
+    public function update(User $user, array $editUser): void
+    {
+        $this->modelService->update($user, $editUser);
     }
 
     public function checkUser(string $email, string $username): ?array
     {
         $emailExists = $this->userExistsByEmail($email);
         $usernameExists = $this->userExistsByUsername($username);
-        return $this->generateErrorResponse($emailExists, $usernameExists);
+        return [$emailExists, $usernameExists];
     }
 
     public function userExistsByEmail(string $email): bool
     {
-        return User::where('email', $email)->where('is_deleted', false)->exists();
+        return User::where('email', $email)
+            ->where('is_deleted', false)
+            ->exists();
     }
 
     public function userExistsByUsername(string $username): bool
     {
-        return User::where('username', $username)->where('is_deleted', false)->exists();
+        return User::where('username', $username)
+            ->where('is_deleted', false)
+            ->exists();
     }
 
-    public function generateErrorResponse(bool $emailExists, bool $usernameExists): ?array
+    public function validate(User $user, string $modelName): mixed
     {
-        if ($emailExists && $usernameExists) {
-            return [
-                'status' => 'error',
-                'message' => 'The email and username already exist',
-                'errors' => [
-                    'email' => 'El email ya existe.',
-                    'username' => 'El username ya existe.'
-                ]
-            ];
-        }
-
-        if ($emailExists) {
-            return [
-                'status'=> 'error',
-                'message'=> 'The email already exists',
-                'errors' => [
-                    'email' => 'El email ya existe.',
-                ]
-            ];
-        }
-
-        if ($usernameExists) {
-            return [
-                'status'=> 'error',
-                'message'=> 'The username already exists',
-                'errors' => [
-                    'username' => 'El username ya existe.'
-                ]
-            ];
-        }
-
-        return NULL;
+        return $this->modelService->validate($user, $modelName);
     }
 }

@@ -32,7 +32,8 @@ class SocialNetworkController extends Controller
     {
         DB::beginTransaction();
         try {
-            $this->socialNetworkService->add($request->validated());
+            $newNetworkValidated = $this->sharedService->convertCamelToSnake($request->validated());
+            $this->socialNetworkService->add($newNetworkValidated);
             DB::commit();
             return response()->json(['message' => 'Social Netwrok added.']);
         } catch (\Exception $e) {
@@ -45,8 +46,9 @@ class SocialNetworkController extends Controller
     {
         DB::beginTransaction();
         try {
-            $socialNetworkValidated = $this->sharedService->validateModel($socialNetwork, 'SocialNetwork');
-            $this->socialNetworkService->update($socialNetworkValidated, $request->validated());
+            $socialNetworkValidated = $this->socialNetworkService->validate($socialNetwork, 'SocialNetwork');
+            $editCompany = $this->sharedService->convertCamelToSnake($request->validated());
+            $this->socialNetworkService->update($socialNetworkValidated, $editCompany);
             DB::commit();
             return response()->json(['message' => 'Social Netwrok updated.']);
         } catch (\Exception $e) {
@@ -57,7 +59,7 @@ class SocialNetworkController extends Controller
 
     public function get(SocialNetwork $socialNetwork): JsonResponse
     {
-        $socialNetworkValidated = $this->sharedService->validateModel($socialNetwork, 'SocialNetwork');
+        $socialNetworkValidated = $this->socialNetworkService->validate($socialNetwork, 'SocialNetwork');
         return response()->json(new SocialNetworkResource($socialNetworkValidated));
     }
 
@@ -75,8 +77,8 @@ class SocialNetworkController extends Controller
     {
         DB::beginTransaction();
         try {
-            $socialNetworkValidated = $this->sharedService->validateModel($socialNetwork, 'SocialNetwork');
-            $this->sharedService->deleteModel($socialNetworkValidated);
+            $socialNetworkValidated = $this->socialNetworkService->validate($socialNetwork, 'SocialNetwork');
+            $this->socialNetworkService->delete($socialNetworkValidated);
             DB::commit();
             return response()->json(['message' => 'Social Netwrok removed.']);
         } catch (\Exception $e) {

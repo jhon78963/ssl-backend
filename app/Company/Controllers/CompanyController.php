@@ -7,6 +7,7 @@ use App\Company\Requests\CompanyUpdateRequest;
 use App\Company\Resources\CompanyResource;
 use App\Company\Services\CompanyService;
 use App\Shared\Controllers\Controller;
+use App\Shared\Services\ModelService;
 use App\Shared\Services\SharedService;
 use Illuminate\Http\JsonResponse;
 use DB;
@@ -14,17 +15,22 @@ use DB;
 class CompanyController extends Controller
 {
     protected CompanyService $companyService;
+    protected ModelService $modelService;
     protected SharedService $sharedService;
 
-    public function __construct(CompanyService $companyService, SharedService $sharedService)
-    {
+    public function __construct(
+        CompanyService $companyService,
+        ModelService $modelService,
+        SharedService $sharedService,
+    ) {
         $this->companyService = $companyService;
+        $this->modelService = $modelService;
         $this->sharedService = $sharedService;
     }
 
     public function get(Company $company): JsonResponse
     {
-        $companyValidated = $this->sharedService->validateModel($company, 'Company');
+        $companyValidated = $this->companyService->validate($company, 'Company');
         return response()->json(new CompanyResource($companyValidated));
     }
 
@@ -32,11 +38,9 @@ class CompanyController extends Controller
     {
         DB::beginTransaction();
         try {
-            $companyValidated = $this->sharedService->validateModel($company, 'Company');
-            $this->companyService->updateCompany(
-                $companyValidated,
-                $request->validated()
-            );
+            $companyValidated = $this->companyService->validate($company, 'Company');
+            $editCompany = $this->sharedService->convertCamelToSnake($request->validated());
+            $this->companyService->update($companyValidated, $editCompany);
             DB::commit();
             return response()->json(['message' => 'Company updated.']);
         } catch (\Exception $e) {

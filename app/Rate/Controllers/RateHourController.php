@@ -29,7 +29,8 @@ class RateHourController extends Controller
     {
         DB::beginTransaction();
         try {
-            $this->rateHourService->createRateHour($request->validated());
+            $newRateHour = $this->sharedService->convertCamelToSnake($request->validated());
+            $this->rateHourService->create($newRateHour);
             DB::commit();
             return response()->json(['message' => 'Rate hour created.'], 201);
         } catch (\Exception $e) {
@@ -42,8 +43,8 @@ class RateHourController extends Controller
     {
         DB::beginTransaction();
         try {
-            $rateHourValidated = $this->sharedService->validateModel($rateHour, 'RateHour');
-            $this->sharedService->deleteModel($rateHourValidated);
+            $rateHourValidated = $this->rateHourService->validate($rateHour, 'RateHour');
+            $this->rateHourService->delete($rateHourValidated);
             DB::commit();
             return response()->json(['message' => 'Rate hour deleted.']);
         } catch (\Exception $e) {
@@ -54,13 +55,19 @@ class RateHourController extends Controller
 
     public function get(RateHour $rateHour): JsonResponse
     {
-        $rateHourValidated = $this->sharedService->validateModel($rateHour, 'RateHour');
+        $rateHourValidated = $this->rateHourService->validate($rateHour, 'RateHour');
         return response()->json(new RateHourResource($rateHourValidated));
     }
 
     public function getAll(GetAllRequest  $request): JsonResponse
     {
-        $query = $this->sharedService->query($request, 'Rate', 'RateHour', 'duration');
+        $query = $this->sharedService->query(
+            $request,
+            'Rate',
+            'RateHour',
+            'duration'
+        );
+
         return response()->json(new GetAllCollection(
             RateHourResource::collection($query['collection']),
             $query['total'],
@@ -72,8 +79,9 @@ class RateHourController extends Controller
     {
         DB::beginTransaction();
         try {
-            $rateHourValidated = $this->sharedService->validateModel($rateHour, 'RateHour');
-            $this->rateHourService->updateRateHour($rateHourValidated, $request->validated());
+            $editRateHour = $this->sharedService->convertCamelToSnake($request->validated());
+            $rateHourValidated = $this->rateHourService->validate($rateHour, 'RateHour');
+            $this->rateHourService->update($rateHourValidated, $editRateHour);
             DB::commit();
             return response()->json(['message' => 'Rate hour updated.']);
         } catch (\Exception $e) {

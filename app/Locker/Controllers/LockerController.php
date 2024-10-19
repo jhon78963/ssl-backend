@@ -7,13 +7,14 @@ use App\Locker\Requests\LockerCreateRequest;
 use App\Locker\Requests\LockerUpdateRequest;
 use App\Locker\Resources\LockerResource;
 use App\Locker\Services\LockerService;
+use App\Shared\Controllers\Controller;
 use App\Shared\Requests\GetAllRequest;
 use App\Shared\Resources\GetAllCollection;
 use App\Shared\Services\SharedService;
 use Illuminate\Http\JsonResponse;
 use DB;
 
-class LockerController
+class LockerController extends Controller
 {
     protected LockerService $lockerService;
     protected SharedService $sharedService;
@@ -58,7 +59,7 @@ class LockerController
         return response()->json(new LockerResource($lockerValidated));
     }
 
-    public function getAll(GetAllRequest  $request): JsonResponse
+    public function getAll(GetAllRequest $request): JsonResponse
     {
         $query = $this->sharedService->query($request, 'Locker', 'Locker', 'number');
         return response()->json(new GetAllCollection(

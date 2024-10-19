@@ -77,7 +77,7 @@ class RoomController extends Controller
         return response()->json(new RoomResource( $roomValidated));
     }
 
-    public function getAll(GetAllRequest  $request): JsonResponse
+    public function getAll(GetAllRequest $request): JsonResponse
     {
         $query = $this->sharedService->query(
             $request,

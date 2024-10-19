@@ -7,13 +7,14 @@ use App\Customer\Requests\CustomerCreateRequest;
 use App\Customer\Requests\CustomerUpdateRequest;
 use App\Customer\Resources\CustomerResource;
 use App\Customer\Services\CustomerService;
+use App\Shared\Controllers\Controller;
 use App\Shared\Requests\GetAllRequest;
 use App\Shared\Resources\GetAllCollection;
 use App\Shared\Services\SharedService;
 use DB;
 use Illuminate\Http\JsonResponse;
 
-class CustomerController
+class CustomerController extends Controller
 {
     protected CustomerService $customerService;
     protected SharedService $sharedService;
@@ -58,7 +59,7 @@ class CustomerController
         return response()->json(new CustomerResource($customerValidated));
     }
 
-    public function getAll(GetAllRequest  $request): JsonResponse
+    public function getAll(GetAllRequest $request): JsonResponse
     {
         $query = $this->sharedService->query($request, 'Customer', 'Customer', 'name');
         return response()->json(new GetAllCollection(

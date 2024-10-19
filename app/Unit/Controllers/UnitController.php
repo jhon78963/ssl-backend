@@ -2,6 +2,7 @@
 
 namespace App\Unit\Controllers;
 
+use App\Shared\Controllers\Controller;
 use App\Shared\Requests\GetAllRequest;
 use App\Shared\Resources\GetAllCollection;
 use App\Shared\Services\SharedService;
@@ -13,7 +14,7 @@ use App\Unit\Services\UnitService;
 use Illuminate\Http\JsonResponse;
 use DB;
 
-class UnitController
+class UnitController extends Controller
 {
     protected SharedService $sharedService;
     protected UnitService $unitService;
@@ -58,7 +59,7 @@ class UnitController
         return response()->json(new UnitResource($unitValidated));
     }
 
-    public function getAll(GetAllRequest  $request): JsonResponse
+    public function getAll(GetAllRequest $request): JsonResponse
     {
         $query = $this->sharedService->query(
             $request,

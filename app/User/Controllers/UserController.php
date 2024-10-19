@@ -81,7 +81,7 @@ class UserController extends Controller
         return response()->json(new UserResource($userValidated));
     }
 
-    public function getAll(GetAllRequest  $request): JsonResponse
+    public function getAll(GetAllRequest $request): JsonResponse
     {
         $query = $this->sharedService->query(
             $request,

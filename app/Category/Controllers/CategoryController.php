@@ -7,14 +7,14 @@ use App\Category\Requests\CategoryCreateRequest;
 use App\Category\Requests\CategoryUpdateRequest;
 use App\Category\Resources\CategoryResource;
 use App\Category\Services\CategoryService;
+use App\Shared\Controllers\Controller;
 use App\Shared\Requests\GetAllRequest;
 use App\Shared\Resources\GetAllCollection;
 use App\Shared\Services\SharedService;
 use Illuminate\Http\JsonResponse;
 use DB;
 
-
-class CategoryController
+class CategoryController  extends Controller
 {
     protected CategoryService $categoryService;
     protected SharedService $sharedService;
@@ -59,7 +59,7 @@ class CategoryController
         return response()->json(new CategoryResource($categoryValidated));
     }
 
-    public function getAll(GetAllRequest  $request): JsonResponse
+    public function getAll(GetAllRequest $request): JsonResponse
     {
         $query = $this->sharedService->query(
             $request,

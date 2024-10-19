@@ -21,6 +21,18 @@ class DatabaseSeeder extends Seeder
             RateSeeder::class,
             GenderSeeder::class,
             LockerSeeder::class,
+            CategorySeeder::class,
+            ProductTypeSeeder::class,
+            UnitSeeder::class,
+            ProductFoodAppetizersSeeder::class,
+            ProductFoodMainDishesSeeder::class,
+            ProductFoodJuicesAndSmoothiesSeeder::class,
+            ProductFoodDessertsSeeder::class,
+            ProductFoodCocktailsSeeder::class,
+            ProductGroceryFrigoBarSeeder::class,
+            ProductGroceryBasketSeeder::class,
+            ProductGroceryBarSeeder::class,
+            ServiceSeeder::class,
         ]);
     }
 }

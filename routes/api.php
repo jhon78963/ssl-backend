@@ -2,11 +2,14 @@
 
 use App\Amenity\Controllers\AmenityController;
 use App\Auth\Controllers\AuthController;
+use App\Category\Controllers\CategoryController;
 use App\Company\Controllers\CompanyController;
 use App\Company\Controllers\SocialNetworkController;
+use App\Customer\Controllers\CustomerController;
 use App\Gender\Controllers\GenderController;
 use App\Image\Controllers\ImageController;
 use App\Locker\Controllers\LockerController;
+use App\ProductType\Controllers\ProductTypeController;
 use App\Rate\Controllers\RateController;
 use App\Rate\Controllers\RateDayController;
 use App\Rate\Controllers\RateHourController;
@@ -18,12 +21,13 @@ use App\Room\Controllers\RoomReviewController;
 use App\RoomType\Controllers\RoomTypeAmenityController;
 use App\RoomType\Controllers\RoomTypeController;
 use App\RoomType\Controllers\RoomTypeRateController;
+use App\Unit\Controllers\UnitController;
 use App\User\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
-header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTION');
-header('Access-Control-Allow-Headers: Origin, Content-Type, Accept, Authorization, X-Auth-Token');
+// header('Access-Control-Allow-Origin: *');
+// header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTION');
+// header('Access-Control-Allow-Headers: Origin, Content-Type, Accept, Authorization, X-Auth-Token');
 
 Route::post('auth/login', [AuthController::class, 'login']);
 Route::post('auth/refresh-token', [AuthController::class, 'refreshToken']);
@@ -167,5 +171,37 @@ Route::group([
         Route::delete('/lockers/{locker}', 'delete');
         Route::get('/lockers', 'getAll');
         Route::get('/lockers/{locker}', 'get');
+    });
+
+    Route::controller(CustomerController::class)->group(function() {
+        Route::post('/customers', 'create');
+        Route::patch('/customers/{customer}', 'update');
+        Route::delete('/customers/{customer}', 'delete');
+        Route::get('/customers', 'getAll');
+        Route::get('/customers/{customer}', 'get');
+    });
+
+    Route::controller(UnitController::class)->group(function() {
+        Route::post('/units', 'create');
+        Route::patch('/units/{unit}', 'update');
+        Route::delete('/units/{unit}', 'delete');
+        Route::get('/units', 'getAll');
+        Route::get('/units/{unit}', 'get');
+    });
+
+    Route::controller(CategoryController::class)->group(function() {
+        Route::post('/categories', 'create');
+        Route::patch('/categories/{category}', 'update');
+        Route::delete('/categories/{category}', 'delete');
+        Route::get('/categories', 'getAll');
+        Route::get('/categories/{category}', 'get');
+    });
+
+    Route::controller(ProductTypeController::class)->group(function() {
+        Route::post('/product-types', 'create');
+        Route::patch('/product-types/{productType}', 'update');
+        Route::delete('/product-types/{productType}', 'delete');
+        Route::get('/product-types', 'getAll');
+        Route::get('/product-types/{productType}', 'get');
     });
 });

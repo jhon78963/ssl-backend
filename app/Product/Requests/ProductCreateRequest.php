@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Shared\Requests;
+namespace App\Product\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class FileMultipleUploadRequest extends FormRequest
+class ProductCreateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,7 +22,9 @@ class FileMultipleUploadRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'file.*' => 'required|max:10240',
+            'name' => 'required|string',
+            'price' => 'nullable',
+            'productTypeId' => 'required|integer',
         ];
     }
 }

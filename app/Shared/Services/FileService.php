@@ -19,7 +19,8 @@ class FileService
         $uploadedPaths = [];
         if ($request->hasFile('file')) {
             foreach ($request->file('file') as $file) {
-                $uploadedPaths[] = $file->store($filePath);
+                $uploadedPaths[] = Storage::disk('s3')->put($filePath,  $file);
+
             }
         }
         return $uploadedPaths;

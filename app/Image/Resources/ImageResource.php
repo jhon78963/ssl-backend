@@ -14,12 +14,10 @@ class ImageResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $baseUrl = config('app.url') . '/storage';
-
         return [
             'id'=> $this->id,
             'imageName' => $this->name,
-            'imagePath' => "$baseUrl/$this->path",
+            'imagePath' => "https://zerogroups-storage.s3.us-east-1.amazonaws.com/$this->path",
         ];
     }
 }

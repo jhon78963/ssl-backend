@@ -10,7 +10,7 @@ class FileService
     public function upload($request, String $filePath): ?string
     {
         return ($request->hasFile("file"))
-            ? $request->file("file")->store($filePath, 'public')
+            ? $request->file("file")->store($filePath)
             : NULL;
     }
 
@@ -19,7 +19,7 @@ class FileService
         $uploadedPaths = [];
         if ($request->hasFile('file')) {
             foreach ($request->file('file') as $file) {
-                $uploadedPaths[] = $file->store($filePath, 'public');
+                $uploadedPaths[] = $file->store($filePath);
             }
         }
         return $uploadedPaths;
@@ -27,15 +27,15 @@ class FileService
 
     public function get(string $filePath): ?string
     {
-        return Storage::disk('public')->exists($filePath)
-            ? Storage::disk('public')->path($filePath)
+        return Storage::disk('s3')->exists($filePath)
+            ? Storage::disk('s3')->path($filePath)
             : NULL;
     }
 
     public function delete(string $filePath): ?string
     {
-        return Storage::disk('public')->exists($filePath)
-            ? Storage::disk('public')->delete($filePath)
+        return Storage::disk('s3')->exists($filePath)
+            ? Storage::disk('s3')->delete($filePath)
             : NULL;
     }
 }

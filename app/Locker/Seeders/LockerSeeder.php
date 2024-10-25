@@ -1,6 +1,6 @@
 <?php
 
-namespace Database\Seeders;
+namespace App\Locker\Seeders;
 
 use App\Locker\Models\Locker;
 use Illuminate\Database\Seeder;

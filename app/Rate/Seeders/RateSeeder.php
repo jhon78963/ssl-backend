@@ -1,6 +1,6 @@
 <?php
 
-namespace Database\Seeders;
+namespace App\Rate\Seeders;
 
 use App\Rate\Models\Rate;
 use Illuminate\Database\Seeder;

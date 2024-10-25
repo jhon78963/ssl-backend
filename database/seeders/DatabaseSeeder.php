@@ -2,6 +2,26 @@
 
 namespace Database\Seeders;
 
+use App\BookType\Seeders\BookTypeSeeder;
+use App\Category\Seeders\CategorySeeder;
+use App\Company\Seeders\CompanySeed;
+use App\Gender\Seeders\GenderSeeder;
+use App\Locker\Seeders\LockerSeeder;
+use App\Product\Seeders\ProductFoodAppetizersSeeder;
+use App\Product\Seeders\ProductFoodCocktailsSeeder;
+use App\Product\Seeders\ProductFoodDessertsSeeder;
+use App\Product\Seeders\ProductFoodJuicesAndSmoothiesSeeder;
+use App\Product\Seeders\ProductFoodMainDishesSeeder;
+use App\Product\Seeders\ProductGroceryBasketSeeder;
+use App\Product\Seeders\ProductGroceryFrigoBarSeeder;
+use App\ProductType\Seeders\ProductTypeSeeder;
+use App\Rate\Seeders\RateDaySeeder;
+use App\Rate\Seeders\RateHourSeeder;
+use App\Role\Seeders\RoleSeed;
+use App\RoomType\Seeders\RoomTypeSeeder;
+use App\Service\Seeders\ServiceSeeder;
+use App\Unit\Seeders\UnitSeeder;
+use App\User\Seeders\UserSeed;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -18,7 +38,7 @@ class DatabaseSeeder extends Seeder
             RoomTypeSeeder::class,
             RateHourSeeder::class,
             RateDaySeeder::class,
-            RateSeeder::class,
+            RateDaySeeder::class,
             GenderSeeder::class,
             LockerSeeder::class,
             CategorySeeder::class,
@@ -31,8 +51,9 @@ class DatabaseSeeder extends Seeder
             ProductFoodCocktailsSeeder::class,
             ProductGroceryFrigoBarSeeder::class,
             ProductGroceryBasketSeeder::class,
-            ProductGroceryBarSeeder::class,
+            ProductGroceryFrigoBarSeeder::class,
             ServiceSeeder::class,
+            BookTypeSeeder::class,
         ]);
     }
 }

@@ -1,9 +1,8 @@
 <?php
 
-namespace Database\Seeders;
+namespace App\Service\Seeders;
 
 use App\Service\Models\Service;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class ServiceSeeder extends Seeder
@@ -17,15 +16,15 @@ class ServiceSeeder extends Seeder
         $service->name = 'Masajes Relajantes';
         $service->price = null;
         $service->save();
-        $service->units()->attach(3, ['price' => 30]);
-        $service->units()->attach(4, ['price' => 50]);
+        $service->times()->attach(3, ['price' => 30]);
+        $service->times()->attach(4, ['price' => 50]);
 
         $service = new Service();
         $service->name = 'Masajes Descontracturantes';
         $service->price = null;
         $service->save();
-        $service->units()->attach(3, ['price' => 30]);
-        $service->units()->attach(4, ['price' => 50]);
+        $service->times()->attach(3, ['price' => 30]);
+        $service->times()->attach(4, ['price' => 50]);
 
         $service = new Service();
         $service->name = 'Terapia';

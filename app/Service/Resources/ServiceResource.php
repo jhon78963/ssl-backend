@@ -33,7 +33,7 @@ class ServiceResource extends JsonResource
 
     private function prepareData(): mixed
     {
-        return $this->portions->map(function ($unit): array {
+        return $this->times->map(function ($unit): array {
             return [
                 'timeString' => $this->getTimeString($unit->quantity),
                 'priceString' => 'S/ ' . $unit->pivot->price,

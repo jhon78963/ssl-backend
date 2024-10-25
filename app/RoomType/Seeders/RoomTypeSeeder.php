@@ -1,6 +1,6 @@
 <?php
 
-namespace Database\Seeders;
+namespace App\RoomType\Seeders;
 
 use App\RoomType\Models\RoomType;
 use Illuminate\Database\Seeder;

@@ -43,7 +43,7 @@ class Service extends Model
      */
     public $timestamps = false;
 
-    public function portions(): BelongsToMany {
+    public function times(): BelongsToMany {
         return $this->belongsToMany(Unit::class)->withPivot('price');
     }
 }

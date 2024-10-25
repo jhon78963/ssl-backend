@@ -2,6 +2,7 @@
 
 use App\Amenity\Controllers\AmenityController;
 use App\Auth\Controllers\AuthController;
+use App\BookType\Controllers\BookTypeController;
 use App\Category\Controllers\CategoryController;
 use App\Company\Controllers\CompanyController;
 use App\Company\Controllers\SocialNetworkController;
@@ -221,5 +222,13 @@ Route::group([
         Route::delete('/services/{service}', 'delete');
         Route::get('/services', 'getAll');
         Route::get('/services/{service}', 'get');
+    });
+
+    Route::controller(BookTypeController::class)->group(function() {
+        Route::post('/book-types', 'create');
+        Route::patch('/book-types/{bookType}', 'update');
+        Route::delete('/book-types/{bookType}', 'delete');
+        Route::get('/book-types', 'getAll');
+        Route::get('/book-types/{bookType}', 'get');
     });
 });

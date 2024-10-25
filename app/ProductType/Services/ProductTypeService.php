@@ -1,6 +1,7 @@
 <?php
 
 namespace App\ProductType\Services;
+
 use App\ProductType\Models\ProductType;
 use App\Shared\Services\ModelService;
 

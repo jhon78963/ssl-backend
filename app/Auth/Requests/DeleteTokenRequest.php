@@ -21,6 +21,8 @@ class DeleteTokenRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [];
+        return [
+            'refreshToken' => 'required',
+        ];
     }
 }

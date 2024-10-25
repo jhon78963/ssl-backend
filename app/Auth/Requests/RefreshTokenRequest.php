@@ -23,6 +23,7 @@ class RefreshTokenRequest extends FormRequest
     {
         return [
             'refreshToken' => 'required',
+            'accessToken' => 'required',
         ];
     }
 }

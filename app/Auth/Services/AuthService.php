@@ -6,6 +6,7 @@ use App\Auth\Enums\TokenAbility;
 use App\Auth\Exceptions\InvalidTokenException;
 use App\Auth\Exceptions\InvalidUserCredentialsException;
 use App\Auth\Models\PersonalAccessToken;
+use App\Auth\Requests\DeleteTokenRequest;
 use App\Auth\Requests\RefreshTokenRequest;
 use App\Auth\Requests\UpdateMeRequest;
 use App\User\Models\User;
@@ -35,7 +36,7 @@ class AuthService
 
     public function createTokens(User $user): array
     {
-        $user->tokens()->delete();
+        // $user->tokens()->delete();
         $accessToken = $user->createToken(
             'access_token',
             [TokenAbility::ACCESS_API->value],
@@ -51,17 +52,35 @@ class AuthService
         return $this->generateTokenResponse($accessToken, $refreshToken);
     }
 
-    public function deleteToken(User $user): void
+    public function deleteToken(User $user, $accessToken, $refreshToken)
     {
-        $user->tokens()->delete();
+        $user->tokens()->find($accessToken->id)->delete();
+        $user->tokens()->find($refreshToken->id)->delete();
     }
 
-    public function validateRefreshToken(RefreshTokenRequest $request): User
+    public function validateRefreshToken(RefreshTokenRequest $request): array
     {
-        $validateToken = PersonalAccessToken::findToken($request->refreshToken);
-        $user = User::find($validateToken->tokenable_id);
-        if ( !$validateToken) throw new InvalidTokenException();
-        return  $user;
+        $refreshToken = PersonalAccessToken::findToken($request->refreshToken);
+        $accessToken = PersonalAccessToken::findToken($request->accessToken);
+        $user = User::find($refreshToken->tokenable_id);
+        if ( !$refreshToken) throw new InvalidTokenException();
+        return  [
+            'refreshToken' => $refreshToken,
+            'accessToken' => $accessToken,
+            'user' => $user,
+        ];
+    }
+
+    public function validateDeleteToken(DeleteTokenRequest $request): array
+    {
+        $refreshToken = PersonalAccessToken::findToken($request->refreshToken);
+        $user = User::find($refreshToken->tokenable_id);
+        if ( !$refreshToken) throw new InvalidTokenException();
+        return  [
+            'refreshToken' => $refreshToken,
+            'accessToken' => $request->user()->currentAccessToken(),
+            'user' => $user,
+        ];
     }
 
     public function generateTokenResponse(string $accessToken, string $refreshToken): array

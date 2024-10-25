@@ -71,18 +71,6 @@ class AuthService
         ];
     }
 
-    public function validateDeleteToken(DeleteTokenRequest $request): array
-    {
-        $refreshToken = PersonalAccessToken::findToken($request->refreshToken);
-        $user = User::find($refreshToken->tokenable_id);
-        if ( !$refreshToken) throw new InvalidTokenException();
-        return  [
-            'refreshToken' => $refreshToken,
-            'accessToken' => $request->user()->currentAccessToken(),
-            'user' => $user,
-        ];
-    }
-
     public function generateTokenResponse(string $accessToken, string $refreshToken): array
     {
         return [

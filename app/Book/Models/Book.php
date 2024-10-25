@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Category\Models;
+namespace App\Book\Models;
 
-use App\ProductType\Models\ProductType;
+use App\BookType\Models\BookType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Category extends Model
+class Book extends Model
 {
     use HasFactory;
 
@@ -18,7 +18,6 @@ class Category extends Model
      */
     protected $fillable = [
         'id',
-        'name',
     ];
 
     /**
@@ -42,7 +41,8 @@ class Category extends Model
      */
     public $timestamps = false;
 
-    public function productTypes(): HasMany {
-        return $this->hasMany(ProductType::class);
+    public function bookType(): BelongsTo
+    {
+        return $this->belongsTo(BookType::class);
     }
 }

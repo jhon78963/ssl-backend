@@ -2,7 +2,9 @@
 
 namespace App\BookType\Controllers;
 
-class BookTypeController
+use App\Shared\Controllers\Controller;
+
+class BookTypeController extends Controller
 {
     //
 }

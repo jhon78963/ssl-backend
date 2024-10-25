@@ -2,6 +2,7 @@
 
 namespace App\BookType\Seeders;
 
+use App\BookType\Models\BookType;
 use Illuminate\Database\Seeder;
 
 class BookTypeSeeder extends Seeder
@@ -11,6 +12,12 @@ class BookTypeSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        $bookType = new BookType();
+        $bookType->description = 'General';
+        $bookType->save();
+
+        $bookType = new BookType();
+        $bookType->description = 'Privado';
+        $bookType->save();
     }
 }

@@ -23,6 +23,7 @@ class DeleteTokenRequest extends FormRequest
     {
         return [
             'refreshToken' => 'required',
+            'accessToken' => 'required',
         ];
     }
 }

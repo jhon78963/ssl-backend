@@ -33,7 +33,7 @@ class AuthController extends Controller
 
     public function refreshToken(RefreshTokenRequest $request): JsonResponse
     {
-        $userAccess = $this->authService->validateRefreshToken($request);
+        $userAccess = $this->authService->validateTokens($request);
         ['user' => $user, 'accessToken' => $accessToken, 'refreshToken' => $refreshToken] = $userAccess;
         $this->authService->deleteToken($user, $accessToken, $refreshToken);
         $getTokens = $this->authService->createTokens($user);
@@ -55,7 +55,7 @@ class AuthController extends Controller
     }
 
     public function logout(DeleteTokenRequest $request): JsonResponse {
-        $userAccess = $this->authService->validateDeleteToken($request);
+        $userAccess = $this->authService->validateTokens($request);
         ['user' => $user, 'accessToken' => $accessToken, 'refreshToken' => $refreshToken] = $userAccess;
         $this->authService->deleteToken($user, $accessToken, $refreshToken);
         return response()->json(['message' => 'Logout successfully']);

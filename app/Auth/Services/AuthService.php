@@ -58,7 +58,7 @@ class AuthService
         $user->tokens()->find($refreshToken->id)->delete();
     }
 
-    public function validateRefreshToken(RefreshTokenRequest $request): array
+    public function validateTokens(RefreshTokenRequest |  DeleteTokenRequest $request): array
     {
         $refreshToken = PersonalAccessToken::findToken($request->refreshToken);
         $accessToken = PersonalAccessToken::findToken($request->accessToken);

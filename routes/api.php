@@ -9,6 +9,7 @@ use App\Customer\Controllers\CustomerController;
 use App\Gender\Controllers\GenderController;
 use App\Image\Controllers\ImageController;
 use App\Locker\Controllers\LockerController;
+use App\Product\Controllers\ProductController;
 use App\ProductType\Controllers\ProductTypeController;
 use App\Rate\Controllers\RateController;
 use App\Rate\Controllers\RateDayController;
@@ -21,6 +22,7 @@ use App\Room\Controllers\RoomReviewController;
 use App\RoomType\Controllers\RoomTypeAmenityController;
 use App\RoomType\Controllers\RoomTypeController;
 use App\RoomType\Controllers\RoomTypeRateController;
+use App\Service\Controllers\ServiceController;
 use App\Unit\Controllers\UnitController;
 use App\User\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -203,5 +205,21 @@ Route::group([
         Route::delete('/product-types/{productType}', 'delete');
         Route::get('/product-types', 'getAll');
         Route::get('/product-types/{productType}', 'get');
+    });
+
+    Route::controller(ProductController::class)->group(function() {
+        Route::post('/products', 'create');
+        Route::patch('/products/{product}', 'update');
+        Route::delete('/products/{product}', 'delete');
+        Route::get('/products', 'getAll');
+        Route::get('/products/{product}', 'get');
+    });
+
+    Route::controller(ServiceController::class)->group(function() {
+        Route::post('/services', 'create');
+        Route::patch('/services/{service}', 'update');
+        Route::delete('/services/{service}', 'delete');
+        Route::get('/services', 'getAll');
+        Route::get('/services/{service}', 'get');
     });
 });

@@ -22,7 +22,6 @@ class Product extends Model
         'id',
         'name',
         'price',
-        'category_id',
         'product_type_id',
     ];
 
@@ -51,7 +50,7 @@ class Product extends Model
         return $this->belongsTo(ProductType::class);
     }
 
-    public function units(): BelongsToMany {
-        return $this->belongsToMany(Unit::class);
+    public function portions(): BelongsToMany {
+        return $this->belongsToMany(Unit::class)->withPivot('price');
     }
 }

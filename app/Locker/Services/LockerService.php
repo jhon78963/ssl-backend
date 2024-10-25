@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Locker\Services;
 
 use App\Locker\Models\Locker;

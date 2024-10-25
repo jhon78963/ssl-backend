@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Product\Resources;
+namespace App\Service\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ProductResource extends JsonResource
+class ServiceResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -20,14 +20,13 @@ class ProductResource extends JsonResource
                 'name' => $this->name,
                 'price' => $this->price,
                 'priceString' => "S/ $this->price",
-                'productTypeId' => $this->product_type_id,
-                'productType' => $this->productType->description,
             ];
+
         } else {
             return [
                 'id' => $this->id,
                 'name' => $this->name,
-                'portions' => $this->prepareData(),
+                'times' => $this->prepareData(),
             ];
         }
     }
@@ -38,17 +37,18 @@ class ProductResource extends JsonResource
             return [
                 'timeString' => $this->getTimeString($unit->quantity),
                 'priceString' => 'S/ ' . $unit->pivot->price,
-                'portion' => $unit->quantity,
+                'time' => $unit->quantity,
                 'price' => $unit->pivot->price,
             ];
         });
     }
 
-    private function getTimeString($portion): string
+    private function getTimeString($hour): string
     {
-        return match ($portion) {
-            "1" => "$portion unidad",
-            default => "$portion unidades",
+        return match ($hour) {
+            "0.5" => "1/2 hora",
+            "1" => "$hour hora",
+            default => "$hour horas",
         };
     }
 }

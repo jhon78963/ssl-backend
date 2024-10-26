@@ -11,8 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('book_types', function (Blueprint $table) {
-            $table->id();
+        Schema::create('reservation_customer', function (Blueprint $table) {
+            $table->unsignedBigInteger('reservation_id');
+            $table->foreign('reservation_id')->references('id')->on('reservations');
+            $table->unsignedBigInteger('customer_id');
+            $table->foreign('customer_id')->references('id')->on('customers');
+            $table->primary(['reservation_id', 'customer_id']);
             $table->datetime('creation_time')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->integer('creator_user_id')->nullable();
             $table->foreign('creator_user_id')->references('id')->on('users');
@@ -23,7 +27,7 @@ return new class extends Migration
             $table->integer('deleter_user_id')->nullable();
             $table->foreign('deleter_user_id')->references('id')->on('users');
             $table->datetime('deletion_time')->nullable();
-            $table->string('description');
+            $table->float('price');
         });
     }
 
@@ -32,6 +36,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('book_types');
+        Schema::dropIfExists('reservation_customer');
     }
 };

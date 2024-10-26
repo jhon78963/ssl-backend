@@ -14,8 +14,6 @@ use App\Shared\Services\SharedService;
 use Illuminate\Http\JsonResponse;
 use DB;
 
-
-
 class ProductTypeController extends Controller
 {
     protected ProductTypeService $productTypeService;

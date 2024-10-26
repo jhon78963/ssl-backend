@@ -2,7 +2,6 @@
 
 use App\Amenity\Controllers\AmenityController;
 use App\Auth\Controllers\AuthController;
-use App\BookType\Controllers\BookTypeController;
 use App\Category\Controllers\CategoryController;
 use App\Company\Controllers\CompanyController;
 use App\Company\Controllers\SocialNetworkController;
@@ -15,6 +14,7 @@ use App\ProductType\Controllers\ProductTypeController;
 use App\Rate\Controllers\RateController;
 use App\Rate\Controllers\RateDayController;
 use App\Rate\Controllers\RateHourController;
+use App\ReservationType\Controllers\ReservationTypeController;
 use App\Review\Controllers\ReviewController;
 use App\Role\Controllers\RoleController;
 use App\Room\Controllers\RoomController;
@@ -224,11 +224,11 @@ Route::group([
         Route::get('/services/{service}', 'get');
     });
 
-    Route::controller(BookTypeController::class)->group(function() {
-        Route::post('/book-types', 'create');
-        Route::patch('/book-types/{bookType}', 'update');
-        Route::delete('/book-types/{bookType}', 'delete');
-        Route::get('/book-types', 'getAll');
-        Route::get('/book-types/{bookType}', 'get');
+    Route::controller(ReservationTypeController::class)->group(function() {
+        Route::post('/reservation-types', 'create');
+        Route::patch('/reservation-types/{reservationType}', 'update');
+        Route::delete('/reservation-types/{reservationType}', 'delete');
+        Route::get('/reservation-types', 'getAll');
+        Route::get('/reservation-types/{reservationType}', 'get');
     });
 });

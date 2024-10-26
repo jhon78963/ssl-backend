@@ -1,10 +1,10 @@
 <?php
 
-namespace App\BookType\Requests;
+namespace App\ReservationType\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class BookTypeUpdateRequest extends FormRequest
+class ReservationTypeCreateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,7 +22,7 @@ class BookTypeUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'description' => 'sometimes|string'
+            'description' => 'required|string'
         ];
     }
 }

@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\BookType\Seeders\BookTypeSeeder;
 use App\Category\Seeders\CategorySeeder;
 use App\Company\Seeders\CompanySeed;
 use App\Gender\Seeders\GenderSeeder;
@@ -17,6 +16,7 @@ use App\Product\Seeders\ProductGroceryFrigoBarSeeder;
 use App\ProductType\Seeders\ProductTypeSeeder;
 use App\Rate\Seeders\RateDaySeeder;
 use App\Rate\Seeders\RateHourSeeder;
+use App\ReservationType\Seeders\ReservationTypeSeeder;
 use App\Role\Seeders\RoleSeed;
 use App\RoomType\Seeders\RoomTypeSeeder;
 use App\Service\Seeders\ServiceSeeder;
@@ -53,7 +53,7 @@ class DatabaseSeeder extends Seeder
             ProductGroceryBasketSeeder::class,
             ProductGroceryFrigoBarSeeder::class,
             ServiceSeeder::class,
-            BookTypeSeeder::class,
+            ReservationTypeSeeder::class,
         ]);
     }
 }

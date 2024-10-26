@@ -1,11 +1,11 @@
 <?php
 
-namespace App\BookType\Resources;
+namespace App\ReservationType\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class BookTypeResource extends JsonResource
+class ReservationTypeResource extends JsonResource
 {
     /**
      * Transform the resource into an array.

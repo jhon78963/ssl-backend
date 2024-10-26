@@ -1,22 +1,22 @@
 <?php
 
-namespace App\BookType\Seeders;
+namespace App\ReservationType\Seeders;
 
-use App\BookType\Models\BookType;
+use App\ReservationType\Models\ReservationType;
 use Illuminate\Database\Seeder;
 
-class BookTypeSeeder extends Seeder
+class ReservationTypeSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        $bookType = new BookType();
+        $bookType = new ReservationType();
         $bookType->description = 'General';
         $bookType->save();
 
-        $bookType = new BookType();
+        $bookType = new ReservationType();
         $bookType->description = 'Privado';
         $bookType->save();
     }

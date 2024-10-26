@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Book\Models;
+namespace App\ReservationType\Models;
 
-use App\BookType\Models\BookType;
+use App\Reservation\Models\Reservation;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Book extends Model
+class ReservationType extends Model
 {
     use HasFactory;
 
@@ -18,6 +18,7 @@ class Book extends Model
      */
     protected $fillable = [
         'id',
+        'description',
     ];
 
     /**
@@ -41,8 +42,8 @@ class Book extends Model
      */
     public $timestamps = false;
 
-    public function bookType(): BelongsTo
+    public function reservations(): HasMany
     {
-        return $this->belongsTo(BookType::class);
+        return $this->hasMany(Reservation::class);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Service\Models;
 
+use App\Reservation\Models\Reservation;
 use App\Unit\Models\Unit;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -45,5 +46,10 @@ class Service extends Model
 
     public function times(): BelongsToMany {
         return $this->belongsToMany(Unit::class)->withPivot('price');
+    }
+
+    public function reservations(): BelongsToMany
+    {
+        return $this->belongsToMany(Reservation::class);
     }
 }

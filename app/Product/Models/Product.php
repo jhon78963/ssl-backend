@@ -2,6 +2,7 @@
 
 namespace App\Product\Models;
 
+use App\Reservation\Models\Reservation;
 use App\Unit\Models\Unit;
 use App\ProductType\Models\ProductType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -52,5 +53,10 @@ class Product extends Model
 
     public function portions(): BelongsToMany {
         return $this->belongsToMany(Unit::class)->withPivot('price');
+    }
+
+    public function reservations(): BelongsToMany
+    {
+        return $this->belongsToMany(Reservation::class);
     }
 }

@@ -14,6 +14,7 @@ use App\ProductType\Controllers\ProductTypeController;
 use App\Rate\Controllers\RateController;
 use App\Rate\Controllers\RateDayController;
 use App\Rate\Controllers\RateHourController;
+use App\Reservation\Controllers\ReservationController;
 use App\ReservationType\Controllers\ReservationTypeController;
 use App\Review\Controllers\ReviewController;
 use App\Role\Controllers\RoleController;
@@ -230,5 +231,13 @@ Route::group([
         Route::delete('/reservation-types/{reservationType}', 'delete');
         Route::get('/reservation-types', 'getAll');
         Route::get('/reservation-types/{reservationType}', 'get');
+    });
+
+    Route::controller(ReservationController::class)->group(function() {
+        Route::post('/reservations', 'create');
+        // Route::patch('/reservations/{reservation}', 'update');
+        // Route::delete('/reservations/{reservation}', 'delete');
+        Route::get('/reservations', 'getAll');
+        Route::get('/reservations/{reservation}', 'get');
     });
 });

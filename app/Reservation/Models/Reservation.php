@@ -3,8 +3,10 @@
 namespace App\Reservation\Models;
 
 use App\Customer\Models\Customer;
+use App\Locker\Models\Locker;
 use App\Product\Models\Product;
 use App\ReservationType\Models\ReservationType;
+use App\Room\Models\Room;
 use App\Service\Models\Service;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -27,6 +29,7 @@ class Reservation extends Model
         'status',
         'customer_id',
         'room_id',
+        'reservation_type_id',
     ];
 
     /**
@@ -50,9 +53,8 @@ class Reservation extends Model
      */
     public $timestamps = false;
 
-    public function reservationType(): BelongsTo
-    {
-        return $this->belongsTo(ReservationType::class);
+    public function customer(): BelongsTo {
+        return $this->belongsTo(Customer::class);
     }
 
     public function customers(): BelongsToMany
@@ -60,9 +62,23 @@ class Reservation extends Model
         return $this->belongsToMany(Customer::class);
     }
 
+    public function locker(): BelongsTo
+    {
+        return $this->belongsTo(Locker::class);
+    }
+
     public function products(): BelongsToMany
     {
         return $this->belongsToMany(Product::class);
+    }
+
+    public function reservationType(): BelongsTo
+    {
+        return $this->belongsTo(ReservationType::class);
+    }
+
+    public function room(): BelongsTo {
+        return $this->belongsTo(Room::class);
     }
 
     public function services(): BelongsToMany

@@ -3,9 +3,11 @@
 namespace App\Locker\Models;
 
 use App\Gender\Models\Gender;
+use App\Reservation\Models\Reservation;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Locker extends Model
 {
@@ -45,5 +47,9 @@ class Locker extends Model
 
     public function gender(): BelongsTo {
         return $this->belongsTo(Gender::class);
+    }
+
+    public function reservations(): HasMany {
+        return $this->hasMany(Reservation::class);
     }
 }

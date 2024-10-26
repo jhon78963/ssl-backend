@@ -2,9 +2,13 @@
 
 namespace App\Reservation\Controllers;
 
+use App\Reservation\Models\Reservation;
 use App\Reservation\Requests\ReservationCreateRequest;
+use App\Reservation\Resources\ReservationResource;
 use App\Reservation\Services\ReservationService;
 use App\Shared\Controllers\Controller;
+use App\Shared\Requests\GetAllRequest;
+use App\Shared\Resources\GetAllCollection;
 use App\Shared\Services\SharedService;
 use Illuminate\Http\JsonResponse;
 use DB;
@@ -32,5 +36,26 @@ class ReservationController extends Controller
             DB::rollback();
             return response()->json(['error' =>  $e->getMessage()]);
         }
+    }
+
+    public function get(Reservation $reservation): JsonResponse
+    {
+        $reservationValidated = $this->reservationService->validate($reservation, 'Reservation');
+        return response()->json(new ReservationResource($reservationValidated));
+    }
+
+    public function getAll(GetAllRequest $request): JsonResponse
+    {
+        $query = $this->sharedService->query(
+            $request,
+            'Reservation',
+            'Reservation',
+            'reservation_date'
+        );
+        return response()->json(new GetAllCollection(
+            ReservationResource::collection($query['collection']),
+            $query['total'],
+            $query['pages'],
+        ));
     }
 }

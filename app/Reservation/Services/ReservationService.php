@@ -14,13 +14,13 @@ class ReservationService
         $this->modelService = $modelService;
     }
 
-    public function addCustomer()
-    {
-
-    }
-
     public function create(array $newReservation): void
     {
         $this->modelService->create(new Reservation(), $newReservation);
+    }
+
+    public function validate(Reservation $reservation, string $modelName): Reservation
+    {
+        return $this->modelService->validate($reservation, $modelName);
     }
 }

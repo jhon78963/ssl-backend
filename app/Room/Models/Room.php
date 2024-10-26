@@ -3,6 +3,7 @@
 namespace App\Room\Models;
 
 use App\Image\Models\Image;
+use App\Reservation\Models\Reservation;
 use App\Review\Models\Review;
 use App\RoomType\Models\RoomType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -61,5 +62,10 @@ class Room extends Model
 
     public function reviews(): HasMany {
         return $this->hasMany(Review::class);
+    }
+
+    public function reservations(): HasMany
+    {
+        return $this->hasMany(Reservation::class);
     }
 }

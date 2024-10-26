@@ -27,6 +27,7 @@ class ReservationCreateRequest extends FormRequest
             'status' => 'nullable|string',
             'customerId' => 'nullable|integer',
             'roomId' => 'nullable|integer',
+            'reservationTypeId' => 'required|integer',
         ];
     }
 }

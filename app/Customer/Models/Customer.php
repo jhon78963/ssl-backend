@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Customer extends Model
 {
@@ -51,6 +52,10 @@ class Customer extends Model
 
     public function gender(): BelongsTo {
         return $this->belongsTo(Gender::class);
+    }
+
+    public function generalReservations(): HasMany {
+        return $this->hasMany(Reservation::class);
     }
 
     public function reservations(): BelongsToMany

@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('reservation_products', function (Blueprint $table) {
-            $table->unsignedBigInteger('reservation_id');
+        Schema::create('product_reservation', function (Blueprint $table) {
+            $table->unsignedBigInteger(column: 'reservation_id');
             $table->foreign('reservation_id')->references('id')->on('reservations');
             $table->unsignedBigInteger('product_id');
             $table->foreign('product_id')->references('id')->on('products');
@@ -34,6 +34,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('reservation_products');
+        Schema::dropIfExists('product_reservation');
     }
 };

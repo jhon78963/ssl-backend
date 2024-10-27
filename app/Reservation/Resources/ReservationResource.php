@@ -28,12 +28,13 @@ class ReservationResource extends JsonResource
             $specificData = [
                 'customerId' => $this->customer_id,
                 'customer' => $this->customer->name . ' ' . $this->customer->surname,
-                'locker' => $this->locker,
+                'lockerId' => $this->locker_id,
+                'locker' => 'N°' . $this->locker->number,
             ];
         } else {
             $specificData = [
                 'roomId' => $this->room_id,
-                'room' => "Habitación N° $this->room_number",
+                'room' => 'Habitación N° ' . $this->room->room_number,
                 'customers' => CustomerResource::collection($this->customers),
             ];
         }

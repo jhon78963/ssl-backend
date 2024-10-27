@@ -4,7 +4,7 @@ namespace App\Reservation\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ReservationCreateRequest extends FormRequest
+class ReservationUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,13 +22,13 @@ class ReservationCreateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'reservationDate' => 'required',
-            'total' => 'required|numeric',
+            'reservationDate' => 'sometimes',
+            'total' => 'sometimes|numeric',
             'status' => 'nullable|string',
             'customerId' => 'nullable|integer',
             'lockerId' => 'nullable|integer',
             'roomId' => 'nullable|integer',
-            'reservationTypeId' => 'required|integer',
+            'reservationTypeId' => 'sometimes|integer',
         ];
     }
 }

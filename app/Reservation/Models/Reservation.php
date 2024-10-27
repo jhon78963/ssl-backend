@@ -28,6 +28,7 @@ class Reservation extends Model
         'total',
         'status',
         'customer_id',
+        'locker_id',
         'room_id',
         'reservation_type_id',
     ];

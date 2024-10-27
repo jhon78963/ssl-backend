@@ -19,6 +19,11 @@ class ReservationService
         $this->modelService->create(new Reservation(), $newReservation);
     }
 
+    public function update(Reservation $reservation, array $editReservation): void
+    {
+        $this->modelService->update($reservation, $editReservation);
+    }
+
     public function validate(Reservation $reservation, string $modelName): Reservation
     {
         return $this->modelService->validate($reservation, $modelName);

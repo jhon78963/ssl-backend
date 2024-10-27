@@ -29,6 +29,8 @@ return new class extends Migration
             $table->foreign('room_id')->references('id')->on('rooms');
             $table->integer('customer_id')->nullable();
             $table->foreign('customer_id')->references('id')->on('customers');
+            $table->integer('locker_id')->nullable();
+            $table->foreign('locker_id')->references('id')->on('lockers');
             $table->datetime('reservation_date');
             $table->float('total')->nullable();
             $table->enum('status', ['ACTIVE', 'CLOSE'])->default('ACTIVE');

@@ -4,6 +4,7 @@ namespace App\Reservation\Controllers;
 
 use App\Reservation\Models\Reservation;
 use App\Reservation\Requests\ReservationCreateRequest;
+use App\Reservation\Requests\ReservationUpdateRequest;
 use App\Reservation\Resources\ReservationResource;
 use App\Reservation\Services\ReservationService;
 use App\Shared\Controllers\Controller;
@@ -57,5 +58,20 @@ class ReservationController extends Controller
             $query['total'],
             $query['pages'],
         ));
+    }
+
+    public function update(ReservationUpdateRequest $request, Reservation $reservation): JsonResponse
+    {
+        DB::beginTransaction();
+        try {
+            $editReservationValidated = $this->sharedService->convertCamelToSnake($request->validated());
+            $reservationValidated = $this->reservationService->validate($reservation, 'ProductType');
+            $this->reservationService->update($reservationValidated, $editReservationValidated);
+            DB::commit();
+            return response()->json(['message' => 'Reservation updated.']);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json(['error' =>  $e->getMessage()]);
+        }
     }
 }

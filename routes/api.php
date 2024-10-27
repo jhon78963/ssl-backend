@@ -235,7 +235,7 @@ Route::group([
 
     Route::controller(ReservationController::class)->group(function() {
         Route::post('/reservations', 'create');
-        // Route::patch('/reservations/{reservation}', 'update');
+        Route::patch('/reservations/{reservation}', 'update');
         // Route::delete('/reservations/{reservation}', 'delete');
         Route::get('/reservations', 'getAll');
         Route::get('/reservations/{reservation}', 'get');

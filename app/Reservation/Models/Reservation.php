@@ -5,6 +5,7 @@ namespace App\Reservation\Models;
 use App\Customer\Models\Customer;
 use App\Locker\Models\Locker;
 use App\Product\Models\Product;
+use App\Reservation\Enums\ReservationStatus;
 use App\ReservationType\Models\ReservationType;
 use App\Room\Models\Room;
 use App\Service\Models\Service;
@@ -53,6 +54,19 @@ class Reservation extends Model
      * @var bool
      */
     public $timestamps = false;
+
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'status' => ReservationStatus::class,
+            'total' => 'float',
+        ];
+    }
 
     public function customer(): BelongsTo {
         return $this->belongsTo(Customer::class);

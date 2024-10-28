@@ -4,6 +4,7 @@ namespace App\Reservation\Resources;
 
 use App\Customer\Resources\CustomerResource;
 use App\Product\Resources\ProductResource;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -17,9 +18,11 @@ class ReservationResource extends JsonResource
     public function toArray(Request $request): array
     {
         $baseData = [
-            'reservationDate' => $this->reservation_date,
+            'id' => $this->id,
+            'reservationDate' => $this->dateFormat($this->reservation_date),
             'total' => $this->total,
-            'status' => $this->status,
+            'totalString' => "S/ $this->total",
+            'status' => $this->status->label(),
             'products' => ProductResource::collection($this->products),
             'services' => ProductResource::collection($this->services),
         ];
@@ -40,5 +43,14 @@ class ReservationResource extends JsonResource
         }
 
         return array_merge($baseData, $specificData);
+    }
+
+    private function dateFormat($date) {
+        if ($date === null) {
+            return null;
+        }
+        $date = Carbon::createFromFormat('Y-m-d h:i:s', $date);
+        $date = $date->format('d/m/Y h:i:s A');
+        return $date;
     }
 }

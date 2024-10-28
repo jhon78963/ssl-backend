@@ -33,7 +33,7 @@ return new class extends Migration
             $table->foreign('locker_id')->references('id')->on('lockers');
             $table->datetime('reservation_date');
             $table->float('total')->nullable();
-            $table->enum('status', ['ACTIVE', 'CLOSE'])->default('ACTIVE');
+            $table->enum('status', ['IN_USE', 'COMPLETED', 'CANCELLED'])->default('IN_USE');
         });
     }
 

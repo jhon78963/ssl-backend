@@ -3,6 +3,7 @@
 namespace App\Locker\Models;
 
 use App\Gender\Models\Gender;
+use App\Locker\Enums\LockerStatus;
 use App\Reservation\Models\Reservation;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -21,6 +22,7 @@ class Locker extends Model
     protected $fillable = [
         'id',
         'number',
+        'status',
         'gender_id',
     ];
 
@@ -44,6 +46,18 @@ class Locker extends Model
      * @var bool
      */
     public $timestamps = false;
+
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'status' => LockerStatus::class,
+        ];
+    }
 
     public function gender(): BelongsTo {
         return $this->belongsTo(Gender::class);

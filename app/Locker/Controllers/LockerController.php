@@ -11,6 +11,7 @@ use App\Shared\Controllers\Controller;
 use App\Shared\Requests\GetAllRequest;
 use App\Shared\Resources\GetAllCollection;
 use App\Shared\Services\SharedService;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 use DB;
 
@@ -59,9 +60,47 @@ class LockerController extends Controller
         return response()->json(new LockerResource($lockerValidated));
     }
 
+    // public function getMaleLockers(GetAllRequest $request, string $status): JsonResponse
+    // {
+    //     $query = $this->sharedService->query(
+    //         $request,
+    //         'Locker',
+    //         'Locker',
+    //         'number',
+    //         1,
+    //         $status
+    //     );
+    //     return response()->json(new GetAllCollection(
+    //         LockerResource::collection($query['collection']),
+    //         $query['total'],
+    //         $query['pages'],
+    //     ));
+    // }
+
+    // public function getFemaleLockers(GetAllRequest $request): JsonResponse
+    // {
+    //     $query = $this->sharedService->query(
+    //         $request,
+    //         'Locker',
+    //         'Locker',
+    //         'number',
+    //         2
+    //     );
+    //     return response()->json(new GetAllCollection(
+    //         LockerResource::collection($query['collection']),
+    //         $query['total'],
+    //         $query['pages'],
+    //     ));
+    // }
+
     public function getAll(GetAllRequest $request): JsonResponse
     {
-        $query = $this->sharedService->query($request, 'Locker', 'Locker', 'number');
+        $query = $this->sharedService->query(
+            $request,
+            'Locker',
+            'Locker',
+            'number'
+        );
         return response()->json(new GetAllCollection(
             LockerResource::collection($query['collection']),
             $query['total'],

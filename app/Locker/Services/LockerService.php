@@ -2,8 +2,10 @@
 
 namespace App\Locker\Services;
 
+use App\Gender\Models\Gender;
 use App\Locker\Models\Locker;
 use App\Shared\Services\ModelService;
+use Illuminate\Database\Eloquent\Collection;
 
 class LockerService
 {
@@ -22,6 +24,12 @@ class LockerService
     public function delete(Locker $locker): void
     {
         $this->modelService->delete($locker);
+    }
+
+    public function get(int $genderId): Collection
+    {
+        $lockers = Locker::where('gender_id', '=', $genderId)->get();
+        return $lockers;
     }
 
     public function update(Locker $locker, array $editLocker): void

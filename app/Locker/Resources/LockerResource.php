@@ -17,6 +17,7 @@ class LockerResource extends JsonResource
         return [
             'id' => $this->id,
             'number' => $this->number,
+            'status' => $this->status->label(),
             'genderId' => $this->gender_id,
             'gender' => $this->gender->name,
         ];

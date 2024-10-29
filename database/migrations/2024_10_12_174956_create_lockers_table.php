@@ -24,6 +24,7 @@ return new class extends Migration
             $table->foreign('deleter_user_id')->references('id')->on('users');
             $table->datetime('deletion_time')->nullable();
             $table->integer('number');
+            $table->float('price');
             $table->enum('status', ['AVAILABLE', 'IN_USE'])->default('AVAILABLE');
             $table->integer('gender_id')->nullable();
             $table->foreign('gender_id')->references('id')->on('genders');

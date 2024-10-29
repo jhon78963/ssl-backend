@@ -47,6 +47,18 @@ class Product extends Model
      */
     public $timestamps = false;
 
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'price' => 'float',
+        ];
+    }
+
     public function productType(): BelongsTo {
         return $this->belongsTo(ProductType::class);
     }

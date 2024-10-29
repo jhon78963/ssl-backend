@@ -44,6 +44,18 @@ class Service extends Model
      */
     public $timestamps = false;
 
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'price' => 'float',
+        ];
+    }
+
     public function times(): BelongsToMany {
         return $this->belongsToMany(Unit::class)->withPivot('price');
     }

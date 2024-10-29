@@ -15,6 +15,8 @@ use App\Rate\Controllers\RateController;
 use App\Rate\Controllers\RateDayController;
 use App\Rate\Controllers\RateHourController;
 use App\Reservation\Controllers\ReservationController;
+use App\Reservation\Controllers\ReservationProductController;
+use App\Reservation\Controllers\ReservationServiceController;
 use App\ReservationType\Controllers\ReservationTypeController;
 use App\Review\Controllers\ReviewController;
 use App\Role\Controllers\RoleController;
@@ -171,6 +173,7 @@ Route::group([
 
     Route::controller(LockerController::class)->group(function() {
         Route::post('/lockers', 'create');
+        Route::patch('/lockers/change-status/{locker}', 'changeStatus');
         Route::patch('/lockers/{locker}', 'update');
         Route::delete('/lockers/{locker}', 'delete');
         Route::get('/lockers', 'getAll');
@@ -182,7 +185,10 @@ Route::group([
         Route::patch('/customers/{customer}', 'update');
         Route::delete('/customers/{customer}', 'delete');
         Route::get('/customers', 'getAll');
+        Route::get('/customers/dni/{customer}', 'getByDni');
         Route::get('/customers/{customer}', 'get');
+        Route::get('/consultation-dni/{dni}', 'searchByDni');
+        Route::get('/consultation-ruc/{ruc}', 'searchByRuc');
     });
 
     Route::controller(UnitController::class)->group(function() {
@@ -239,5 +245,19 @@ Route::group([
         // Route::delete('/reservations/{reservation}', 'delete');
         Route::get('/reservations', 'getAll');
         Route::get('/reservations/{reservation}', 'get');
+    });
+
+    Route::controller(ReservationProductController::class)->group(function() {
+        Route::post('/products/{reservation}/add/{product}', 'add');
+        Route::delete('/products/{reservation}/remove/{product}', 'remove');
+        Route::get('/products/{reservation}/all', 'getAll');
+        Route::get('/products/{reservation}/left', 'getLeft');
+    });
+
+    Route::controller(ReservationServiceController::class)->group(function() {
+        Route::post('/services/{reservation}/add/{service}', 'add');
+        Route::delete('/services/{reservation}/remove/{service}', 'remove');
+        Route::get('/services/{reservation}/all', 'getAll');
+        Route::get('/services/{reservation}/left', 'getLeft');
     });
 });

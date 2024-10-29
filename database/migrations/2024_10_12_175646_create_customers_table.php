@@ -23,7 +23,7 @@ return new class extends Migration
             $table->integer('deleter_user_id')->nullable();
             $table->foreign('deleter_user_id')->references('id')->on('users');
             $table->datetime('deletion_time')->nullable();
-            $table->string('dni', 8);
+            $table->string('dni', 8)->unique();
             $table->string('name');
             $table->string('surname');
             $table->string('cellphone')->nullable();

@@ -9,8 +9,11 @@ use App\Customer\Resources\CustomerResource;
 use App\Customer\Services\CustomerService;
 use App\Shared\Controllers\Controller;
 use App\Shared\Requests\GetAllRequest;
+use App\Shared\Resources\DniConsultationResource;
 use App\Shared\Resources\GetAllCollection;
+use App\Shared\Resources\RUCConsultationResource;
 use App\Shared\Services\SharedService;
+use App\Shared\Services\SunatService;
 use Illuminate\Http\JsonResponse;
 use DB;
 
@@ -18,11 +21,16 @@ class CustomerController extends Controller
 {
     protected CustomerService $customerService;
     protected SharedService $sharedService;
+    protected SunatService $sunatService;
 
-    public function __construct(CustomerService $customerService, SharedService $sharedService)
-    {
+    public function __construct(
+        CustomerService $customerService,
+        SharedService $sharedService,
+        SunatService $sunatService,
+    ) {
         $this->customerService = $customerService;
         $this->sharedService = $sharedService;
+        $this->sunatService = $sunatService;
     }
 
     public function create(CustomerCreateRequest $request): JsonResponse
@@ -30,9 +38,12 @@ class CustomerController extends Controller
         DB::beginTransaction();
         try {
             $newCustomer = $this->sharedService->convertCamelToSnake($request->validated());
-            $this->customerService->create($newCustomer);
+            $createdCustomer = $this->customerService->create($newCustomer);
             DB::commit();
-            return response()->json(['message' => 'Customer created.'], 201);
+            return response()->json([
+                'message' => 'Customer created.',
+                'customerId' => $createdCustomer->id
+            ], 201);
         } catch (\Exception $e) {
             DB::rollback();
             return response()->json(['error' =>  $e->getMessage()]);
@@ -59,6 +70,12 @@ class CustomerController extends Controller
         return response()->json(new CustomerResource($customerValidated));
     }
 
+    public function getByDni(string $dni): JsonResponse
+    {
+        $customerFounded = $this->customerService->get('dni', $dni);
+        return response()->json(new CustomerResource($customerFounded));
+    }
+
     public function getAll(GetAllRequest $request): JsonResponse
     {
         $query = $this->sharedService->query($request, 'Customer', 'Customer', 'name');
@@ -67,6 +84,18 @@ class CustomerController extends Controller
             $query['total'],
             $query['pages'],
         ));
+    }
+
+    public function searchByDni(string $dni)
+    {
+        $person = $this->sunatService->dniConsultation($dni);
+        return response()->json(new DniConsultationResource($person));
+    }
+
+    public function searchByRuc(string $ruc)
+    {
+        $company = $this->sunatService->rucConsultation($ruc);
+        return response()->json(new RUCConsultationResource($company));
     }
 
     public function update(CustomerUpdateRequest $request, Customer $customer): JsonResponse

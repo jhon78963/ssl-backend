@@ -12,19 +12,39 @@ class ServiceSeeder extends Seeder
      */
     public function run(): void
     {
-        $service = new Service();
-        $service->name = 'Masajes Relajantes';
-        $service->price = null;
-        $service->save();
-        $service->times()->attach(3, ['price' => 30]);
-        $service->times()->attach(4, ['price' => 50]);
+        // $service = new Service();
+        // $service->name = 'Masajes Relajantes';
+        // $service->price = null;
+        // $service->save();
+        // $service->times()->attach(3, ['price' => 30]);
+        // $service->times()->attach(4, ['price' => 50]);
+
+        // $service = new Service();
+        // $service->name = 'Masajes Descontracturantes';
+        // $service->price = null;
+        // $service->save();
+        // $service->times()->attach(3, ['price' => 30]);
+        // $service->times()->attach(4, ['price' => 50]);
 
         $service = new Service();
-        $service->name = 'Masajes Descontracturantes';
-        $service->price = null;
+        $service->name = 'Masajes Relajantes (1/2 hora)';
+        $service->price = 30;
         $service->save();
-        $service->times()->attach(3, ['price' => 30]);
-        $service->times()->attach(4, ['price' => 50]);
+
+        $service = new Service();
+        $service->name = 'Masajes Relajantes (1 hora)';
+        $service->price = 50;
+        $service->save();
+
+        $service = new Service();
+        $service->name = 'Masajes Descontracturantes (1/2 hora)';
+        $service->price = 30;
+        $service->save();
+
+        $service = new Service();
+        $service->name = 'Masajes Descontracturantes (1 hora)';
+        $service->price = 50;
+        $service->save();
 
         $service = new Service();
         $service->name = 'Terapia';

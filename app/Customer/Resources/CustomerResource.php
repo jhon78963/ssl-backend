@@ -22,7 +22,7 @@ class CustomerResource extends JsonResource
             'cellphone' => $this->cellphone,
             'email' => $this->email,
             'genderId' => $this->gender_id,
-            'gender' => $this->gender->name,
+            'gender' => $this->gender_id ? $this->gender->name : null,
         ];
     }
 }

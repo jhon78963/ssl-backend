@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Customer\Requests;
+namespace App\Locker\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CustomerCreateRequest extends FormRequest
+class LockerChangeStatus extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,12 +22,7 @@ class CustomerCreateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'dni' => 'required|string|size:8',
-            'name' => 'required|string',
-            'surname' => 'required|string',
-            'cellphone' => 'nullable|string|size:9',
-            'email' => 'nullable|email',
-            'genderId' => 'nullable|integer',
+            'status' => 'required|string'
         ];
     }
 }

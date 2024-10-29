@@ -56,6 +56,7 @@ class Locker extends Model
     {
         return [
             'status' => LockerStatus::class,
+            'price' => 'float',
         ];
     }
 
@@ -65,5 +66,9 @@ class Locker extends Model
 
     public function reservations(): HasMany {
         return $this->hasMany(Reservation::class);
+    }
+
+    public function reservationsInUse(): HasMany {
+        return $this->hasMany(Reservation::class)->where('status', 'IN_USE');
     }
 }

@@ -33,6 +33,11 @@ class ModelService
         $model->save();
     }
 
+    public function get(Model $model, string $column, string|int $data): ?Model
+    {
+        return $model->where($column, '=', $data)->first();
+    }
+
     function update(Model $model, array $data): Model
     {
         $this->setUpdateAuditFields($model);

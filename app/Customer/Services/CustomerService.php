@@ -12,14 +12,19 @@ class CustomerService
         $this->modelService = $modelService;
     }
 
-    public function create(array $newCustomer): void
+    public function create(array $newCustomer): Customer
     {
-        $this->modelService->create(new Customer(), $newCustomer);
+        return $this->modelService->create(new Customer(), $newCustomer);
     }
 
     public function delete(Customer $customer): void
     {
         $this->modelService->delete($customer);
+    }
+
+    public function get(string $column, string $dni): ?Customer
+    {
+        return $this->modelService->get(new Customer(), $column, $dni);
     }
 
     public function update(Customer $customer, array $editCustomer): void

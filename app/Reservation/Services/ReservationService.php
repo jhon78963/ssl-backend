@@ -14,9 +14,9 @@ class ReservationService
         $this->modelService = $modelService;
     }
 
-    public function create(array $newReservation): void
+    public function create(array $newReservation): Reservation
     {
-        $this->modelService->create(new Reservation(), $newReservation);
+        return $this->modelService->create(new Reservation(), $newReservation);
     }
 
     public function update(Reservation $reservation, array $editReservation): void

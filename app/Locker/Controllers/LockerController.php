@@ -3,6 +3,7 @@
 namespace App\Locker\Controllers;
 
 use App\Locker\Models\Locker;
+use App\Locker\Requests\LockerChangeStatus;
 use App\Locker\Requests\LockerCreateRequest;
 use App\Locker\Requests\LockerUpdateRequest;
 use App\Locker\Resources\LockerResource;
@@ -24,6 +25,21 @@ class LockerController extends Controller
     {
         $this->lockerService = $lockerService;
         $this->sharedService = $sharedService;
+    }
+
+    public function changeStatus(LockerChangeStatus $request, Locker $locker): JsonResponse
+    {
+        DB::beginTransaction();
+        try {
+            $editLocker = $this->sharedService->convertCamelToSnake($request->validated());
+            $lockerValidated = $this->lockerService->validate($locker, 'Locker');
+            $this->lockerService->update($lockerValidated, $editLocker);
+            DB::commit();
+            return response()->json(['message' => 'Room status changed.'], 201);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json(['error' =>  $e->getMessage()]);
+        }
     }
 
     public function create(LockerCreateRequest $request): JsonResponse

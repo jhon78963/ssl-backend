@@ -1,13 +1,14 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Reservation\Controllers;
 
 use App\Product\Models\Product;
+use App\Product\Resources\ProductResource;
 use App\Reservation\Models\Reservation;
 use App\Shared\Controllers\Controller;
 use App\Shared\Services\ModelService;
-use DB;
 use Illuminate\Http\JsonResponse;
+use DB;
 
 class ReservationProductController extends Controller
 {
@@ -29,6 +30,20 @@ class ReservationProductController extends Controller
             DB::rollback();
             return response()->json($e->getMessage());
         }
+    }
+
+    public function getAll(Reservation $reservation): JsonResponse
+    {
+        $products = $reservation->products()->orderBy('id', 'desc')->get();
+        return response()->json( ProductResource::collection($products));
+    }
+
+    public function getLeft(Reservation $reservation): JsonResponse
+    {
+        $allProducts = Product::where('is_deleted', false)->get();
+        $associatedProducts = $reservation->products()->pluck('id')->toArray();
+        $leftProducts = $allProducts->whereNotIn('id', $associatedProducts);
+        return response()->json( ProductResource::collection($leftProducts));
     }
 
     public function remove(Reservation $reservation, Product $product): JsonResponse

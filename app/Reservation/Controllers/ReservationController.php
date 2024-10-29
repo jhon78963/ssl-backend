@@ -30,9 +30,12 @@ class ReservationController extends Controller
         DB::beginTransaction();
         try {
             $newReservation = $this->sharedService->convertCamelToSnake($request->validated());
-            $this->reservationService->create($newReservation);
+            $createdReservation = $this->reservationService->create($newReservation);
             DB::commit();
-            return response()->json(['message' => 'Reservation created.'], 201);
+            return response()->json([
+                'message' => 'Reservation created.',
+                'reservationId' => $createdReservation->id,
+            ], 201);
         } catch (\Exception $e) {
             DB::rollback();
             return response()->json(['error' =>  $e->getMessage()]);

@@ -18,15 +18,17 @@ class ProductResource extends JsonResource
             return [
                 'id' => $this->id,
                 'name' => $this->name,
-                'price' => $this->price,
-                'priceString' => "S/ $this->price",
                 'productTypeId' => $this->product_type_id,
                 'productType' => $this->productType->description,
+                'price' => $this->price,
+                'priceString' => "S/ $this->price",
             ];
         } else {
             return [
                 'id' => $this->id,
                 'name' => $this->name,
+                'productTypeId' => $this->product_type_id,
+                'productType' => $this->productType->description,
                 'portions' => $this->prepareData(),
             ];
         }

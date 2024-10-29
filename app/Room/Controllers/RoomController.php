@@ -28,20 +28,6 @@ class RoomController extends Controller
         $this->sharedService = $sharedService;
     }
 
-    public function create(RoomCreateRequest $request): JsonResponse
-    {
-        DB::beginTransaction();
-        try {
-            $newRoom = $this->sharedService->convertCamelToSnake($request->validated());
-            $this->roomService->create($newRoom);
-            DB::commit();
-            return response()->json(['message' => 'Room created.'], 201);
-        } catch (\Exception $e) {
-            DB::rollback();
-            return response()->json(['error' =>  $e->getMessage()]);
-        }
-    }
-
     public function changeStatus(RoomChangeStatus $request, Room $room): JsonResponse
     {
         DB::beginTransaction();
@@ -51,6 +37,20 @@ class RoomController extends Controller
             $this->roomService->update($roomValidated, $editRoom);
             DB::commit();
             return response()->json(['message' => 'Room status changed.'], 201);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json(['error' =>  $e->getMessage()]);
+        }
+    }
+
+    public function create(RoomCreateRequest $request): JsonResponse
+    {
+        DB::beginTransaction();
+        try {
+            $newRoom = $this->sharedService->convertCamelToSnake($request->validated());
+            $this->roomService->create($newRoom);
+            DB::commit();
+            return response()->json(['message' => 'Room created.'], 201);
         } catch (\Exception $e) {
             DB::rollback();
             return response()->json(['error' =>  $e->getMessage()]);

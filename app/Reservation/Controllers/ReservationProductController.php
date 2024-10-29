@@ -3,7 +3,7 @@
 namespace App\Reservation\Controllers;
 
 use App\Product\Models\Product;
-use App\Product\Resources\ProductResource;
+use App\Product\Resources\ProductAddResource;
 use App\Reservation\Models\Reservation;
 use App\Shared\Controllers\Controller;
 use App\Shared\Services\ModelService;
@@ -35,7 +35,7 @@ class ReservationProductController extends Controller
     public function getAll(Reservation $reservation): JsonResponse
     {
         $products = $reservation->products()->get();
-        return response()->json( ProductResource::collection($products));
+        return response()->json( ProductAddResource::collection($products));
     }
 
     public function getLeft(Reservation $reservation): JsonResponse
@@ -43,7 +43,7 @@ class ReservationProductController extends Controller
         $allProducts = Product::where('is_deleted', false)->get();
         $associatedProducts = $reservation->products()->pluck('id')->toArray();
         $leftProducts = $allProducts->whereNotIn('id', $associatedProducts);
-        return response()->json( ProductResource::collection($leftProducts));
+        return response()->json( ProductAddResource::collection($leftProducts));
     }
 
     public function remove(Reservation $reservation, Product $product): JsonResponse

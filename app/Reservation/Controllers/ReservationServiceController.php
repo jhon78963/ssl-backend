@@ -4,7 +4,7 @@ namespace App\Reservation\Controllers;
 
 use App\Reservation\Models\Reservation;
 use App\Service\Models\Service;
-use App\Service\Resources\ServiceResource;
+use App\Service\Resources\ServiceAddResource;
 use App\Shared\Controllers\Controller;
 use App\Shared\Services\ModelService;
 use Illuminate\Http\JsonResponse;
@@ -35,7 +35,7 @@ class ReservationServiceController extends Controller
     public function getAll(Reservation $reservation): JsonResponse
     {
         $services = $reservation->services()->get();
-        return response()->json( ServiceResource::collection($services));
+        return response()->json( ServiceAddResource::collection($services));
     }
 
     public function getLeft(Reservation $reservation): JsonResponse
@@ -43,7 +43,7 @@ class ReservationServiceController extends Controller
         $allServices = Service::where('is_deleted', false)->get();
         $associatedServices = $reservation->services()->pluck('id')->toArray();
         $leftServices = $allServices->whereNotIn('id', $associatedServices);
-        return response()->json( ServiceResource::collection($leftServices));
+        return response()->json( ServiceAddResource::collection($leftServices));
     }
 
     public function remove(Reservation $reservation, Service $service): JsonResponse

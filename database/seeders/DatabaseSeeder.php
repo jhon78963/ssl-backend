@@ -51,7 +51,6 @@ class DatabaseSeeder extends Seeder
             ProductFoodCocktailsSeeder::class,
             ProductGroceryFrigoBarSeeder::class,
             ProductGroceryBasketSeeder::class,
-            ProductGroceryFrigoBarSeeder::class,
             ServiceSeeder::class,
             ReservationTypeSeeder::class,
         ]);

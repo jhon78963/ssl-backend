@@ -34,7 +34,7 @@ class ReservationProductController extends Controller
 
     public function getAll(Reservation $reservation): JsonResponse
     {
-        $products = $reservation->products()->orderBy('id', 'desc')->get();
+        $products = $reservation->products()->get();
         return response()->json( ProductResource::collection($products));
     }
 

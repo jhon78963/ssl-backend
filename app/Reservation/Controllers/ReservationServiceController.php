@@ -34,7 +34,7 @@ class ReservationServiceController extends Controller
 
     public function getAll(Reservation $reservation): JsonResponse
     {
-        $services = $reservation->services()->orderBy('id', 'desc')->get();
+        $services = $reservation->services()->get();
         return response()->json( ServiceResource::collection($services));
     }
 

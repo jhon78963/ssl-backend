@@ -3,6 +3,7 @@
 namespace App\Reservation\Controllers;
 
 use App\Reservation\Models\Reservation;
+use App\Reservation\Requests\ReservationChangeStatus;
 use App\Reservation\Requests\ReservationCreateRequest;
 use App\Reservation\Requests\ReservationUpdateRequest;
 use App\Reservation\Resources\ReservationResource;
@@ -23,6 +24,24 @@ class ReservationController extends Controller
     {
         $this->reservationService = $reservationService;
         $this->sharedService = $sharedService;
+    }
+
+    public function changeStatus(ReservationChangeStatus $request, Reservation $reservation)
+    {
+        DB::beginTransaction();
+        try {
+            $editLocker = $this->sharedService->convertCamelToSnake($request->validated());
+            $reservationValidated = $this->reservationService->validate(
+                $reservation,
+                'Reservation'
+            );
+            $this->reservationService->update($reservationValidated, $editLocker);
+            DB::commit();
+            return response()->json(['message' => 'Reservation status changed.'], 201);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json(['error' =>  $e->getMessage()]);
+        }
     }
 
     public function create(ReservationCreateRequest $request): JsonResponse

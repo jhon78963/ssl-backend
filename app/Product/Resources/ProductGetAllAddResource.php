@@ -17,7 +17,8 @@ class ProductGetAllAddResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'price' => isset($this->pivot) && $this->pivot->quantity ? $this->price * ($this->pivot->quantity ?? 1) : $this->price,
+            'price' => $this->price,
+            'total' => isset($this->pivot) && $this->pivot->quantity ? $this->price * ($this->pivot->quantity ?? 1) : $this->price,
             'quantity' => $this->pivot->quantity ?? null,
             'productType' => $this->productType->description,
         ];

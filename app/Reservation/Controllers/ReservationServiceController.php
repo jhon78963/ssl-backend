@@ -64,7 +64,7 @@ class ReservationServiceController extends Controller
         try {
             $this->modelService->detach($reservation, 'services', $service->id);
             $editReservation = [
-                'total' => $reservation - $service->price * $quantity,
+                'total' => $reservation->total - $service->price * $quantity,
             ];
             $this->modelService->update($reservation, $editReservation);
             DB::commit();

@@ -18,7 +18,8 @@ class ServiceGetAllAddResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'quantity' => $this->pivot->quantity ?? null,
-            'price' => isset($this->pivot) ? $this->price * ($this->pivot->quantity ?? 1) : $this->price,
+            'price' => $this->price,
+            'total' => isset($this->pivot) ? $this->price * ($this->pivot->quantity ?? 1) : $this->price,
         ];
     }
 }

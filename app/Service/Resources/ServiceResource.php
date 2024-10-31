@@ -18,6 +18,7 @@ class ServiceResource extends JsonResource
             return [
                 'id' => $this->id,
                 'name' => $this->name,
+                'quantity' => $this->pivot->quantity,
                 'price' => $this->price,
                 'priceString' => "S/ $this->price",
             ];

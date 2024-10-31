@@ -2,6 +2,7 @@
 
 namespace App\Shared\Services;
 
+use App\Shared\Requests\AddRequest;
 use App\User\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -9,9 +10,9 @@ use Auth;
 
 class ModelService
 {
-    public function attach(Model $model, string $relation, int $id): void
+    public function attach(Model $model, string $relation, int $id, float $price = 0, int $quantity = 0): void
     {
-        $model->$relation()->attach($id);
+        $model->$relation()->attach($id, ['price' => $price, 'quantity' => $quantity]);
     }
 
     function create(Model $model, array $data): Model

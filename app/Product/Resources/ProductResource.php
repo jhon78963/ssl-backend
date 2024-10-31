@@ -21,6 +21,7 @@ class ProductResource extends JsonResource
                 'productTypeId' => $this->product_type_id,
                 'productType' => $this->productType->description,
                 'price' => $this->price,
+                'quantity' => $this->pivot->quantity,
                 'priceString' => "S/ $this->price",
             ];
         } else {

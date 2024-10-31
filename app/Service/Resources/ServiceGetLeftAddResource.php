@@ -5,7 +5,7 @@ namespace App\Service\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ServiceAddResource extends JsonResource
+class ServiceGetLeftAddResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -17,6 +17,7 @@ class ServiceAddResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'quantity' => 1,
             'price' => $this->price,
         ];
     }

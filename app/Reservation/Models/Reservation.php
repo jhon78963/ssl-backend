@@ -65,6 +65,7 @@ class Reservation extends Model
         return [
             'status' => ReservationStatus::class,
             'total' => 'float',
+            'price' => 'float',
         ];
     }
 
@@ -84,7 +85,7 @@ class Reservation extends Model
 
     public function products(): BelongsToMany
     {
-        return $this->belongsToMany(Product::class);
+        return $this->belongsToMany(Product::class)->withPivot(['price', 'quantity']);
     }
 
     public function reservationType(): BelongsTo
@@ -98,6 +99,6 @@ class Reservation extends Model
 
     public function services(): BelongsToMany
     {
-        return $this->belongsToMany(Service::class);
+        return $this->belongsToMany(Service::class)->withPivot(['price', 'quantity']);;
     }
 }

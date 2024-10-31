@@ -32,6 +32,10 @@ class ReservationServiceController extends Controller
                 $service->price,
                 $request->input('quantity'),
             );
+            $editReservation = [
+                'total' => $reservation->total + $service->price * $request->input('quantity'),
+            ];
+            $this->modelService->update($reservation, $editReservation);
             DB::commit();
             return response()->json(['message' => 'Service added to the reservation.'], 201);
         } catch (\Exception $e) {
@@ -54,11 +58,15 @@ class ReservationServiceController extends Controller
         return response()->json( ServiceGetLeftAddResource::collection($leftServices));
     }
 
-    public function remove(Reservation $reservation, Service $service): JsonResponse
+    public function remove(Reservation $reservation, Service $service, int $quantity): JsonResponse
     {
         DB::beginTransaction();
         try {
             $this->modelService->detach($reservation, 'services', $service->id);
+            $editReservation = [
+                'total' => $reservation - $service->price * $quantity,
+            ];
+            $this->modelService->update($reservation, $editReservation);
             DB::commit();
             return response()->json(['message' => 'Service removed from the reservation']);
         } catch (\Exception $e) {

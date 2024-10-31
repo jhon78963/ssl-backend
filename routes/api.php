@@ -250,14 +250,14 @@ Route::group([
 
     Route::controller(ReservationProductController::class)->group(function() {
         Route::post('/products/{reservation}/add/{product}', 'add');
-        Route::delete('/products/{reservation}/remove/{product}', 'remove');
+        Route::delete('/products/{reservation}/remove/{product}/quantity/{quantity}', 'remove');
         Route::get('/products/{reservation}/all', 'getAll');
         Route::get('/products/{reservation}/left', 'getLeft');
     });
 
     Route::controller(ReservationServiceController::class)->group(function() {
         Route::post('/services/{reservation}/add/{service}', 'add');
-        Route::delete('/services/{reservation}/remove/{service}', 'remove');
+        Route::delete('/services/{reservation}/remove/{service}/quantity/{quantity}', 'remove');
         Route::get('/services/{reservation}/all', 'getAll');
         Route::get('/services/{reservation}/left', 'getLeft');
     });

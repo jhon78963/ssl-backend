@@ -25,7 +25,7 @@ return new class extends Migration
             $table->datetime('deletion_time')->nullable();
             $table->unsignedBigInteger('room_type_id');
             $table->integer('room_number');
-            $table->enum('status', ['OCUPADO','DISPONIBLE', 'EN_LIMPIEZA'])->default('DISPONIBLE');
+            $table->enum('status', ['AVAILABLE', 'IN_USE', 'IN_CLEANING'])->default('AVAILABLE');
             $table->foreign('room_type_id')->references('id')->on('room_types');
         });
     }

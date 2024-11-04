@@ -1,17 +1,19 @@
 <?php
 
-namespace App\Locker\Enums;
+namespace App\Room\Enums;
 
-enum LockerStatus: string
+enum RoomStatus: string
 {
     case InUse = 'IN_USE';
     case Available = 'AVAILABLE';
+    case InCleaning = 'IN_CLEANING';
 
     public function label(): string
     {
         return match($this) {
             self::InUse => 'Ocupado',
             self::Available => 'Disponible',
+            self::InCleaning => 'En limpieza',
         };
     }
 }

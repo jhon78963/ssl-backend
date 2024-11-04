@@ -22,9 +22,8 @@ class RoomResource extends JsonResource
             'id'=> $this->id,
             'roomNumber' => $this->room_number,
             'roomName' => "Habitación N° $this->room_number",
-            'capacity' => $this->capacity,
             'status' => $this->status,
-            'roomStatus' => $this->getLabelStatus($this->status),
+            'roomStatus' => $this->status->label(),
             'roomTypeId' => $this->room_type_id,
             'roomType' => $this->roomType->description,
             'images' => ImageResource::collection($this->orderDesc()),
@@ -32,15 +31,6 @@ class RoomResource extends JsonResource
             'rates' => RateResource::collection($this->roomType->rates),
             'reviews' => ReviewResource::collection($this->reviews),
         ];
-    }
-
-    private function getLabelStatus($status): string {
-        return match ($status) {
-            'DISPONIBLE'   => 'Disponible',
-            'OCUPADO'      => 'Ocupado',
-            'EN_LIMPIEZA'  => 'En Limpieza',
-            default        => 'Estado desconocido',
-        };
     }
 
     private function orderDesc() {

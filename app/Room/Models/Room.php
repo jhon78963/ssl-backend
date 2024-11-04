@@ -5,6 +5,7 @@ namespace App\Room\Models;
 use App\Image\Models\Image;
 use App\Reservation\Models\Reservation;
 use App\Review\Models\Review;
+use App\Room\Enums\RoomStatus;
 use App\RoomType\Models\RoomType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -50,6 +51,18 @@ class Room extends Model
      */
 
     public $timestamps = false;
+
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'status' => RoomStatus::class,
+        ];
+    }
 
     public function roomType(): BelongsTo {
         return $this->belongsTo(RoomType::class);

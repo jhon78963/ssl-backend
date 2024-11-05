@@ -85,7 +85,6 @@ class RoomController extends Controller
             'Room',
             'room_number'
         );
-
         return response()->json(new GetAllCollection(
             RoomResource::collection($query['collection']),
             $query['total'],

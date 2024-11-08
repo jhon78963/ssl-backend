@@ -81,4 +81,8 @@ class Room extends Model
     {
         return $this->hasMany(Reservation::class);
     }
+
+    public function reservationsInUse(): HasMany {
+        return $this->hasMany(Reservation::class)->where('status', 'IN_USE');
+    }
 }

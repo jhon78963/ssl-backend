@@ -5,6 +5,7 @@ namespace App\Reservation\Controllers;
 use App\Customer\Models\Customer;
 use App\Reservation\Models\Reservation;
 use App\Shared\Controllers\Controller;
+use App\Shared\Requests\AddRequest;
 use App\Shared\Services\ModelService;
 use Illuminate\Http\JsonResponse;
 use DB;
@@ -18,11 +19,23 @@ class ReservationCustomerController extends Controller
         $this->modelService = $modelService;
     }
 
-    public function add(Reservation $reservation, Customer $customer): JsonResponse
+    public function add(AddRequest $request, Reservation $reservation, Customer $customer): JsonResponse
     {
         DB::beginTransaction();
         try {
-            $this->modelService->attach($reservation, 'customers', $customer->id);
+            $customerCount = $reservation->customers()->count();
+            $price = $customerCount >= 2 ? $request->input('price') : 0;
+            $this->modelService->attach(
+                $reservation,
+                'customers',
+                $customer->id,
+                $price,
+                1,
+            );
+            $editReservation = [
+                'total' => $reservation->total + $price,
+            ];
+            $this->modelService->update($reservation, $editReservation);
             DB::commit();
             return response()->json(['message' => 'Customer added to the reservation.'], 201);
         } catch (\Exception $e) {

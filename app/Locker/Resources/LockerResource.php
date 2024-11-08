@@ -24,7 +24,7 @@ class LockerResource extends JsonResource
             'status' => $this->status->label(),
             'genderId' => $this->gender_id,
             'gender' => $this->gender->name,
-            'reservationId' => $reservation ? $reservation->id : null,
+            'reservationId' => $reservation?->id,
             'customerId' => $reservation && $reservation->customer ? $reservation->customer->id : null,
             'customerName' => $reservation && $reservation->customer ? $reservation->customer->name : null,
             'customerSurname' => $reservation && $reservation->customer ? $reservation->customer->surname : null,

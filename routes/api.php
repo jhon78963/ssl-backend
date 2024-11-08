@@ -15,6 +15,7 @@ use App\Rate\Controllers\RateController;
 use App\Rate\Controllers\RateDayController;
 use App\Rate\Controllers\RateHourController;
 use App\Reservation\Controllers\ReservationController;
+use App\Reservation\Controllers\ReservationCustomerController;
 use App\Reservation\Controllers\ReservationProductController;
 use App\Reservation\Controllers\ReservationServiceController;
 use App\ReservationType\Controllers\ReservationTypeController;
@@ -260,5 +261,12 @@ Route::group([
         Route::delete('/services/{reservation}/remove/{service}/quantity/{quantity}', 'remove');
         Route::get('/services/{reservation}/all', 'getAll');
         Route::get('/services/{reservation}/left', 'getLeft');
+    });
+
+    Route::controller(ReservationCustomerController::class)->group(function() {
+        Route::post('/customers/{reservation}/add/{customer}', 'add');
+        Route::delete('/customers/{reservation}/remove/{customer}', 'remove');
+        Route::get('/customers/{reservation}/all', 'getAll');
+        Route::get('/customers/{reservation}/left', 'getLeft');
     });
 });

@@ -18,6 +18,8 @@ class RoomResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $reservation = $this->reservationsInUse->first();
+
         return [
             'id'=> $this->id,
             'roomNumber' => $this->room_number,
@@ -26,6 +28,9 @@ class RoomResource extends JsonResource
             'roomStatus' => $this->status->label(),
             'roomTypeId' => $this->room_type_id,
             'roomType' => $this->roomType->description,
+            'pricePerCapacity' => $this->roomType->price_per_capacity,
+            'pricePerAdditionalPerson' => $this->roomType->price_per_additional_person,
+            'reservationId' => $reservation?->id,
             'images' => ImageResource::collection($this->orderDesc()),
             'amenities' => AmenityResource::collection($this->roomType->amenities),
             'rates' => RateResource::collection($this->roomType->rates),

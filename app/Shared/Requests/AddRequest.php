@@ -22,7 +22,8 @@ class AddRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'quantity' => 'required|integer',
+            'quantity' => 'nullable|integer',
+            'price' => 'nullable',
         ];
     }
 }

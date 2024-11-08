@@ -48,8 +48,20 @@ class RoomType extends Model
      *
      * @var bool
      */
-
     public $timestamps = false;
+
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'price_per_capacity' => 'float',
+            'price_per_additional_person' => 'float',
+        ];
+    }
 
     public function rooms(): HasMany {
         return $this->hasMany(Room::class);

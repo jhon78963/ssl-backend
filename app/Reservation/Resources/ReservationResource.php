@@ -40,6 +40,7 @@ class ReservationResource extends JsonResource
                 'roomId' => $this->room_id,
                 'room' => 'Habitación N° ' . $this->room->room_number,
                 'customers' => CustomerResource::collection($this->customers),
+                'customersNumber' => $this->customers->count(),
             ];
         }
 

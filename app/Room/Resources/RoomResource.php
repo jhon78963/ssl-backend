@@ -30,6 +30,8 @@ class RoomResource extends JsonResource
             'roomType' => $this->roomType->description,
             'pricePerCapacity' => $this->roomType->price_per_capacity,
             'pricePerAdditionalPerson' => $this->roomType->price_per_additional_person,
+            'capacity' => $this->roomType->capacity,
+            'agreFree' => $this->roomType->age_free,
             'reservationId' => $reservation?->id,
             'images' => ImageResource::collection($this->orderDesc()),
             'amenities' => AmenityResource::collection($this->roomType->amenities),

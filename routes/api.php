@@ -265,8 +265,7 @@ Route::group([
 
     Route::controller(ReservationCustomerController::class)->group(function() {
         Route::post('/customers/{reservation}/add/{customer}', 'add');
-        Route::delete('/customers/{reservation}/remove/{customer}', 'remove');
+        Route::delete('/customers/{reservation}/remove/{customer}/price/{price}', 'remove');
         Route::get('/customers/{reservation}/all', 'getAll');
-        Route::get('/customers/{reservation}/left', 'getLeft');
     });
 });

@@ -22,7 +22,7 @@ class RoomCreateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'roomNumber' => 'required|integer|min:1',
+            'number' => 'required|integer|min:1',
             'roomTypeId' => 'required|integer',
         ];
     }

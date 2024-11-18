@@ -21,7 +21,7 @@ class ReviewResource extends JsonResource
             'description' => $this->description,
             'rating' => $this->rating,
             'roomId' => $this->room_id,
-            'room' => "Habitación N° " . $this->room->room_number,
+            'room' => "Habitación N° " . $this->room->number,
             'date' => \Carbon\Carbon::parse($this->creation_time)->translatedFormat('d \d\e F \d\e Y H:i:s'),
             'image' => $imagePath,
         ];

@@ -246,6 +246,7 @@ Route::group([
         Route::patch('/reservations/{reservation}', 'update');
         // Route::delete('/reservations/{reservation}', 'delete');
         Route::get('/reservations', 'getAll');
+        Route::get('/reservations/facilities', 'facilities');
         Route::get('/reservations/{reservation}', 'get');
     });
 

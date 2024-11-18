@@ -38,7 +38,7 @@ class ReservationResource extends JsonResource
         } else {
             $specificData = [
                 'roomId' => $this->room_id,
-                'room' => 'Habitación N° ' . $this->room->room_number,
+                'room' => 'Habitación N° ' . $this->room->number,
                 'customers' => CustomerResource::collection($this->customers),
                 'customersNumber' => $this->customers->count(),
             ];

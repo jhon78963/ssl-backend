@@ -83,7 +83,7 @@ class RoomController extends Controller
             $request,
             'Room',
             'Room',
-            'room_number'
+            'number'
         );
         return response()->json(new GetAllCollection(
             RoomResource::collection($query['collection']),

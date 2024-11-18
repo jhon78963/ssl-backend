@@ -24,7 +24,7 @@ class Room extends Model
      */
     protected $fillable = [
         'id',
-        'room_number',
+        'number',
         'room_type_id',
         'status',
     ];
@@ -61,6 +61,7 @@ class Room extends Model
     {
         return [
             'status' => RoomStatus::class,
+            'price' => 'float',
         ];
     }
 

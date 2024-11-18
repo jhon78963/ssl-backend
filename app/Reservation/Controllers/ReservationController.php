@@ -2,12 +2,14 @@
 
 namespace App\Reservation\Controllers;
 
+use App\Locker\Models\Locker;
 use App\Reservation\Models\Reservation;
 use App\Reservation\Requests\ReservationChangeStatus;
 use App\Reservation\Requests\ReservationCreateRequest;
 use App\Reservation\Requests\ReservationUpdateRequest;
 use App\Reservation\Resources\ReservationResource;
 use App\Reservation\Services\ReservationService;
+use App\Room\Models\Room;
 use App\Shared\Controllers\Controller;
 use App\Shared\Requests\GetAllRequest;
 use App\Shared\Resources\GetAllCollection;
@@ -59,6 +61,11 @@ class ReservationController extends Controller
             DB::rollback();
             return response()->json(['error' =>  $e->getMessage()]);
         }
+    }
+
+    public function facilities()
+    {
+        return $this->reservationService->facilities();
     }
 
     public function get(Reservation $reservation): JsonResponse

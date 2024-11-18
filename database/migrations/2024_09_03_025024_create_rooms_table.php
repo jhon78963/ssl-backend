@@ -24,7 +24,7 @@ return new class extends Migration
             $table->foreign('deleter_user_id')->references('id')->on('users');
             $table->datetime('deletion_time')->nullable();
             $table->unsignedBigInteger('room_type_id');
-            $table->integer('room_number');
+            $table->integer('number');
             $table->enum('status', ['AVAILABLE', 'IN_USE', 'IN_CLEANING'])->default('AVAILABLE');
             $table->foreign('room_type_id')->references('id')->on('room_types');
         });

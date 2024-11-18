@@ -22,7 +22,7 @@ class RoomUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'roomNumber' => 'sometimes|integer|min:1',
+            'number' => 'sometimes|integer|min:1',
             'roomTypeId' => 'sometimes|integer',
         ];
     }

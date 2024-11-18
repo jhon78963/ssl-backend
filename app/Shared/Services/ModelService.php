@@ -2,10 +2,10 @@
 
 namespace App\Shared\Services;
 
-use App\Shared\Requests\AddRequest;
 use App\User\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Collection;
 use Auth;
 
 class ModelService
@@ -37,6 +37,18 @@ class ModelService
     public function get(Model $model, string $column, string|int $data): ?Model
     {
         return $model->where($column, '=', $data)->first();
+    }
+
+    public function mergeModels(array $models): Collection
+    {
+        $collection = collect();
+        foreach ($models as $model) {
+            if ($model instanceof Model) {
+                $records = $model->where('is_deleted', '=', false)->get();
+                $collection = $collection->merge($records);
+            }
+        }
+        return $collection;
     }
 
     function update(Model $model, array $data): Model

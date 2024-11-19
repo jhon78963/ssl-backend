@@ -6,9 +6,9 @@ use App\Locker\Models\Locker;
 use App\Reservation\Models\Reservation;
 use App\Room\Models\Room;
 use App\Shared\Services\ModelService;
-use DB;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Collection;
+use DB;
 
 class ReservationService
 {
@@ -24,7 +24,7 @@ class ReservationService
         return $this->modelService->create(new Reservation(), $newReservation);
     }
 
-    public function facilities()
+    public function facilities(): Collection
     {
         $lockers = Locker::where('is_deleted', '=', false)
             ->select('id', DB::raw("CONCAT('L', number) as number"), 'status', 'price')

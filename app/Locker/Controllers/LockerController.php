@@ -32,9 +32,12 @@ class LockerController extends Controller
         try {
             $editLocker = $this->sharedService->convertCamelToSnake($request->validated());
             $lockerValidated = $this->lockerService->validate($locker, 'Locker');
-            $this->lockerService->update($lockerValidated, $editLocker);
+            $locker = $this->lockerService->update($lockerValidated, $editLocker);
             DB::commit();
-            return response()->json(['message' => 'Locker status changed.'], 201);
+            return response()->json( [
+                'message' => 'Locker status changed.',
+                'locker' => $locker,
+            ], 201);
         } catch (\Exception $e) {
             DB::rollback();
             return response()->json(['error' =>  $e->getMessage()]);

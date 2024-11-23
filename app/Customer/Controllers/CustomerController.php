@@ -42,7 +42,7 @@ class CustomerController extends Controller
             DB::commit();
             return response()->json([
                 'message' => 'Customer created.',
-                'customerId' => $createdCustomer->id
+                'customer' => $createdCustomer
             ], 201);
         } catch (\Exception $e) {
             DB::rollback();

@@ -32,9 +32,9 @@ class LockerService
         return $lockers;
     }
 
-    public function update(Locker $locker, array $editLocker): void
+    public function update(Locker $locker, array $editLocker): Locker
     {
-        $this->modelService->update($locker, $editLocker);
+        return $this->modelService->update($locker, $editLocker);
     }
 
     public function validate(Locker $locker, string $modelName): Locker

@@ -28,7 +28,11 @@ class ReservationService
     {
         $lockers = Locker::where('is_deleted', '=', false)
             ->select('id', DB::raw("CONCAT('L', number) as number"), 'status', 'price')
-            ->get();
+            ->get()
+            ->map(function (Locker $locker): Locker {
+                $locker->type = 'locker';
+                return $locker;
+            });
 
         $rooms = Room::where('is_deleted', '=', false)
             ->select('id', DB::raw("CONCAT('R', number) as number"), 'status')
@@ -39,9 +43,18 @@ class ReservationService
                         ->whereColumn('room_types.id', 'rooms.room_type_id');
                 },
             ])
-            ->get();
+            ->get()
+            ->map(function (Room $room): Room {
+                $room->type = 'room';
+                return $room;
+            });
 
-        return $lockers->concat($rooms);
+        return $lockers
+                ->concat($rooms)
+                ->sortBy(function (Locker|Room $item): int {
+                    preg_match('/\d+/', $item->number, $matches);
+                    return (int) $matches[0];
+                })->values();
     }
 
     public function update(Reservation $reservation, array $editReservation): void

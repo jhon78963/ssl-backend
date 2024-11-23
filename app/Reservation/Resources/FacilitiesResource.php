@@ -19,6 +19,7 @@ class FacilitiesResource extends JsonResource
             'number' => $this->number,
             'status' => $this->status,
             'price' => $this->price,
+            'type' => $this->type,
         ];
     }
 }

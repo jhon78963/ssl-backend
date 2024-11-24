@@ -2,7 +2,7 @@
 
 namespace App\Reservation\Controllers;
 
-use App\Customer\Models\Customer;
+use App\Locker\Models\Locker;
 use App\Reservation\Models\Reservation;
 use App\Service\Resources\ServiceGetAllAddResource;
 use App\Shared\Controllers\Controller;
@@ -11,7 +11,7 @@ use App\Shared\Services\ModelService;
 use Illuminate\Http\JsonResponse;
 use DB;
 
-class ReservationCustomerController extends Controller
+class ReservationLockerController extends Controller
 {
     protected ModelService $modelService;
 
@@ -20,16 +20,15 @@ class ReservationCustomerController extends Controller
         $this->modelService = $modelService;
     }
 
-    public function add(AddRequest $request, Reservation $reservation, Customer $customer): JsonResponse
+    public function add(AddRequest $request, Reservation $reservation, Locker $locker): JsonResponse
     {
         DB::beginTransaction();
         try {
-            $customerCount = $reservation->customers()->count();
-            $price = $customerCount >= 2 ? $request->input('price') : 0;
+            $price = $request->input('price');
             $this->modelService->attach(
                 $reservation,
                 'customers',
-                $customer->id,
+                $locker->id,
                 $price,
                 1,
             );
@@ -47,23 +46,21 @@ class ReservationCustomerController extends Controller
 
     public function getAll(Reservation $reservation): JsonResponse
     {
-        $customers = $reservation->customers()->get();
-        return response()->json( ServiceGetAllAddResource::collection($customers));
+        $lockers = $reservation->lockers()->get();
+        return response()->json( ServiceGetAllAddResource::collection($lockers));
     }
 
-    public function remove(Reservation $reservation, Customer $customer, float $price): JsonResponse
+    public function remove(Reservation $reservation, Locker $locker, float $price): JsonResponse
     {
         DB::beginTransaction();
         try {
-            $customerCount = $reservation->customers()->count();
-            $priceT = $customerCount > 2 ? $price : 0;
-            $this->modelService->detach($reservation, 'customers', $customer->id);
+            $this->modelService->detach($reservation, 'lockers', $locker->id);
             $editReservation = [
-                'total' => $reservation->total - $priceT,
+                'total' => $reservation->total - $price,
             ];
             $this->modelService->update($reservation, $editReservation);
             DB::commit();
-            return response()->json(['message' => 'Customer removed from the reservation']);
+            return response()->json(['message' => 'Locker removed from the reservation']);
         } catch (\Exception $e) {
             DB::rollback();
             return response()->json(['error' => $e->getMessage()]);

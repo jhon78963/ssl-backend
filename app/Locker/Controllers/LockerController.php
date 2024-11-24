@@ -8,6 +8,7 @@ use App\Locker\Requests\LockerCreateRequest;
 use App\Locker\Requests\LockerUpdateRequest;
 use App\Locker\Resources\LockerResource;
 use App\Locker\Services\LockerService;
+use App\Reservation\Resources\FacilitiesResource;
 use App\Shared\Controllers\Controller;
 use App\Shared\Requests\GetAllRequest;
 use App\Shared\Resources\GetAllCollection;
@@ -36,7 +37,7 @@ class LockerController extends Controller
             DB::commit();
             return response()->json( [
                 'message' => 'Locker status changed.',
-                'locker' => $locker,
+                'locker' => new FacilitiesResource($locker),
             ], 201);
         } catch (\Exception $e) {
             DB::rollback();

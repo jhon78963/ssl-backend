@@ -62,7 +62,7 @@ class ReservationController extends Controller
         }
     }
 
-    public function facilities()
+    public function facilities(): JsonResponse
     {
         return response()->json(
             FacilitiesResource::collection(

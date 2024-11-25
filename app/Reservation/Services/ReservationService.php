@@ -24,13 +24,14 @@ class ReservationService
         return $this->modelService->create(new Reservation(), $newReservation);
     }
 
-    public function facilities(): Collection
+    public function facilities()
     {
-        $lockers = Locker::where('is_deleted', '=', false)
+        $lockers = Locker::with('reservations')->where('is_deleted', '=', false)
             ->select('id', DB::raw("CONCAT('L', number) as number"), 'status', 'price')
             ->get()
             ->map(function (Locker $locker): Locker {
                 $locker->type = 'locker';
+                $locker->reservation_id = $locker->reservations->first()?->id;
                 return $locker;
             });
 

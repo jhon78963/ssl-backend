@@ -83,9 +83,16 @@ class Reservation extends Model
         return $this->belongsTo(Locker::class);
     }
 
+    // public function lockers(): BelongsToMany
+    // {
+    //     return $this->belongsToMany(Locker::class);
+    // }
+
     public function lockers(): BelongsToMany
     {
-        return $this->belongsToMany(Locker::class);
+        return $this->belongsToMany(
+            Locker::class,
+        );
     }
 
     public function products(): BelongsToMany

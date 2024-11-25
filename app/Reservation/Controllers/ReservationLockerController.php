@@ -24,20 +24,15 @@ class ReservationLockerController extends Controller
     {
         DB::beginTransaction();
         try {
-            $price = $request->input('price');
             $this->modelService->attach(
                 $reservation,
-                'customers',
+                'lockers',
                 $locker->id,
-                $price,
+                $request->input('price'),
                 1,
             );
-            $editReservation = [
-                'total' => $reservation->total + $price,
-            ];
-            $this->modelService->update($reservation, $editReservation);
             DB::commit();
-            return response()->json(['message' => 'Customer added to the reservation.'], 201);
+            return response()->json(['message' => 'Locker added to the reservation.'], 201);
         } catch (\Exception $e) {
             DB::rollback();
             return response()->json($e->getMessage());

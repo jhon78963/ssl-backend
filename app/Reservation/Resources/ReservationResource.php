@@ -18,33 +18,22 @@ class ReservationResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $baseData = [
+        return [
             'id' => $this->id,
             'reservationDate' => $this->dateFormat($this->reservation_date),
             'total' => $this->total,
-            'totalString' => "S/ $this->total",
             'status' => $this->status->label(),
             'products' => ProductResource::collection($this->products),
             'services' => ServiceResource::collection($this->services),
+            'customer' => [
+                'id' => $this->customer_id,
+                'name' => $this->customer->name,
+                'surname' => $this->customer->surname,
+            ],
+            'facilities' => $this->room_id
+                ? RoomsResource::collection([$this->room])
+                : LockersResource::collection($this->lockers),
         ];
-
-        if ($this->customer_id) {
-            $specificData = [
-                'customerId' => $this->customer_id,
-                'customer' => $this->customer->name . ' ' . $this->customer->surname,
-                'lockerId' => $this->locker_id,
-                'locker' => 'N°' . $this->locker->number,
-            ];
-        } else {
-            $specificData = [
-                'roomId' => $this->room_id,
-                'room' => 'Habitación N° ' . $this->room->number,
-                'customers' => CustomerResource::collection($this->customers),
-                'customersNumber' => $this->customers->count(),
-            ];
-        }
-
-        return array_merge($baseData, $specificData);
     }
 
     private function dateFormat($date): string|null {

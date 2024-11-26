@@ -22,6 +22,7 @@ use App\RoomType\Seeders\RoomTypeSeeder;
 use App\Service\Seeders\ServiceSeeder;
 use App\Unit\Seeders\UnitSeeder;
 use App\User\Seeders\UserSeed;
+use App\Room\Seeders\RoomSeeder;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -53,6 +54,7 @@ class DatabaseSeeder extends Seeder
             ProductGroceryBasketSeeder::class,
             ServiceSeeder::class,
             ReservationTypeSeeder::class,
+            RoomSeeder::class,
         ]);
     }
 }

@@ -3,10 +3,12 @@
 namespace App\Reservation\Controllers;
 
 use App\Reservation\Models\Reservation;
+use App\Reservation\Requests\ProductSearchRequest;
 use App\Reservation\Requests\ReservationChangeStatus;
 use App\Reservation\Requests\ReservationCreateRequest;
 use App\Reservation\Requests\ReservationUpdateRequest;
 use App\Reservation\Resources\FacilitiesResource;
+use App\Reservation\Resources\ProductsResource;
 use App\Reservation\Resources\ReservationResource;
 use App\Reservation\Services\ReservationService;
 use App\Shared\Controllers\Controller;
@@ -68,6 +70,15 @@ class ReservationController extends Controller
             FacilitiesResource::collection(
                 $this->reservationService->facilities(),
             ),
+        );
+    }
+
+    public function products(ProductSearchRequest $request): JsonResponse
+    {
+        $nameFilter = $request->input('name');
+        $products = $nameFilter ? $this->reservationService->products($nameFilter) : [];
+        return response()->json(
+            ProductsResource::collection($products)
         );
     }
 

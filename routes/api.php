@@ -247,6 +247,7 @@ Route::group([
         // Route::delete('/reservations/{reservation}', 'delete');
         Route::get('/reservations', 'getAll');
         Route::get('/reservations/facilities', 'facilities');
+        Route::get('/reservations/products', 'products');
         Route::get('/reservations/{reservation}', 'get');
     });
 

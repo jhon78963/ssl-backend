@@ -3,8 +3,10 @@
 namespace App\Reservation\Services;
 
 use App\Locker\Models\Locker;
+use App\Product\Models\Product;
 use App\Reservation\Models\Reservation;
 use App\Room\Models\Room;
+use App\Service\Models\Service;
 use App\Shared\Services\ModelService;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Collection;
@@ -24,7 +26,7 @@ class ReservationService
         return $this->modelService->create(new Reservation(), $newReservation);
     }
 
-    public function facilities()
+    public function facilities(): Collection
     {
         $lockers = Locker::with('reservations')->where('is_deleted', '=', false)
             ->select('id', DB::raw("CONCAT('L', number) as number"), 'status', 'price')
@@ -56,6 +58,33 @@ class ReservationService
                     preg_match('/\d+/', $item->number, $matches);
                     return (int) $matches[0];
                 })->values();
+    }
+
+    public function products(?string $nameFilter = null): Collection
+    {
+        $products = Product::where('is_deleted', '=', false)
+            ->when($nameFilter, function ($query) use ($nameFilter) {
+                $query->whereRaw('LOWER(name) LIKE ?', [strtolower("{$nameFilter}%")]);
+            })
+            ->select('id', 'name', 'price')
+            ->get()
+            ->map(function (Product $product): Product {
+                $product->type = 'product';
+                return $product;
+            });
+
+        $services = Service::where('is_deleted', '=', false)
+            ->when($nameFilter, function ($query) use ($nameFilter) {
+                $query->whereRaw('LOWER(name) LIKE ?', [strtolower("{$nameFilter}%")]);
+            })
+            ->select('id', 'name', 'price')
+            ->get()
+            ->map(function (Service $service): Service {
+                $service->type = 'service';
+                return $service;
+            });
+
+        return $products->concat($services);
     }
 
     public function update(Reservation $reservation, array $editReservation): void

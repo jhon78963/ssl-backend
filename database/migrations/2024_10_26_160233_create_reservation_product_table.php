@@ -19,6 +19,7 @@ return new class extends Migration
             $table->primary(['reservation_id', 'product_id']);
             $table->integer('quantity');
             $table->float('price');
+            $table->boolean('is_paid')->default(false);
         });
     }
 

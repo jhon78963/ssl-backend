@@ -31,6 +31,7 @@ class ReservationProductController extends Controller
                 $product->id,
                 $product->price,
                 $request->input('quantity'),
+                $request->input('isPaid'),
             );
             $editReservation = [
                 'total' => $reservation->total + $product->price * $request->input('quantity'),

@@ -10,9 +10,25 @@ use Auth;
 
 class ModelService
 {
-    public function attach(Model $model, string $relation, int $id, float $price = 0, int $quantity = 0): void
-    {
-        $model->$relation()->attach($id, ['price' => $price, 'quantity' => $quantity]);
+    public function attach(
+        Model $model,
+        string $relation,
+        int $id,
+        ?float $price = null,
+        ?int $quantity = null,
+        ?bool $isPaid = null,
+    ): void {
+        $attributes = [];
+        if (!$price) {
+            $attributes['price'] = $price;
+        }
+        if (!$quantity) {
+            $attributes['quantity'] = $quantity;
+        }
+        if (!$isPaid) {
+            $attributes['is_paid'] = $isPaid;
+        }
+        $model->$relation()->attach($id, $attributes);
     }
 
     function create(Model $model, array $data): Model

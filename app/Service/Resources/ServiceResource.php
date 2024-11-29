@@ -14,42 +14,14 @@ class ServiceResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        if ($this->price) {
-            return [
-                'id' => $this->id,
-                'name' => $this->name,
-                'quantity' => $this->pivot->quantity,
-                'price' => $this->price,
-                'priceString' => "S/ $this->price",
-            ];
-
-        } else {
-            return [
-                'id' => $this->id,
-                'name' => $this->name,
-                'times' => $this->prepareData(),
-            ];
-        }
-    }
-
-    private function prepareData(): mixed
-    {
-        return $this->times->map(function ($unit): array {
-            return [
-                'timeString' => $this->getTimeString($unit->quantity),
-                'priceString' => 'S/ ' . $unit->pivot->price,
-                'time' => $unit->quantity,
-                'price' => $unit->pivot->price,
-            ];
-        });
-    }
-
-    private function getTimeString($hour): string
-    {
-        return match ($hour) {
-            "0.5" => "1/2 hora",
-            "1" => "$hour hora",
-            default => "$hour horas",
-        };
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'price' => $this->price,
+            'quantity' => $this->pivot->quantity,
+            'total' => $this->price * $this->pivot->quantity,
+            'isPaid' => $this->pivot->is_paid,
+            'type' => 'service'
+        ];
     }
 }

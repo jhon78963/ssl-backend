@@ -19,13 +19,13 @@ class ModelService
         ?bool $isPaid = null,
     ): void {
         $attributes = [];
-        if (!$price) {
+        if ($price !== null) {
             $attributes['price'] = $price;
         }
-        if (!$quantity) {
+        if ($quantity !== null) {
             $attributes['quantity'] = $quantity;
         }
-        if (!$isPaid) {
+        if ($isPaid !== null) {
             $attributes['is_paid'] = $isPaid;
         }
         $model->$relation()->attach($id, $attributes);

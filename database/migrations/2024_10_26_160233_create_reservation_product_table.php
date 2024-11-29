@@ -16,10 +16,10 @@ return new class extends Migration
             $table->foreign('reservation_id')->references('id')->on('reservations');
             $table->unsignedBigInteger('product_id');
             $table->foreign('product_id')->references('id')->on('products');
-            $table->primary(['reservation_id', 'product_id']);
+            $table->boolean('is_paid')->default(false);
+            $table->primary(['reservation_id', 'product_id', 'is_paid']);
             $table->integer('quantity');
             $table->float('price');
-            $table->boolean('is_paid')->default(false);
         });
     }
 

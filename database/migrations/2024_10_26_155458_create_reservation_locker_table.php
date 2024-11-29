@@ -16,7 +16,8 @@ return new class extends Migration
             $table->foreign('reservation_id')->references('id')->on('reservations');
             $table->unsignedBigInteger('locker_id');
             $table->foreign('locker_id')->references('id')->on('lockers');
-            $table->primary(['reservation_id', 'locker_id']);
+            $table->boolean('is_paid')->default(false);
+            $table->primary(['reservation_id', 'locker_id', 'is_paid']);
             $table->float('price')->default(0);
             $table->integer('quantity')->default(1);
         });

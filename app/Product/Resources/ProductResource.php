@@ -20,6 +20,8 @@ class ProductResource extends JsonResource
             'price' => $this->price,
             'quantity' => $this->pivot->quantity,
             'total' => $this->price * $this->pivot->quantity,
+            'isPaid' => $this->pivot->is_paid,
+            'type' => 'product'
         ];
     }
 }

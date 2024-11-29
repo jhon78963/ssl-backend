@@ -56,12 +56,8 @@ class Service extends Model
         ];
     }
 
-    public function times(): BelongsToMany {
-        return $this->belongsToMany(Unit::class)->withPivot('price');
-    }
-
     public function reservations(): BelongsToMany
     {
-        return $this->belongsToMany(Reservation::class)->withPivot(['price', 'quantity']);;
+        return $this->belongsToMany(Reservation::class)->withPivot(['price', 'quantity', 'is_paid']);
     }
 }

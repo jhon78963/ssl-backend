@@ -18,6 +18,7 @@ class LockersResource extends JsonResource
             'id' => $this->id,
             'number' => "L$this->number",
             'status' => $this->status,
+            'price' => $this->price,
             'type' => 'locker',
         ];
     }

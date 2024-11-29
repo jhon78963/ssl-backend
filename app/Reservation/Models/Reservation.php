@@ -97,7 +97,7 @@ class Reservation extends Model
 
     public function products(): BelongsToMany
     {
-        return $this->belongsToMany(Product::class)->withPivot(['price', 'quantity']);
+        return $this->belongsToMany(Product::class)->withPivot(['price', 'quantity', 'is_paid']);
     }
 
     public function reservationType(): BelongsTo
@@ -111,6 +111,6 @@ class Reservation extends Model
 
     public function services(): BelongsToMany
     {
-        return $this->belongsToMany(Service::class)->withPivot(['price', 'quantity']);;
+        return $this->belongsToMany(Service::class)->withPivot(['price', 'quantity', 'is_paid']);
     }
 }

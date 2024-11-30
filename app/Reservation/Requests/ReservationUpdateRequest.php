@@ -24,6 +24,7 @@ class ReservationUpdateRequest extends FormRequest
         return [
             'reservationDate' => 'sometimes',
             'total' => 'sometimes|numeric',
+            'totalPaid' => 'nullable|numeric',
             'status' => 'nullable|string',
             'customerId' => 'nullable|integer',
             'lockerId' => 'nullable|integer',

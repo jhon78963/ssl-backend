@@ -65,6 +65,16 @@ class Product extends Model
 
     public function reservations(): BelongsToMany
     {
-        return $this->belongsToMany(Reservation::class)->withPivot(['price', 'quantity', 'is_paid']);
+        return $this->belongsToMany(
+            Reservation::class,
+            'reservation_product',
+        )->withPivot(['price', 'quantity', 'is_paid']);
+    }
+
+    public function units(): BelongsToMany {
+        return $this->belongsToMany(
+            Unit::class,
+            'unit_product'
+        );
     }
 }

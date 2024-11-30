@@ -17,6 +17,7 @@ use App\Rate\Controllers\RateHourController;
 use App\Reservation\Controllers\ReservationController;
 use App\Reservation\Controllers\ReservationLockerController;
 use App\Reservation\Controllers\ReservationProductController;
+use App\Reservation\Controllers\ReservationRoomController;
 use App\Reservation\Controllers\ReservationServiceController;
 use App\ReservationType\Controllers\ReservationTypeController;
 use App\Review\Controllers\ReviewController;
@@ -269,5 +270,11 @@ Route::group([
         Route::post('/lockers/{reservation}/add/{locker}', 'add');
         Route::delete('/lockers/{reservation}/remove/{locker}/price/{price}', 'remove');
         Route::get('/lockers/{reservation}/all', 'getAll');
+    });
+
+    Route::controller(ReservationRoomController::class)->group(function() {
+        Route::post('/rooms/{reservation}/add/{room}', 'add');
+        Route::delete('/rooms/{reservation}/remove/{room}/price/{price}', 'remove');
+        Route::get('/rooms/{reservation}/all', 'getAll');
     });
 });

@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('locker_reservation', function (Blueprint $table) {
+        Schema::create('reservation_locker', function (Blueprint $table) {
             $table->unsignedBigInteger('reservation_id');
             $table->foreign('reservation_id')->references('id')->on('reservations');
             $table->unsignedBigInteger('locker_id');
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('locker_reservation');
+        Schema::dropIfExists('reservation_locker');
     }
 };

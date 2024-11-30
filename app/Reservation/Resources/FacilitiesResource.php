@@ -14,26 +14,13 @@ class FacilitiesResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        switch ($this->type) {
-            case 'room':
-                $reservation = $this->reservationsInUse->first();
-                return [
-                    'id' => $this->id,
-                    'number' => $this->number,
-                    'status' => $this->status,
-                    'price' => $this->price,
-                    'type' => $this->type,
-                    'reservationId' => $reservation?->id,
-                ];
-            default:
-                return [
-                    'id' => $this->id,
-                    'number' => $this->number,
-                    'status' => $this->status,
-                    'price' => $this->price,
-                    'type' => $this->type,
-                    'reservationId' => $this->reservation_id,
-                ];
-        }
+        return [
+            'id' => $this->id,
+            'number' => $this->number,
+            'status' => $this->status,
+            'price' => $this->price,
+            'type' => $this->type,
+            'reservationId' => $this->reservation_id,
+        ];
     }
 }

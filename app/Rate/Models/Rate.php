@@ -56,6 +56,9 @@ class Rate extends Model
 
     public function roomTypes(): BelongsToMany
     {
-        return $this->belongsToMany(RoomType::class);
+        return $this->belongsToMany(
+            RoomType::class,
+            'room_type_rate',
+        );
     }
 }

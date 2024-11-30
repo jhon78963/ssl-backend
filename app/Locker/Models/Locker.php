@@ -65,18 +65,17 @@ class Locker extends Model
         return $this->belongsTo(Gender::class);
     }
 
-    // public function reservations(): HasMany {
-    //     return $this->hasMany(Reservation::class);
-    // }
-
     public function reservations(): BelongsToMany
     {
         return $this->belongsToMany(
             Reservation::class,
-        );
+            'reservation_locker',
+        )->withPivot(['price', 'quantity', 'is_paid']);
     }
 
     public function reservationsInUse(): HasMany {
-        return $this->hasMany(Reservation::class)->where('status', 'IN_USE');
+        return $this->hasMany(
+            Reservation::class
+        )->where('status', 'IN_USE');
     }
 }

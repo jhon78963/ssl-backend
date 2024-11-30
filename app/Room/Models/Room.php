@@ -71,16 +71,22 @@ class Room extends Model
 
     public function images(): BelongsToMany
     {
-        return $this->belongsToMany(Image::class);
+        return $this->belongsToMany(
+            Image::class,
+            'room_image'
+        );
     }
 
     public function reviews(): HasMany {
         return $this->hasMany(Review::class);
     }
 
-    public function reservations(): HasMany
+    public function reservations(): BelongsToMany
     {
-        return $this->hasMany(Reservation::class);
+        return $this->belongsToMany(
+            Reservation::class,
+            'reservation_room',
+        )->withPivot(['price', 'quantity', 'is_paid']);
     }
 
     public function reservationsInUse(): HasMany {

@@ -45,10 +45,16 @@ class Unit extends Model
     public $timestamps = false;
 
     public function products(): BelongsToMany {
-        return $this->belongsToMany(Product::class);
+        return $this->belongsToMany(
+            Product::class,
+            'unit_product'
+        );
     }
 
     public function services(): BelongsToMany {
-        return $this->belongsToMany(Service::class)->withPivot('price');
+        return $this->belongsToMany(
+            Service::class,
+            'unit_service'
+        )->withPivot('price');
     }
 }

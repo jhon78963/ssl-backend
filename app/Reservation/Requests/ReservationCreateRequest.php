@@ -24,6 +24,7 @@ class ReservationCreateRequest extends FormRequest
         return [
             'reservationDate' => 'required',
             'total' => 'required|numeric',
+            'totalPaid' => 'nullable|numeric',
             'status' => 'nullable|string',
             'customerId' => 'nullable|integer',
             'lockerId' => 'nullable|integer',

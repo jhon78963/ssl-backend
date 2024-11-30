@@ -30,8 +30,8 @@ class ReservationResource extends JsonResource
                 'name' => $this->customer->name,
                 'surname' => $this->customer->surname,
             ],
-            'facilities' => $this->room_id
-                ? RoomsResource::collection([$this->room])
+            'facilities' => $this->rooms->isNotEmpty()
+                ? RoomsResource::collection($this->rooms)
                 : LockersResource::collection($this->lockers),
         ];
     }

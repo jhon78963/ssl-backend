@@ -49,6 +49,7 @@ class ReservationService
             ->get()
             ->map(function (Room $room): Room {
                 $room->type = 'room';
+                $room->reservation_id = $room->reservations->first()?->id;
                 return $room;
             });
 

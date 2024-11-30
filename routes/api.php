@@ -16,6 +16,7 @@ use App\Rate\Controllers\RateDayController;
 use App\Rate\Controllers\RateHourController;
 use App\Reservation\Controllers\ReservationController;
 use App\Reservation\Controllers\ReservationLockerController;
+use App\Reservation\Controllers\ReservationPaymentTypeController;
 use App\Reservation\Controllers\ReservationProductController;
 use App\Reservation\Controllers\ReservationRoomController;
 use App\Reservation\Controllers\ReservationServiceController;
@@ -276,5 +277,14 @@ Route::group([
         Route::post('/rooms/{reservation}/add/{room}', 'add');
         Route::delete('/rooms/{reservation}/remove/{room}/price/{price}', 'remove');
         Route::get('/rooms/{reservation}/all', 'getAll');
+    });
+
+    Route::controller(ReservationPaymentTypeController::class)->group(function() {
+        Route::post('/payment-types/{reservation}/add/{paymentType}', 'add');
+        Route::delete(
+            '/payment-types/{reservation}/remove/{paymentType}/cash-payment/{cashPayment}/card-payment/{cardPayment}',
+            'remove'
+        );
+        Route::get('/payment-types/{reservation}/all', 'getAll');
     });
 });

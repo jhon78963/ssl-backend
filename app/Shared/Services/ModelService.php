@@ -17,6 +17,8 @@ class ModelService
         ?float $price = null,
         ?int $quantity = null,
         ?bool $isPaid = null,
+        ?float $cashPayment = null,
+        ?float $cardPayment = null,
     ): void {
         $attributes = [];
         if ($price !== null) {
@@ -27,6 +29,12 @@ class ModelService
         }
         if ($isPaid !== null) {
             $attributes['is_paid'] = $isPaid;
+        }
+        if ($cashPayment !== null) {
+            $attributes['cash_payment'] = $cashPayment;
+        }
+        if ($cardPayment !== null) {
+            $attributes['card_payment'] = $cardPayment;
         }
         $model->$relation()->attach($id, $attributes);
     }

@@ -6,6 +6,7 @@ use App\Category\Seeders\CategorySeeder;
 use App\Company\Seeders\CompanySeed;
 use App\Gender\Seeders\GenderSeeder;
 use App\Locker\Seeders\LockerSeeder;
+use App\PaymentType\Seeders\PaymentTypeSeeder;
 use App\Product\Seeders\ProductFoodAppetizersSeeder;
 use App\Product\Seeders\ProductFoodCocktailsSeeder;
 use App\Product\Seeders\ProductFoodDessertsSeeder;
@@ -55,6 +56,7 @@ class DatabaseSeeder extends Seeder
             ServiceSeeder::class,
             ReservationTypeSeeder::class,
             RoomSeeder::class,
+            PaymentTypeSeeder::class,
         ]);
     }
 }

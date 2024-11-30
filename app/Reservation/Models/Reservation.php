@@ -4,6 +4,7 @@ namespace App\Reservation\Models;
 
 use App\Customer\Models\Customer;
 use App\Locker\Models\Locker;
+use App\PaymentType\Models\PaymentType;
 use App\Product\Models\Product;
 use App\Reservation\Enums\ReservationStatus;
 use App\ReservationType\Models\ReservationType;
@@ -121,7 +122,15 @@ class Reservation extends Model
     public function services(): BelongsToMany
     {
         return $this->belongsToMany(
-            Service::class
+            Service::class,
         )->withPivot(['price', 'quantity', 'is_paid']);
+    }
+
+    public function paymentTypes(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            PaymentType::class,
+            'reservation_payment_type',
+        )->withPivot(['cash_payment', 'card_payment']);
     }
 }

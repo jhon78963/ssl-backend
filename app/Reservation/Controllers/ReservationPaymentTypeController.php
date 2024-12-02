@@ -28,6 +28,9 @@ class ReservationPaymentTypeController extends Controller
                 $reservation,
                 'paymentTypes',
                 $paymentType->id,
+                null,
+                null,
+                null,
                 $request->input('cashPayment'),
                 $request->input('cardPayment'),
             );

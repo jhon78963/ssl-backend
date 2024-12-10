@@ -27,8 +27,6 @@ class ReservationUpdateRequest extends FormRequest
             'totalPaid' => 'nullable|numeric',
             'status' => 'nullable|string',
             'customerId' => 'nullable|integer',
-            'lockerId' => 'nullable|integer',
-            'roomId' => 'nullable|integer',
             'reservationTypeId' => 'sometimes|integer',
         ];
     }

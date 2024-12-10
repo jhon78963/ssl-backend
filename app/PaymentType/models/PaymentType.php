@@ -47,6 +47,6 @@ class PaymentType extends Model
         return $this->belongsToMany(
             Reservation::class,
             'reservation_payment_type',
-        )->withPivot(['cash_payment', 'card_payment']);
+        )->withPivot(['payment', 'cash_payment', 'card_payment']);
     }
 }

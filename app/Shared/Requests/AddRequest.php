@@ -25,6 +25,7 @@ class AddRequest extends FormRequest
             'quantity' => 'nullable|integer',
             'price' => 'nullable',
             'isPaid' => 'nullable',
+            'payment' => 'nullable',
             'cashPayment' => 'nullable',
             'cardPayment' => 'nullable',
         ];

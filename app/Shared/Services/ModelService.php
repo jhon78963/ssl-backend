@@ -17,6 +17,7 @@ class ModelService
         ?float $price = null,
         ?int $quantity = null,
         ?bool $isPaid = null,
+        ?float $payment = null,
         ?float $cashPayment = null,
         ?float $cardPayment = null,
     ): void {
@@ -29,6 +30,9 @@ class ModelService
         }
         if ($isPaid !== null) {
             $attributes['is_paid'] = $isPaid;
+        }
+        if ($payment !== null) {
+            $attributes['payment'] = $payment;
         }
         if ($cashPayment !== null) {
             $attributes['cash_payment'] = $cashPayment;

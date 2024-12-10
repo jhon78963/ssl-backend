@@ -25,12 +25,8 @@ return new class extends Migration
             $table->datetime('deletion_time')->nullable();
             $table->integer('reservation_type_id');
             $table->foreign('reservation_type_id')->references('id')->on('reservation_types');
-            // $table->integer('room_id')->nullable();
-            // $table->foreign('room_id')->references('id')->on('rooms');
             $table->integer('customer_id')->nullable();
             $table->foreign('customer_id')->references('id')->on('customers');
-            // $table->integer('locker_id')->nullable();
-            // $table->foreign('locker_id')->references('id')->on('lockers');
             $table->datetime('reservation_date');
             $table->float('total')->nullable();
             $table->float('total_paid')->nullable();

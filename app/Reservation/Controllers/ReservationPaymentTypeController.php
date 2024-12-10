@@ -31,6 +31,7 @@ class ReservationPaymentTypeController extends Controller
                 null,
                 null,
                 null,
+                $request->input('payment'),
                 $request->input('cashPayment'),
                 $request->input('cardPayment'),
             );
@@ -51,6 +52,7 @@ class ReservationPaymentTypeController extends Controller
     public function remove(
         Reservation $reservation,
         PaymentType $paymentType,
+        float $payment,
         float $cashPayment,
         float $cardPayment
     ): JsonResponse {
@@ -58,7 +60,7 @@ class ReservationPaymentTypeController extends Controller
         try {
             $this->modelService->detach($reservation, 'paymentTypes', $paymentType->id);
             $editReservation = [
-                'total' => $reservation->total - $cashPayment - $cardPayment,
+                'total' => $reservation->total - ($paymentType->id == 3 ? $cashPayment + $cardPayment : $payment),
             ];
             $this->modelService->update($reservation, $editReservation);
             DB::commit();

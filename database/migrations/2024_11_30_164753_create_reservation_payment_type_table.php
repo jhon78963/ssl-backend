@@ -17,6 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('payment_type_id');
             $table->foreign('payment_type_id')->references('id')->on('payment_types');
             $table->primary(['reservation_id', 'payment_type_id']);
+            $table->float('payment')->default(0);
             $table->float('cash_payment')->default(0);
             $table->float('card_payment')->default(0);
         });

@@ -2,7 +2,7 @@
 
 namespace App\Reservation\Resources;
 
-use App\Customer\Resources\CustomerResource;
+use App\PaymentType\Resources\PaymentTypeResource;
 use App\Product\Resources\ProductResource;
 use App\Service\Resources\ServiceResource;
 use Carbon\Carbon;
@@ -23,6 +23,7 @@ class ReservationResource extends JsonResource
             'reservationDate' => $this->dateFormat($this->reservation_date),
             'total' => $this->total,
             'status' => $this->status->label(),
+            'paymentTypes' => PaymentTypeResource::collection($this->paymentTypes),
             'products' => ProductResource::collection($this->products),
             'services' => ServiceResource::collection($this->services),
             'customer' => [

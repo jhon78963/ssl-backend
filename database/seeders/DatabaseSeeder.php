@@ -56,7 +56,7 @@ class DatabaseSeeder extends Seeder
             ServiceSeeder::class,
             ReservationTypeSeeder::class,
             RoomSeeder::class,
-            PaymentTypeSeeder::class,
+            // PaymentTypeSeeder::class,
         ]);
     }
 }

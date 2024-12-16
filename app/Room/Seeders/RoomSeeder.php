@@ -2,6 +2,7 @@
 
 namespace App\Room\Seeders;
 
+use App\PaymentType\Models\PaymentType;
 use App\Room\Models\Room;
 use Illuminate\Database\Seeder;
 
@@ -71,5 +72,17 @@ class RoomSeeder extends Seeder
         $room->number = '212';
         $room->room_type_id = 3;
         $room->save();
+
+        $paymentTYpe = new PaymentType();
+        $paymentTYpe->description = 'Efectivo';
+        $paymentTYpe->save();
+
+        $paymentTYpe = new PaymentType();
+        $paymentTYpe->description = 'Tarjeta';
+        $paymentTYpe->save();
+
+        $paymentTYpe = new PaymentType();
+        $paymentTYpe->description = 'Mixto';
+        $paymentTYpe->save();
     }
 }

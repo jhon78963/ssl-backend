@@ -72,17 +72,5 @@ class RoomSeeder extends Seeder
         $room->number = '212';
         $room->room_type_id = 3;
         $room->save();
-
-        $paymentTYpe = new PaymentType();
-        $paymentTYpe->description = 'Efectivo';
-        $paymentTYpe->save();
-
-        $paymentTYpe = new PaymentType();
-        $paymentTYpe->description = 'Tarjeta';
-        $paymentTYpe->save();
-
-        $paymentTYpe = new PaymentType();
-        $paymentTYpe->description = 'Mixto';
-        $paymentTYpe->save();
     }
 }

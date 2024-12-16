@@ -12,11 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('reservation_payment_type', function (Blueprint $table) {
-            $table->unsignedBigInteger(column: 'reservation_id');
+            $table->id();
+            $table->unsignedBigInteger('reservation_id');
             $table->foreign('reservation_id')->references('id')->on('reservations');
             $table->unsignedBigInteger('payment_type_id');
             $table->foreign('payment_type_id')->references('id')->on('payment_types');
-            $table->primary(['reservation_id', 'payment_type_id']);
             $table->float('payment')->default(0);
             $table->float('cash_payment')->default(0);
             $table->float('card_payment')->default(0);

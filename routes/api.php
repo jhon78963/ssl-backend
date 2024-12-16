@@ -244,7 +244,7 @@ Route::group([
 
     Route::controller(ReservationController::class)->group(function() {
         Route::post('/reservations', 'create');
-        Route::patch('/reservations/change-status/{reservation}', 'update');
+        Route::patch('/reservations/change-status/{reservation}', 'changeStatus');
         Route::patch('/reservations/{reservation}', 'update');
         // Route::delete('/reservations/{reservation}', 'delete');
         Route::get('/reservations', 'getAll');
@@ -255,6 +255,7 @@ Route::group([
 
     Route::controller(ReservationProductController::class)->group(function() {
         Route::post('/products/{reservation}/add/{product}', 'add');
+        Route::post('/products/{reservation}/modify/{product}', 'modify');
         Route::delete('/products/{reservation}/remove/{product}/quantity/{quantity}', 'remove');
         Route::get('/products/{reservation}/all', 'getAll');
         Route::get('/products/{reservation}/left', 'getLeft');
@@ -262,6 +263,7 @@ Route::group([
 
     Route::controller(ReservationServiceController::class)->group(function() {
         Route::post('/services/{reservation}/add/{service}', 'add');
+        Route::post('/services/{reservation}/modify/{service}', 'modify');
         Route::delete('/services/{reservation}/remove/{service}/quantity/{quantity}', 'remove');
         Route::get('/services/{reservation}/all', 'getAll');
         Route::get('/services/{reservation}/left', 'getLeft');
@@ -269,12 +271,14 @@ Route::group([
 
     Route::controller(ReservationLockerController::class)->group(function() {
         Route::post('/lockers/{reservation}/add/{locker}', 'add');
+        Route::post('/lockers/{reservation}/modify/{locker}', 'modify');
         Route::delete('/lockers/{reservation}/remove/{locker}/price/{price}', 'remove');
         Route::get('/lockers/{reservation}/all', 'getAll');
     });
 
     Route::controller(ReservationRoomController::class)->group(function() {
         Route::post('/rooms/{reservation}/add/{room}', 'add');
+        Route::post('/rooms/{reservation}/modify/{room}', 'modify');
         Route::delete('/rooms/{reservation}/remove/{room}/price/{price}', 'remove');
         Route::get('/rooms/{reservation}/all', 'getAll');
     });

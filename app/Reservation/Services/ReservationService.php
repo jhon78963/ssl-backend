@@ -28,7 +28,13 @@ class ReservationService
 
     public function facilities(): Collection
     {
-        $lockers = Locker::with('reservations')->where('is_deleted', '=', false)
+        $lockers = Locker::with(
+            [
+                'reservations' => function ($query) {
+                    $query->where('status', '!=', 'COMPLETED');
+                }
+            ])
+            ->where('is_deleted', '=', false)
             ->select('id', DB::raw("CONCAT('L', number) as number"), 'status', 'price')
             ->get()
             ->map(function (Locker $locker): Locker {
@@ -37,7 +43,13 @@ class ReservationService
                 return $locker;
             });
 
-        $rooms = Room::where('is_deleted', '=', false)
+        $rooms = Room::with(
+            [
+                'reservations' => function ($query) {
+                    $query->where('status', '!=', 'COMPLETED');
+                }
+            ])
+            ->where('is_deleted', '=', false)
             ->select('id', DB::raw("CONCAT('R', number) as number"), 'status')
             ->addSelect([
                 'price' => function (Builder $query): void {
@@ -90,6 +102,7 @@ class ReservationService
 
     public function update(Reservation $reservation, array $editReservation): void
     {
+        $editReservation['total_paid'] += $reservation->total_paid;
         $this->modelService->update($reservation, $editReservation);
     }
 

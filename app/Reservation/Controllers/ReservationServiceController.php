@@ -8,6 +8,7 @@ use App\Service\Resources\ServiceGetAllAddResource;
 use App\Service\Resources\ServiceGetLeftAddResource;
 use App\Shared\Controllers\Controller;
 use App\Shared\Requests\AddRequest;
+use App\Shared\Requests\ModifyRequest;
 use App\Shared\Services\ModelService;
 use Illuminate\Http\JsonResponse;
 use DB;
@@ -31,13 +32,30 @@ class ReservationServiceController extends Controller
                 $service->id,
                 $service->price,
                 $request->input('quantity'),
+                $request->input('isPaid'),
             );
-            $editReservation = [
-                'total' => $reservation->total + $service->price * $request->input('quantity'),
-            ];
-            $this->modelService->update($reservation, $editReservation);
             DB::commit();
             return response()->json(['message' => 'Service added to the reservation.'], 201);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json($e->getMessage());
+        }
+    }
+
+    public function modify(ModifyRequest $request, Reservation $reservation, Service $service): JsonResponse
+    {
+        DB::beginTransaction();
+        try {
+            $this->modelService->modify(
+                $reservation,
+                'services',
+                $service->id,
+                null,
+                $request->input('quantity'),
+                $request->input('isPaid'),
+            );
+            DB::commit();
+            return response()->json(['message' => 'Service modified to the reservation.'], 201);
         } catch (\Exception $e) {
             DB::rollback();
             return response()->json($e->getMessage());

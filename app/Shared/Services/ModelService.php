@@ -10,6 +10,38 @@ use Auth;
 
 class ModelService
 {
+    public function modify(
+        Model $model,
+        string $relation,
+        int $id,
+        ?float $price = null,
+        ?int $quantity = null,
+        ?bool $isPaid = null,
+        ?float $payment = null,
+        ?float $cashPayment = null,
+        ?float $cardPayment = null,
+    ): void {
+        $attributes = [];
+        if ($price !== null) {
+            $attributes['price'] = $price;
+        }
+        if ($quantity !== null) {
+            $attributes['quantity'] = $quantity;
+        }
+        if ($isPaid !== null) {
+            $attributes['is_paid'] = $isPaid;
+        }
+        if ($payment !== null) {
+            $attributes['payment'] = $payment;
+        }
+        if ($cashPayment !== null) {
+            $attributes['cash_payment'] = $cashPayment;
+        }
+        if ($cardPayment !== null) {
+            $attributes['card_payment'] = $cardPayment;
+        }
+        $model->$relation()->updateExistingPivot($id, $attributes);
+    }
     public function attach(
         Model $model,
         string $relation,
@@ -78,6 +110,8 @@ class ModelService
         }
         return $collection;
     }
+
+
 
     function update(Model $model, array $data): Model
     {

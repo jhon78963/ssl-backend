@@ -18,7 +18,7 @@ class RoomsResource extends JsonResource
             'id' => $this->id,
             'number' => "R$this->number",
             'status' => $this->status,
-            'price' => $this->price,
+            'price' => $this->roomType->price_per_capacity,
             'isPaid' => $this->pivot->is_paid,
             'type' => 'room',
         ];

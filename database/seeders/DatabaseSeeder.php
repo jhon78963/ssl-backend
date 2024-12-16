@@ -19,11 +19,11 @@ use App\Rate\Seeders\RateDaySeeder;
 use App\Rate\Seeders\RateHourSeeder;
 use App\ReservationType\Seeders\ReservationTypeSeeder;
 use App\Role\Seeders\RoleSeed;
+use App\Room\Seeders\RoomSeeder;
 use App\RoomType\Seeders\RoomTypeSeeder;
 use App\Service\Seeders\ServiceSeeder;
 use App\Unit\Seeders\UnitSeeder;
 use App\User\Seeders\UserSeed;
-use App\Room\Seeders\RoomSeeder;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder

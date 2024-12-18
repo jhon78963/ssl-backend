@@ -17,6 +17,7 @@ class ModelService
         ?float $price = null,
         ?int $quantity = null,
         ?bool $isPaid = null,
+        ?bool $isFree = null,
         ?float $payment = null,
         ?float $cashPayment = null,
         ?float $cardPayment = null,
@@ -30,6 +31,9 @@ class ModelService
         }
         if ($isPaid !== null) {
             $attributes['is_paid'] = $isPaid;
+        }
+        if ($isFree !== null) {
+            $attributes['is_free'] = $isFree;
         }
         if ($payment !== null) {
             $attributes['payment'] = $payment;
@@ -49,6 +53,7 @@ class ModelService
         ?float $price = null,
         ?int $quantity = null,
         ?bool $isPaid = null,
+        ?bool $isFree = null,
         ?float $payment = null,
         ?float $cashPayment = null,
         ?float $cardPayment = null,
@@ -62,6 +67,9 @@ class ModelService
         }
         if ($isPaid !== null) {
             $attributes['is_paid'] = $isPaid;
+        }
+        if ($isFree !== null) {
+            $attributes['is_free'] = $isFree;
         }
         if ($payment !== null) {
             $attributes['payment'] = $payment;

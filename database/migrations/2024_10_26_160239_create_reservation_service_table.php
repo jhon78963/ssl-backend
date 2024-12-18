@@ -17,7 +17,8 @@ return new class extends Migration
             $table->unsignedBigInteger('service_id');
             $table->foreign('service_id')->references('id')->on('services');
             $table->boolean('is_paid')->default(false);
-            $table->primary(['reservation_id', 'service_id', 'is_paid']);
+            $table->boolean('is_free')->default(false);
+            $table->primary(['reservation_id', 'service_id', 'is_paid', 'is_free']);
             $table->integer('quantity');
             $table->float('price');
         });

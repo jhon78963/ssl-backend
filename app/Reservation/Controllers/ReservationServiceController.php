@@ -33,6 +33,7 @@ class ReservationServiceController extends Controller
                 $service->price,
                 $request->input('quantity'),
                 $request->input('isPaid'),
+                $request->input('isFree'),
             );
             DB::commit();
             return response()->json(['message' => 'Service added to the reservation.'], 201);
@@ -53,6 +54,7 @@ class ReservationServiceController extends Controller
                 null,
                 $request->input('quantity'),
                 $request->input('isPaid'),
+                $request->input('isFree'),
             );
             DB::commit();
             return response()->json(['message' => 'Service modified to the reservation.'], 201);

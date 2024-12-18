@@ -76,14 +76,9 @@ class Reservation extends Model
         return $this->belongsTo(Customer::class);
     }
 
-    public function customers(): BelongsToMany
+    public function reservationType(): BelongsTo
     {
-        return $this->belongsToMany(Customer::class);
-    }
-
-    public function locker(): BelongsTo
-    {
-        return $this->belongsTo(Locker::class);
+        return $this->belongsTo(ReservationType::class);
     }
 
     public function lockers(): BelongsToMany
@@ -94,23 +89,6 @@ class Reservation extends Model
         )->withPivot(['price', 'quantity', 'is_paid']);
     }
 
-    public function products(): BelongsToMany
-    {
-        return $this->belongsToMany(
-            Product::class,
-            'reservation_product',
-        )->withPivot(['price', 'quantity', 'is_paid']);
-    }
-
-    public function reservationType(): BelongsTo
-    {
-        return $this->belongsTo(ReservationType::class);
-    }
-
-    public function room(): BelongsTo {
-        return $this->belongsTo(Room::class);
-    }
-
     public function rooms(): BelongsToMany
     {
         return $this->belongsToMany(
@@ -119,11 +97,19 @@ class Reservation extends Model
         )->withPivot(['price', 'quantity', 'is_paid']);
     }
 
+    public function products(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            Product::class,
+            'reservation_product',
+        )->withPivot(['price', 'quantity', 'is_paid', 'is_free']);
+    }
+
     public function services(): BelongsToMany
     {
         return $this->belongsToMany(
             Service::class,
-        )->withPivot(['price', 'quantity', 'is_paid']);
+        )->withPivot(['price', 'quantity', 'is_paid', 'is_free']);
     }
 
     public function paymentTypes(): BelongsToMany

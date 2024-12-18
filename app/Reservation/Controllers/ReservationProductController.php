@@ -33,6 +33,7 @@ class ReservationProductController extends Controller
                 $product->price,
                 $request->input('quantity'),
                 $request->input('isPaid'),
+                $request->input('isFree'),
             );
             DB::commit();
             return response()->json(['message' => 'Product added to the reservation.'], 201);
@@ -53,6 +54,7 @@ class ReservationProductController extends Controller
                 null,
                 $request->input('quantity'),
                 $request->input('isPaid'),
+                $request->input('isFree'),
             );
             DB::commit();
             return response()->json(['message' => 'Product modified to the reservation.'], 201);

@@ -31,6 +31,7 @@ class ReservationPaymentTypeController extends Controller
                 null,
                 null,
                 null,
+                null,
                 $request->input('payment'),
                 $request->input('cashPayment'),
                 $request->input('cardPayment'),

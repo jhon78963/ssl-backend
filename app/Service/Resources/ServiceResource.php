@@ -22,6 +22,7 @@ class ServiceResource extends JsonResource
             'total' => $this->price * $this->pivot->quantity,
             'isPaid' => $this->pivot->is_paid,
             'isFree' => $this->pivot->is_free,
+            'isBd' => true,
             'type' => 'service'
         ];
     }

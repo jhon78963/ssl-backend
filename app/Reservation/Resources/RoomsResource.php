@@ -21,6 +21,7 @@ class RoomsResource extends JsonResource
             'price' => $this->roomType->price_per_capacity,
             'isPaid' => $this->pivot->is_paid,
             'type' => 'room',
+            'isBd' => true,
         ];
     }
 }

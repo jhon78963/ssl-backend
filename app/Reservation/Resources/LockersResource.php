@@ -21,6 +21,7 @@ class LockersResource extends JsonResource
             'price' => $this->price,
             'isPaid' => $this->pivot->is_paid,
             'type' => 'locker',
+            'isBd' => true,
         ];
     }
 }

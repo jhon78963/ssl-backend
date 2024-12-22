@@ -94,7 +94,7 @@ class Reservation extends Model
         return $this->belongsToMany(
             Room::class,
             'reservation_room',
-        )->withPivot(['price', 'quantity', 'is_paid']);
+        )->withPivot(['price', 'quantity', 'is_paid', 'additional_people']);
     }
 
     public function products(): BelongsToMany

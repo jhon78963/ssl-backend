@@ -32,6 +32,11 @@ class ReservationRoomController extends Controller
                 $request->input('price'),
                 1,
                 $request->input('isPaid'),
+                null,
+                null,
+                null,
+                null,
+                $request->input('additionalPeople'),
             );
             DB::commit();
             return response()->json(['message' => 'Room added to the reservation.'], 201);

@@ -20,6 +20,7 @@ return new class extends Migration
             $table->primary(['reservation_id', 'room_id', 'is_paid']);
             $table->float('price')->default(0);
             $table->integer('quantity')->default(1);
+            $table->integer('additional_people')->default(0);
         });
     }
 

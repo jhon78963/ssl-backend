@@ -29,6 +29,7 @@ class ModifyRequest extends FormRequest
             'payment' => 'nullable',
             'cashPayment' => 'nullable',
             'cardPayment' => 'nullable',
+            'additionalPeople' => 'nullable',
         ];
     }
 }

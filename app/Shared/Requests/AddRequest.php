@@ -29,6 +29,7 @@ class AddRequest extends FormRequest
             'payment' => 'nullable',
             'cashPayment' => 'nullable',
             'cardPayment' => 'nullable',
+            'additionalPeople' => 'nullable',
         ];
     }
 }

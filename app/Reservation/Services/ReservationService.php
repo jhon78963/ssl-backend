@@ -43,27 +43,33 @@ class ReservationService
                 return $locker;
             });
 
-        $rooms = Room::with(
-            [
+            $rooms = Room::with([
                 'reservations' => function ($query) {
                     $query->where('status', '!=', 'COMPLETED');
                 }
             ])
-            ->where('is_deleted', '=', false)
-            ->select('id', DB::raw("CONCAT('R', number) as number"), 'status')
-            ->addSelect([
-                'price' => function (Builder $query): void {
-                    $query->select('price_per_capacity')
-                        ->from('room_types')
-                        ->whereColumn('room_types.id', 'rooms.room_type_id');
-                },
-            ])
-            ->get()
-            ->map(function (Room $room): Room {
-                $room->type = 'room';
-                $room->reservation_id = $room->reservations->first()?->id;
-                return $room;
-            });
+                ->where('is_deleted', '=', false)
+                ->select('id', DB::raw("CONCAT('R', number) as number"), 'status')
+                ->addSelect([
+                    'price' => function (Builder $query): void {
+                        $query->select('price_per_capacity')
+                            ->from('room_types')
+                            ->whereColumn('room_types.id', 'rooms.room_type_id')
+                            ->limit(1); // Importante para evitar múltiples filas
+                    },
+                    'price_per_additional_person' => function (Builder $query): void {
+                        $query->select('price_per_additional_person')
+                            ->from('room_types')
+                            ->whereColumn('room_types.id', 'rooms.room_type_id')
+                            ->limit(1); // Importante para evitar múltiples filas
+                    },
+                ])
+                ->get()
+                ->map(function (Room $room): Room {
+                    $room->type = 'room';
+                    $room->reservation_id = $room->reservations->first()?->id;
+                    return $room;
+                });
 
         return $lockers
                 ->concat($rooms)

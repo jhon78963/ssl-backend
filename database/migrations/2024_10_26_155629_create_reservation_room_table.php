@@ -21,6 +21,7 @@ return new class extends Migration
             $table->float('price')->default(0);
             $table->integer('quantity')->default(1);
             $table->integer('additional_people')->default(0);
+            $table->integer('extra_hours')->default(0);
         });
     }
 

@@ -24,6 +24,7 @@ class ReservationResource extends JsonResource
             'finalReservationDate' => $this->dateFormat($this->final_reservation_date),
             'reservationType' => $this->reservationType->description,
             'total' => $this->total,
+            'extraImport' => $this->extra_import ?? 0,
             'facilitiesImport' => $this->facilities_import ?? 0,
             'consumptionsImport' => $this->consumptions_import ?? 0,
             'status' => $this->status->label(),

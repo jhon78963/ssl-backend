@@ -27,6 +27,7 @@ return new class extends Migration
             $table->integer('capacity');
             $table->float('price_per_capacity');
             $table->float('price_per_additional_person');
+            $table->float('price_per_extra_hour');
             $table->integer('age_free');
         });
     }

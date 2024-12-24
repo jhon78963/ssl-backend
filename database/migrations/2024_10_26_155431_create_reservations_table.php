@@ -31,6 +31,7 @@ return new class extends Migration
             $table->datetime('final_reservation_date')->nullable();
             $table->float('total')->nullable();
             $table->float('total_paid')->nullable();
+            $table->float('extra_import')->nullable();
             $table->float('facilities_import')->nullable();
             $table->float('consumptions_import')->nullable();
             $table->enum('status', ['IN_USE', 'COMPLETED', 'CANCELLED'])->default('IN_USE');

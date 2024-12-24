@@ -30,6 +30,7 @@ class ModifyRequest extends FormRequest
             'cashPayment' => 'nullable',
             'cardPayment' => 'nullable',
             'additionalPeople' => 'nullable',
+            'extraHours' => 'nullable',
         ];
     }
 }

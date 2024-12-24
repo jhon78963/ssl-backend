@@ -7,6 +7,7 @@ use App\Room\Requests\RoomChangeStatus;
 use App\Room\Requests\RoomCreateRequest;
 use App\Room\Requests\RoomUpdateRequest;
 use App\Room\Resources\RoomResource;
+use App\Room\Resources\RoomTableResource;
 use App\Room\Services\RoomService;
 use App\Shared\Controllers\Controller;
 use App\Shared\Requests\GetAllRequest;
@@ -74,7 +75,7 @@ class RoomController extends Controller
     public function get(Room  $room): JsonResponse
     {
         $roomValidated = $this->roomService->validate($room, 'Room');
-        return response()->json(new RoomResource( $roomValidated));
+        return response()->json(new RoomTableResource( $roomValidated));
     }
 
     public function getAll(GetAllRequest $request): JsonResponse
@@ -86,7 +87,7 @@ class RoomController extends Controller
             'number'
         );
         return response()->json(new GetAllCollection(
-            RoomResource::collection($query['collection']),
+            RoomTableResource::collection($query['collection']),
             $query['total'],
             $query['pages'],
         ));

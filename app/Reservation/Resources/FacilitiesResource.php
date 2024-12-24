@@ -20,6 +20,7 @@ class FacilitiesResource extends JsonResource
             'status' => $this->status,
             'price' => $this->price,
             'pricePerAdditionalPerson' => (float)$this->price_per_additional_person ?? 0,
+            'pricePerExtraHour' => (float)$this->price_per_extra_hour ?? 0,
             'type' => $this->type,
             'reservationId' => $this->reservation_id,
         ];

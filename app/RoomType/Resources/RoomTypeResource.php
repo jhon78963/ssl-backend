@@ -25,6 +25,8 @@ class RoomTypeResource extends JsonResource
             'pricePerCapacityTable'=> "S/ $this->price_per_capacity",
             'pricePerAdditionalPerson'=> (float) $this->price_per_additional_person,
             'pricePerAdditionalPersonTable'=>"S/ $this->price_per_additional_person",
+            'pricePerExtraHour'=> (float) $this->price_per_extra_hour,
+            'pricePerExtraHourTable'=>"S/ $this->price_per_extra_hour",
             'ageFree'=> $this->age_free,
             'ageFreeTable'=> $this->getAgeLabel($this->age_free),
             'amenities' => AmenityResource::collection($this->amenities),

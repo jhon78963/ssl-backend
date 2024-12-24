@@ -37,6 +37,7 @@ class ReservationRoomController extends Controller
                 null,
                 null,
                 $request->input('additionalPeople'),
+                $request->input('extraHours'),
             );
             DB::commit();
             return response()->json(['message' => 'Room added to the reservation.'], 201);
@@ -57,6 +58,12 @@ class ReservationRoomController extends Controller
                 null,
                 null,
                 $request->input('isPaid'),
+                null,
+                null,
+                null,
+                null,
+                $request->input('additionalPeople'),
+                $request->input('extraHours'),
             );
             DB::commit();
             return response()->json(['message' => 'Room modified to the reservation.'], 201);

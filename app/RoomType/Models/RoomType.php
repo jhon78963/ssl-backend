@@ -25,6 +25,7 @@ class RoomType extends Model
         'capacity',
         'price_per_capacity',
         'price_per_additional_person',
+        'price_per_extra_hour',
         'age_free',
     ];
 
@@ -60,6 +61,7 @@ class RoomType extends Model
         return [
             'price_per_capacity' => 'float',
             'price_per_additional_person' => 'float',
+            'price_per_extra_hour' => 'float',
         ];
     }
 

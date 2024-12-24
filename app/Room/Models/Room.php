@@ -86,7 +86,7 @@ class Room extends Model
         return $this->belongsToMany(
             Reservation::class,
             'reservation_room',
-        )->withPivot(['price', 'quantity', 'is_paid', 'additional_people']);
+        )->withPivot(['price', 'quantity', 'is_paid', 'additional_people', 'extra_hours']);
     }
 
     public function reservationsInUse(): HasMany {

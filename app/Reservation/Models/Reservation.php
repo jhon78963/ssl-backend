@@ -32,6 +32,7 @@ class Reservation extends Model
         'final_reservation_date',
         'total',
         'total_paid',
+        'extra_import',
         'facilities_import',
         'consumptions_import',
         'status',
@@ -70,6 +71,7 @@ class Reservation extends Model
             'total' => 'float',
             'total_paid' => 'float',
             'price' => 'float',
+            'extra_import' => 'float',
             'consumptions_import' => 'float',
             'facilities_import' => 'float',
         ];
@@ -97,7 +99,7 @@ class Reservation extends Model
         return $this->belongsToMany(
             Room::class,
             'reservation_room',
-        )->withPivot(['price', 'quantity', 'is_paid', 'additional_people']);
+        )->withPivot(['price', 'quantity', 'is_paid', 'additional_people', 'extra_hours']);
     }
 
     public function products(): BelongsToMany

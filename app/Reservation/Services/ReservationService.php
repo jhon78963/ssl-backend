@@ -63,6 +63,12 @@ class ReservationService
                             ->whereColumn('room_types.id', 'rooms.room_type_id')
                             ->limit(1); // Importante para evitar múltiples filas
                     },
+                    'price_per_extra_hour' => function (Builder $query): void {
+                        $query->select('price_per_extra_hour')
+                            ->from('room_types')
+                            ->whereColumn('room_types.id', 'rooms.room_type_id')
+                            ->limit(1); // Importante para evitar múltiples filas
+                    },
                 ])
                 ->get()
                 ->map(function (Room $room): Room {

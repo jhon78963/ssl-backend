@@ -22,6 +22,7 @@ class ModelService
         ?float $cashPayment = null,
         ?float $cardPayment = null,
         ?int $additionalPeople = null,
+        ?int $extraHours = null,
     ): void {
         $attributes = [];
         if ($price !== null) {
@@ -47,6 +48,9 @@ class ModelService
         }
         if ($additionalPeople !== null) {
             $attributes['additional_people'] = $additionalPeople;
+        }
+        if ($extraHours !== null) {
+            $attributes['extra_hours'] = $extraHours;
         }
         $model->$relation()->updateExistingPivot($id, $attributes);
     }
@@ -62,6 +66,7 @@ class ModelService
         ?float $cashPayment = null,
         ?float $cardPayment = null,
         ?int $additionalPeople = null,
+        ?int $extraHours = null,
     ): void {
         $attributes = [];
         if ($price !== null) {
@@ -87,6 +92,9 @@ class ModelService
         }
         if ($additionalPeople !== null) {
             $attributes['additional_people'] = $additionalPeople;
+        }
+        if ($extraHours !== null) {
+            $attributes['extra_hours'] = $extraHours;
         }
         $model->$relation()->attach($id, $attributes);
     }

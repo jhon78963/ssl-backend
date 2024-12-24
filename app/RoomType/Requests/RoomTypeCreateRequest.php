@@ -26,6 +26,7 @@ class RoomTypeCreateRequest extends FormRequest
             'capacity' => 'required|integer|min:1|max:6',
             'pricePerCapacity' => 'required',
             'pricePerAdditionalPerson' => 'required',
+            'pricePerExtraHour' => 'required',
             'ageFree' => 'required|integer',
         ];
     }

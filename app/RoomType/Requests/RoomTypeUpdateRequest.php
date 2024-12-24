@@ -26,6 +26,7 @@ class RoomTypeUpdateRequest extends FormRequest
             'capacity' => 'sometimes|integer|min:1|max:6',
             'pricePerCapacity' => 'sometimes',
             'pricePerAdditionalPerson' => 'sometimes',
+            'pricePerExtraHour' => 'sometimes',
             'ageFree' => 'sometimes|integer',
         ];
     }

@@ -20,8 +20,12 @@ class ReservationResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'reservationDate' => $this->dateFormat($this->reservation_date),
+            'initialReservationDate' => $this->dateFormat($this->initial_reservation_date),
+            'finalReservationDate' => $this->dateFormat($this->final_reservation_date),
+            'reservationType' => $this->reservationType->description,
             'total' => $this->total,
+            'facilitiesImport' => $this->facilities_import ?? 0,
+            'consumptionsImport' => $this->consumptions_import ?? 0,
             'status' => $this->status->label(),
             'paymentTypes' => PaymentTypeResource::collection($this->paymentTypes),
             'products' => ProductResource::collection($this->products),

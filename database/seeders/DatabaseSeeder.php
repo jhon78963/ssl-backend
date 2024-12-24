@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Cash\Seeders\CashSeeder;
+use App\CashType\Seeders\CashTypeSeeder;
 use App\Category\Seeders\CategorySeeder;
 use App\Company\Seeders\CompanySeed;
 use App\Gender\Seeders\GenderSeeder;
@@ -21,6 +23,7 @@ use App\ReservationType\Seeders\ReservationTypeSeeder;
 use App\Role\Seeders\RoleSeed;
 use App\Room\Seeders\RoomSeeder;
 use App\RoomType\Seeders\RoomTypeSeeder;
+use App\Schedule\Seeders\ScheduleSeeder;
 use App\Service\Seeders\ServiceSeeder;
 use App\Unit\Seeders\UnitSeeder;
 use App\User\Seeders\UserSeed;
@@ -57,6 +60,9 @@ class DatabaseSeeder extends Seeder
             ReservationTypeSeeder::class,
             RoomSeeder::class,
             PaymentTypeSeeder::class,
+            CashSeeder::class,
+            CashTypeSeeder::class,
+            ScheduleSeeder::class,
         ]);
     }
 }

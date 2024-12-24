@@ -1,13 +1,12 @@
 <?php
 
-namespace App\Image\Models;
+namespace App\Cash\Models;
 
-use App\Room\Models\Room;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Image extends Model
+class Cash extends Model
 {
     use HasFactory;
 
@@ -18,8 +17,7 @@ class Image extends Model
      */
     protected $fillable = [
         'id',
-        'name',
-        'path',
+        'description',
     ];
 
     /**
@@ -44,11 +42,7 @@ class Image extends Model
      */
     public $timestamps = false;
 
-    public function rooms(): BelongsToMany
-    {
-        return $this->belongsToMany(
-            Room::class,
-            'room_image'
-        );
+    public function cashOperations(): HasMany {
+        return $this->hasMany(CashOperation::class);
     }
 }

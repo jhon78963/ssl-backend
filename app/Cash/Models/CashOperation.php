@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Image\Models;
+namespace App\Cash\Models;
 
-use App\Room\Models\Room;
+use App\CashType\Models\CashType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Image extends Model
+class CashOperation extends Model
 {
     use HasFactory;
 
@@ -18,8 +18,10 @@ class Image extends Model
      */
     protected $fillable = [
         'id',
-        'name',
-        'path',
+        'cash_id',
+        'cash_type_id',
+        'petty_cash_amount',
+        'initial_amount',
     ];
 
     /**
@@ -44,11 +46,11 @@ class Image extends Model
      */
     public $timestamps = false;
 
-    public function rooms(): BelongsToMany
-    {
-        return $this->belongsToMany(
-            Room::class,
-            'room_image'
-        );
+    public function cash(): BelongsTo {
+        return $this->belongsTo(Cash::class);
+    }
+
+    public function cashType(): BelongsTo {
+        return $this->belongsTo(CashType::class);
     }
 }

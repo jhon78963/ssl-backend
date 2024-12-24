@@ -26,14 +26,15 @@ class Reservation extends Model
      */
     protected $fillable = [
         'id',
-        'reservation_date',
+        'reservation_type_id',
+        'customer_id',
+        'initial_reservation_date',
+        'final_reservation_date',
         'total',
         'total_paid',
+        'facilities_import',
+        'consumptions_import',
         'status',
-        'customer_id',
-        'locker_id',
-        'room_id',
-        'reservation_type_id',
     ];
 
     /**
@@ -69,6 +70,8 @@ class Reservation extends Model
             'total' => 'float',
             'total_paid' => 'float',
             'price' => 'float',
+            'consumptions_import' => 'float',
+            'facilities_import' => 'float',
         ];
     }
 

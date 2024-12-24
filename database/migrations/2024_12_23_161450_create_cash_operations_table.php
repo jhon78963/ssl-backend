@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('reservations', function (Blueprint $table) {
+        Schema::create('cash_operations', function (Blueprint $table) {
             $table->id();
             $table->datetime('creation_time')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->integer('creator_user_id')->nullable();
@@ -23,17 +23,12 @@ return new class extends Migration
             $table->integer('deleter_user_id')->nullable();
             $table->foreign('deleter_user_id')->references('id')->on('users');
             $table->datetime('deletion_time')->nullable();
-            $table->integer('reservation_type_id');
-            $table->foreign('reservation_type_id')->references('id')->on('reservation_types');
-            $table->integer('customer_id')->nullable();
-            $table->foreign('customer_id')->references('id')->on('customers');
-            $table->datetime('initial_reservation_date');
-            $table->datetime('final_reservation_date')->nullable();
-            $table->float('total')->nullable();
-            $table->float('total_paid')->nullable();
-            $table->float('facilities_import')->nullable();
-            $table->float('consumptions_import')->nullable();
-            $table->enum('status', ['IN_USE', 'COMPLETED', 'CANCELLED'])->default('IN_USE');
+            $table->integer('cash_id')->nullable();
+            $table->foreign('cash_id')->references('id')->on('cashes');
+            $table->integer('cash_type_id')->nullable();
+            $table->foreign('cash_type_id')->references('id')->on('cash_types');
+            $table->float('petty_cash_amount')->default(0);
+            $table->float('initial_amount')->default(0);
         });
     }
 
@@ -42,6 +37,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('reservations');
+        Schema::dropIfExists('cash_operations');
     }
 };

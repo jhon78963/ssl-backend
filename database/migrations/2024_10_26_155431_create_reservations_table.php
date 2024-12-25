@@ -34,6 +34,7 @@ return new class extends Migration
             $table->float('extra_import')->nullable();
             $table->float('facilities_import')->nullable();
             $table->float('consumptions_import')->nullable();
+            $table->float('broken_things_import')->nullable();
             $table->enum('status', ['IN_USE', 'COMPLETED', 'CANCELLED'])->default('IN_USE');
         });
     }

@@ -35,6 +35,7 @@ class Reservation extends Model
         'extra_import',
         'facilities_import',
         'consumptions_import',
+        'broken_things_import',
         'status',
     ];
 

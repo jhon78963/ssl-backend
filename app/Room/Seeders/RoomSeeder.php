@@ -22,7 +22,7 @@ class RoomSeeder extends Seeder
         $room = new Room();
         $room->number = '202';
         $room->room_type_id = 1;
-        $room->description = '';
+        $room->description = 'Pekín';
         $room->save();
 
         $room = new Room();
@@ -52,7 +52,7 @@ class RoomSeeder extends Seeder
         $room = new Room();
         $room->number = '207';
         $room->room_type_id = 1;
-        $room->description = '';
+        $room->description = 'Zahara';
         $room->save();
 
         $room = new Room();

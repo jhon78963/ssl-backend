@@ -24,6 +24,7 @@ class RoomTypeCreateRequest extends FormRequest
         return [
             'description' => 'required|string',
             'capacity' => 'required|integer|min:1|max:6',
+            'rentalHours' => 'required|integer|min:1|max:24',
             'pricePerCapacity' => 'required',
             'pricePerAdditionalPerson' => 'required',
             'pricePerExtraHour' => 'required',

@@ -24,6 +24,7 @@ class RoomTypeUpdateRequest extends FormRequest
         return [
             'description' => 'sometimes|string',
             'capacity' => 'sometimes|integer|min:1|max:6',
+            'rentalHours' => 'sometimes|integer|min:1|max:24',
             'pricePerCapacity' => 'sometimes',
             'pricePerAdditionalPerson' => 'sometimes',
             'pricePerExtraHour' => 'sometimes',

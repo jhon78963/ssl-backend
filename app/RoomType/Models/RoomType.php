@@ -23,6 +23,7 @@ class RoomType extends Model
         'id',
         'description',
         'capacity',
+        'rental_hours',
         'price_per_capacity',
         'price_per_additional_person',
         'price_per_extra_hour',

@@ -21,7 +21,8 @@ class RoomTableResource extends JsonResource
         return [
             'id'=> $this->id,
             'number' => $this->number,
-            'roomName' => "Habitación N° $this->number",
+            'roomName' => "$this->description - Suite $this->number",
+            'description' => $this->description,
             'status' => $this->status,
             'roomStatus' => $this->status->label(),
             'roomTypeId' => $this->room_type_id,

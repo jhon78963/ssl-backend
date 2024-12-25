@@ -23,6 +23,7 @@ class RoomUpdateRequest extends FormRequest
     {
         return [
             'number' => 'sometimes|integer|min:1',
+            'description' => 'sometimes',
             'roomTypeId' => 'sometimes|integer',
         ];
     }

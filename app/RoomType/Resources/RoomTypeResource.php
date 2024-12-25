@@ -20,7 +20,9 @@ class RoomTypeResource extends JsonResource
             'id' => $this->id,
             'description'=> $this->description,
             'capacity'=> $this->capacity,
-            'capacityTable'=> $this->getPersonLabel($this->capacity),
+            'capacityTable' => $this->getPersonLabel($this->capacity),
+            'rentalHours' => $this->rental_hours,
+            'rentalHoursTable' => $this->getHourLabel($this->rental_hours),
             'pricePerCapacity'=> (float) $this->price_per_capacity,
             'pricePerCapacityTable'=> "S/ $this->price_per_capacity",
             'pricePerAdditionalPerson'=> (float) $this->price_per_additional_person,
@@ -36,7 +38,7 @@ class RoomTypeResource extends JsonResource
 
     private function getAgeLabel($age): string {
         return match ($age) {
-            '1'   => "1 año",
+            1   => "1 año",
             default        => "$age años",
         };
     }
@@ -45,6 +47,13 @@ class RoomTypeResource extends JsonResource
         return match ($capacity) {
             '1'   => "1 persona",
             default        => "$capacity personas",
+        };
+    }
+
+    private function getHourLabel($hour): string {
+        return match ($hour) {
+            1   => "1 hora",
+            default        => "$hour horas",
         };
     }
 }

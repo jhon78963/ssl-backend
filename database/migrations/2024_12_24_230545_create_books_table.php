@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('room_types', function (Blueprint $table) {
+        Schema::create('books', function (Blueprint $table) {
             $table->id();
             $table->datetime('creation_time')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->integer('creator_user_id')->nullable();
@@ -23,13 +23,19 @@ return new class extends Migration
             $table->integer('deleter_user_id')->nullable();
             $table->foreign('deleter_user_id')->references('id')->on('users');
             $table->datetime('deletion_time')->nullable();
+            $table->integer('customer_id')->nullable();
+            $table->foreign('customer_id')->references('id')->on('customers');
+            $table->unsignedBigInteger('room_id');
+            $table->foreign('room_id')->references('id')->on('rooms');
+            $table->string('title');
+            $table->string('location');
+            $table->datetime('start_date');
+            $table->datetime('end_date')->nullable();
             $table->string('description');
-            $table->integer('capacity');
-            $table->integer('rental_hours');
-            $table->float('price_per_capacity');
-            $table->float('price_per_additional_person');
-            $table->float('price_per_extra_hour');
-            $table->integer('age_free');
+            $table->string('background_color');
+            $table->string('border_color');
+            $table->string('text_color');
+            $table->enum('status', ['PENDING', 'IN_USE', 'COMPLETED', 'CANCELLED'])->default('PENDING');
         });
     }
 
@@ -38,6 +44,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('room_types');
+        Schema::dropIfExists('books');
     }
 };

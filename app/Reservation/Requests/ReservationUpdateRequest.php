@@ -31,8 +31,10 @@ class ReservationUpdateRequest extends FormRequest
             'reservationTypeId' => 'sometimes|integer',
             'facilitiesImport' => 'sometimes|numeric',
             'consumptionsImport' => 'sometimes|numeric',
-            'extraImport' => 'sometimes|numeric',
+            'peopleExtraImport' => 'sometimes|numeric',
+            'hoursExtraImport' => 'sometimes|numeric',
             'brokenThingsImport' => 'sometimes|numeric',
+            'notes' => 'nullable',
         ];
     }
 }

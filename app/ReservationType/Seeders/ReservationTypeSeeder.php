@@ -19,5 +19,9 @@ class ReservationTypeSeeder extends Seeder
         $bookType = new ReservationType();
         $bookType->description = 'Privado';
         $bookType->save();
+
+        $bookType = new ReservationType();
+        $bookType->description = 'Personal';
+        $bookType->save();
     }
 }

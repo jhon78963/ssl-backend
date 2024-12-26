@@ -31,8 +31,10 @@ class ReservationCreateRequest extends FormRequest
             'reservationTypeId' => 'required|integer',
             'facilitiesImport' => 'required|numeric',
             'consumptionsImport' => 'required|numeric',
-            'extraImport' => 'required|numeric',
+            'peopleExtraImport' => 'required|numeric',
+            'hoursExtraImport' => 'required|numeric',
             'brokenThingsImport' => 'nullable|numeric',
+            'notes' => 'nullable',
         ];
     }
 }

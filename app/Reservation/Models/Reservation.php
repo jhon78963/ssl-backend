@@ -32,10 +32,12 @@ class Reservation extends Model
         'final_reservation_date',
         'total',
         'total_paid',
-        'extra_import',
+        'people_extra_import',
+        'hours_extra_import',
         'facilities_import',
         'consumptions_import',
         'broken_things_import',
+        'notes',
         'status',
     ];
 

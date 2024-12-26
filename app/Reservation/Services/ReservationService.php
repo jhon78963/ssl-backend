@@ -5,6 +5,7 @@ namespace App\Reservation\Services;
 use App\Locker\Models\Locker;
 use App\Product\Models\Product;
 use App\Reservation\Models\Reservation;
+use App\ReservationType\Models\ReservationType;
 use App\Room\Models\Room;
 use App\Service\Models\Service;
 use App\Shared\Services\ModelService;
@@ -55,19 +56,19 @@ class ReservationService
                         $query->select('price_per_capacity')
                             ->from('room_types')
                             ->whereColumn('room_types.id', 'rooms.room_type_id')
-                            ->limit(1); // Importante para evitar múltiples filas
+                            ->limit(1);
                     },
                     'price_per_additional_person' => function (Builder $query): void {
                         $query->select('price_per_additional_person')
                             ->from('room_types')
                             ->whereColumn('room_types.id', 'rooms.room_type_id')
-                            ->limit(1); // Importante para evitar múltiples filas
+                            ->limit(1);
                     },
                     'price_per_extra_hour' => function (Builder $query): void {
                         $query->select('price_per_extra_hour')
                             ->from('room_types')
                             ->whereColumn('room_types.id', 'rooms.room_type_id')
-                            ->limit(1); // Importante para evitar múltiples filas
+                            ->limit(1);
                     },
                 ])
                 ->get()
@@ -111,6 +112,10 @@ class ReservationService
 
         return $products->concat($services);
     }
+
+    // public function reservationTypes(): Collection {
+    //     $reservationTypes = ReservationType::
+    // }
 
     public function update(Reservation $reservation, array $editReservation): void
     {

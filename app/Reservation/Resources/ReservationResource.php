@@ -21,11 +21,12 @@ class ReservationResource extends JsonResource
         return [
             'id' => $this->id,
             'initialReservationDate' => $this->dateFormat($this->initial_reservation_date),
-            'startDate' => $this->initial_reservation_date,
             'finalReservationDate' => $this->dateFormat($this->final_reservation_date),
+            'startDate' => $this->initial_reservation_date,
             'reservationType' => $this->reservationType->description,
             'total' => $this->total,
-            'extraImport' => $this->extra_import ?? 0,
+            'peopleExtraImport' => $this->people_extra_import ?? 0,
+            'hoursExtraImport' => $this->hours_extra_import ?? 0,
             'facilitiesImport' => $this->facilities_import ?? 0,
             'consumptionsImport' => $this->consumptions_import ?? 0,
             'brokenThingsImport' => $this->broken_things_import ?? 0,
@@ -41,17 +42,16 @@ class ReservationResource extends JsonResource
             'facilities' => $this->rooms->isNotEmpty()
                 ? RoomsResource::collection($this->rooms)
                 : LockersResource::collection($this->lockers),
+            'notes' => $this->notes,
         ];
     }
 
-    private function dateFormat($date, bool $isCalculated = false): string|null {
+    private function dateFormat($date): string|null {
         if ($date === null) {
             return null;
         }
         $date = Carbon::createFromFormat('Y-m-d H:i:s', $date);
-        $date = $isCalculated
-            ? $date->format('d/m/Y h:i:s')
-            : $date->format('d/m/Y h:i:s A');
+        $date->format('d/m/Y h:i:s A');
         return $date;
     }
 }

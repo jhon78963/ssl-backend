@@ -3,6 +3,7 @@
 namespace App\Cash\Models;
 
 use App\CashType\Models\CashType;
+use App\Schedule\Models\Schedule;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -20,8 +21,11 @@ class CashOperation extends Model
         'id',
         'cash_id',
         'cash_type_id',
+        'schedule_id',
+        'date',
         'petty_cash_amount',
         'initial_amount',
+        'name',
     ];
 
     /**
@@ -46,11 +50,28 @@ class CashOperation extends Model
      */
     public $timestamps = false;
 
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'petty_cash_amount' => 'float',
+            'initial_amount' => 'float',
+        ];
+    }
+
     public function cash(): BelongsTo {
         return $this->belongsTo(Cash::class);
     }
 
     public function cashType(): BelongsTo {
         return $this->belongsTo(CashType::class);
+    }
+
+    public function schedule(): BelongsTo {
+        return $this->belongsTo(Schedule::class);
     }
 }

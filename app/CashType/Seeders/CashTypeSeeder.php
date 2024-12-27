@@ -13,13 +13,13 @@ class CashTypeSeeder extends Seeder
     public function run(): void
     {
         $cashType = new CashType();
-        $cashType->key = 'CASH_CLOSURE';
-        $cashType->label = 'Cierre de caja';
+        $cashType->key = 'CASH_OPENING';
+        $cashType->label = 'Apertura de caja';
         $cashType->save();
 
         $cashType = new CashType();
-        $cashType->key = 'CASH_OPENING';
-        $cashType->label = 'Apertura de caja';
+        $cashType->key = 'CASH_CLOSURE';
+        $cashType->label = 'Cierre de caja';
         $cashType->save();
     }
 }

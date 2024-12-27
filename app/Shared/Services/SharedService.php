@@ -13,6 +13,8 @@ class SharedService {
     private string $search = '';
     private int $gender = 0;
     private string $status = '';
+    private string $startDate = '';
+    private string $endDate = '';
 
     public function convertCamelToSnake(array $data): array
     {
@@ -34,13 +36,17 @@ class SharedService {
         GetAllRequest  $request,
         string $entityName,
         string $modelName,
-        string $columnSearch,
+        string $columnSearch = null,
+        ?string $startDate = null,
+        ?string $endDate = null,
     ): array {
         $limit = $request->query('limit', $this->limit);
         $page = $request->query('page', $this->page);
         $search = $request->query('search', $this->search);
         $gender = $request->query('gender', $this->gender);
         $status = $request->query('status', $this->status);
+        $startDate = $request->query('startDate', $this->startDate);
+        $endDate = $request->query('endDate', $this->endDate);
 
         $modelClass = "App\\$entityName\\Models\\$modelName";
 
@@ -48,6 +54,10 @@ class SharedService {
 
         if ($search) {
             $query = $this->searchFilter($query, $search, $columnSearch);
+        }
+
+        if ($startDate || $endDate) {
+            $query = $this->dateFilter($query, $startDate, $endDate);
         }
 
         if ($gender) {
@@ -81,8 +91,22 @@ class SharedService {
         return $query->where(function ($query) use ($searchTerm, $columnSearch): void {
             $query->whereRaw(
                 "LOWER(CAST($columnSearch AS TEXT)) LIKE ?",
-                ['%' . $searchTerm . '%']
+                ["%$searchTerm%"]
             );
+        });
+    }
+
+    private function dateFilter(Builder $query, ?string $startDate, ?string $endDate): Builder
+    {
+        return $query->when($startDate || $endDate, function (Builder $query) use ($startDate, $endDate) {
+            $query->where(function ($query) use ($startDate, $endDate) {
+                if ($startDate) {
+                    $query->whereDate('initial_reservation_date', '>=', $startDate);
+                }
+                if ($endDate) {
+                    $query->whereDate('initial_reservation_date', '<=', $endDate);
+                }
+            });
         });
     }
 }

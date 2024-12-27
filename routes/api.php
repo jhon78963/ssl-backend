@@ -2,6 +2,7 @@
 
 use App\Amenity\Controllers\AmenityController;
 use App\Auth\Controllers\AuthController;
+use App\Cash\Controllers\CashController;
 use App\Category\Controllers\CategoryController;
 use App\Company\Controllers\CompanyController;
 use App\Company\Controllers\SocialNetworkController;
@@ -248,6 +249,7 @@ Route::group([
         Route::patch('/reservations/{reservation}', 'update');
         // Route::delete('/reservations/{reservation}', 'delete');
         Route::get('/reservations', 'getAll');
+        Route::get('/reservations/reservationTypes', 'reservationTypes');
         Route::get('/reservations/facilities', 'facilities');
         Route::get('/reservations/products', 'products');
         Route::get('/reservations/{reservation}', 'get');
@@ -290,5 +292,12 @@ Route::group([
             'remove'
         );
         Route::get('/payment-types/{reservation}/all', 'getAll');
+    });
+
+    Route::controller(CashController::class)->group(function() {
+        Route::post('/cashes', 'create');
+        Route::get('/cashes', 'getAll');
+        Route::get('/cashes/total', 'total');
+        Route::get('/cashes/validate', 'validate');
     });
 });

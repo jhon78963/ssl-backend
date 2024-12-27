@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Shared\Requests;
+namespace App\Cash\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class GetAllRequest extends FormRequest
+class CashCreateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,14 +22,13 @@ class GetAllRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'limit' => 'nullable|integer|min:1',
-            'page' => 'nullable|integer|min:1',
-            'search' => 'nullable|string',
-            'gender' => 'nullable|string',
-            'status' => 'nullable|string',
-            'reservationType' => 'nullable|string',
-            'startDate' => 'nullable|string',
-            'endDate' => 'nullable|string',
+            'cashId' => 'required|integer',
+            'cashTypeId' => 'required|integer',
+            'scheduleId' => 'required|integer',
+            'date' => 'required',
+            'pettyCashAmount' => 'required',
+            'initialAmount' => 'required',
+            'name' => 'required',
         ];
     }
 }

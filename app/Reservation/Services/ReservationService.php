@@ -113,9 +113,18 @@ class ReservationService
         return $products->concat($services);
     }
 
-    // public function reservationTypes(): Collection {
-    //     $reservationTypes = ReservationType::
-    // }
+    private function prependReservationType(): ReservationType {
+        $allReservationType = new ReservationType();
+        $allReservationType->id = 0;
+        $allReservationType->description = 'Todos';
+        return $allReservationType;
+    }
+
+    public function reservationTypes(): Collection {
+        $reservationTypes = ReservationType::whereHas('reservations')->get();
+        $reservationTypes->prepend($this->prependReservationType());
+        return $reservationTypes;
+    }
 
     public function update(Reservation $reservation, array $editReservation): void
     {

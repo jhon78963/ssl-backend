@@ -2,8 +2,10 @@
 
 namespace App\Schedule\Models;
 
+use App\Cash\Models\CashOperation;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Schedule extends Model
 {
@@ -40,4 +42,8 @@ class Schedule extends Model
      * @var bool
      */
     public $timestamps = false;
+
+    public function cashOperations(): HasMany {
+        return $this->hasMany(CashOperation::class);
+    }
 }

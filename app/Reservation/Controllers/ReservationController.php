@@ -10,6 +10,7 @@ use App\Reservation\Requests\ReservationUpdateRequest;
 use App\Reservation\Resources\FacilitiesResource;
 use App\Reservation\Resources\ProductsResource;
 use App\Reservation\Resources\ReservationResource;
+use App\Reservation\Resources\ReservationTypeResource;
 use App\Reservation\Services\ReservationService;
 use App\Shared\Controllers\Controller;
 use App\Shared\Requests\GetAllRequest;
@@ -82,6 +83,15 @@ class ReservationController extends Controller
         );
     }
 
+    public function reservationTypes(): JsonResponse
+    {
+        return response()->json(
+            ReservationTypeResource::collection(
+                $this->reservationService->reservationTypes(),
+            ),
+        );
+    }
+
     public function get(Reservation $reservation): JsonResponse
     {
         $reservationValidated = $this->reservationService->validate($reservation, 'Reservation');
@@ -94,7 +104,9 @@ class ReservationController extends Controller
             $request,
             'Reservation',
             'Reservation',
-            'reservation_date'
+            'reservation_type_id',
+            $request->input('startDate'),
+            $request->input('endDate'),
         );
         return response()->json(new GetAllCollection(
             ReservationResource::collection($query['collection']),

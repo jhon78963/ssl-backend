@@ -55,8 +55,8 @@ class ReservationsExport implements FromCollection, WithHeadings, WithStyles, Sh
             ->select(
                 'r.initial_reservation_date',
                 'r.final_reservation_date',
-                'rt.description',
-                's.description',
+                'rt.description as rt_description',
+                's.description as s_description',
                 'r.facilities_import',
                 'r.people_extra_import',
                 'r.hours_extra_import',

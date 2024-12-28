@@ -5,10 +5,12 @@ namespace App\Reservation\Controllers;
 use App\Cash\Services\CashOperationService;
 use App\Cash\Services\CashService;
 use App\Reservation\Enums\ReservationStatus;
+use App\Reservation\Exports\ReservationsExport;
 use App\Reservation\Models\Reservation;
 use App\Reservation\Requests\ProductSearchRequest;
 use App\Reservation\Requests\ReservationChangeStatus;
 use App\Reservation\Requests\ReservationCreateRequest;
+use App\Reservation\Requests\ReservationExportRequest;
 use App\Reservation\Requests\ReservationUpdateRequest;
 use App\Reservation\Resources\FacilitiesResource;
 use App\Reservation\Resources\ProductsResource;
@@ -19,8 +21,10 @@ use App\Shared\Controllers\Controller;
 use App\Shared\Requests\GetAllRequest;
 use App\Shared\Resources\GetAllCollection;
 use App\Shared\Services\SharedService;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\JsonResponse;
 use DB;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class ReservationController extends Controller
 {
@@ -74,6 +78,16 @@ class ReservationController extends Controller
             DB::rollback();
             return response()->json(['error' =>  $e->getMessage()]);
         }
+    }
+
+    public function export(ReservationExportRequest $request): BinaryFileResponse
+    {
+        $startDate = $request->input('startDate');
+        $endDate = $request->input('endDate');
+        return Excel::download(
+            new ReservationsExport($startDate, $endDate),
+            'users.xlsx'
+        );
     }
 
     public function facilities(): JsonResponse

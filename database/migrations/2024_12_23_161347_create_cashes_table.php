@@ -23,6 +23,8 @@ return new class extends Migration
             $table->integer('deleter_user_id')->nullable();
             $table->foreign('deleter_user_id')->references('id')->on('users');
             $table->datetime('deletion_time')->nullable();
+            $table->integer('schedule_id')->nullable();
+            $table->foreign('schedule_id')->references('id')->on('schedules');
             $table->string('description');
             $table->string('name');
             $table->float('petty_cash_amount')->default(0);

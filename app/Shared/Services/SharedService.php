@@ -11,6 +11,7 @@ class SharedService {
     private int $limit = 10;
     private int $page = 1;
     private string $search = '';
+    private string $schedule = '';
     private int $gender = 0;
     private string $status = '';
     private string $startDate = '';
@@ -39,6 +40,7 @@ class SharedService {
         string $columnSearch = null,
         ?string $startDate = null,
         ?string $endDate = null,
+        ?string $schedule = null,
     ): array {
         $limit = $request->query('limit', $this->limit);
         $page = $request->query('page', $this->page);
@@ -54,6 +56,10 @@ class SharedService {
 
         if ($search) {
             $query = $this->searchFilter($query, $search, $columnSearch);
+        }
+
+        if ($schedule) {
+            $query->where('schedule_id', $schedule);
         }
 
         if ($startDate || $endDate) {
@@ -96,7 +102,7 @@ class SharedService {
         });
     }
 
-    private function dateFilter(Builder $query, ?string $startDate, ?string $endDate): Builder
+    public function dateFilter(Builder $query, ?string $startDate, ?string $endDate): Builder
     {
         return $query->when(
             $startDate || $endDate,

@@ -2,6 +2,7 @@
 
 namespace App\Reservation\Models;
 
+use App\Cash\Models\CashOperation;
 use App\Customer\Models\Customer;
 use App\Locker\Models\Locker;
 use App\PaymentType\Models\PaymentType;
@@ -9,11 +10,13 @@ use App\Product\Models\Product;
 use App\Reservation\Enums\ReservationStatus;
 use App\ReservationType\Models\ReservationType;
 use App\Room\Models\Room;
+use App\Schedule\Models\Schedule;
 use App\Service\Models\Service;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Reservation extends Model
 {
@@ -28,6 +31,7 @@ class Reservation extends Model
         'id',
         'reservation_type_id',
         'customer_id',
+        'schedule_id',
         'initial_reservation_date',
         'final_reservation_date',
         'total',
@@ -89,6 +93,11 @@ class Reservation extends Model
         return $this->belongsTo(ReservationType::class);
     }
 
+    public function schedule(): BelongsTo
+    {
+        return $this->belongsTo(Schedule::class);
+    }
+
     public function lockers(): BelongsToMany
     {
         return $this->belongsToMany(
@@ -126,5 +135,10 @@ class Reservation extends Model
             PaymentType::class,
             'reservation_payment_type',
         )->withPivot(['payment', 'cash_payment', 'card_payment']);
+    }
+
+    public function cashOperation(): HasOne
+    {
+        return $this->hasOne(CashOperation::class);
     }
 }

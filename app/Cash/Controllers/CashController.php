@@ -7,6 +7,7 @@ use App\Cash\Requests\CashCreateRequest;
 use App\Cash\Requests\CashOperationCreateRequest;
 use App\Cash\Requests\CashUpdateRequest;
 use App\Cash\Resources\CashResource;
+use App\Cash\Resources\ScheduleResource;
 use App\Cash\Services\CashOperationService;
 use App\Cash\Services\CashService;
 use App\Shared\Requests\GetAllRequest;
@@ -51,6 +52,7 @@ class CashController
         DB::beginTransaction();
         try {
             $newCash = $this->sharedService->convertCamelToSnake($request->validated());
+            $newCash['schedule_id'] = $this->cashOperationService->schedule();
             $cash = $this->cashService->create($newCash);
             DB::commit();
             return response()->json([
@@ -83,6 +85,12 @@ class CashController
 
     public function currentCash() {
         return response()->json($this->cashService->currentCash());
+    }
+
+    public function currentSchedule() {
+        return response()->json(
+            new ScheduleResource($this->cashOperationService->currentSchedule())
+        );
     }
 
     public function validate()

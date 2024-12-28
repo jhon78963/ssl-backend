@@ -3,6 +3,7 @@
 namespace App\Schedule\Models;
 
 use App\Cash\Models\CashOperation;
+use App\Reservation\Models\Reservation;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -47,5 +48,10 @@ class Schedule extends Model
 
     public function cashOperations(): HasMany {
         return $this->hasMany(CashOperation::class);
+    }
+
+    public function reservations(): HasMany
+    {
+        return $this->hasMany(Reservation::class);
     }
 }

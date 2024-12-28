@@ -251,6 +251,7 @@ Route::group([
         // Route::delete('/reservations/{reservation}', 'delete');
         Route::get('/reservations', 'getAll');
         Route::get('/reservations/reservationTypes', 'reservationTypes');
+        Route::get('/reservations/schedules', 'schedules');
         Route::get('/reservations/facilities', 'facilities');
         Route::get('/reservations/products', 'products');
         Route::get('/reservations/{reservation}', 'get');
@@ -302,6 +303,7 @@ Route::group([
         Route::get('/cashes/total', 'total');
         Route::get('/cashes/validate', 'validate');
         Route::get('/cashes/currentCash', 'currentCash');
+        Route::get('/cashes/currentSchedule', 'currentSchedule');
         Route::put('/cashes/{cash}', 'updateCash');
     });
 });

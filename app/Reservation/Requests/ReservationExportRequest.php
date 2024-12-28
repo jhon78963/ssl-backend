@@ -24,6 +24,8 @@ class ReservationExportRequest extends FormRequest
         return [
             'startDate' => 'nullable',
             'endDate' => 'nullable',
+            'reservationType' => 'nullable',
+            'schedule' => 'nullable',
         ];
     }
 }

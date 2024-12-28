@@ -29,6 +29,8 @@ return new class extends Migration
             $table->foreign('cash_type_id')->references('id')->on('cash_types');
             $table->integer('schedule_id')->nullable();
             $table->foreign('schedule_id')->references('id')->on('schedules');
+            $table->integer('reservation_id')->unique()->nullable();
+            $table->foreign('reservation_id')->references('id')->on('reservations');
             $table->datetime('date');
             $table->float('amount')->default(0);
         });

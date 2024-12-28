@@ -14,11 +14,15 @@ class ReservationsExport implements FromCollection, WithHeadings, WithStyles, Sh
 {
     protected $startDate;
     protected $endDate;
+    protected $reservationType;
+    protected $schedule;
 
-    public function __construct($startDate, $endDate)
+    public function __construct($startDate, $endDate, $reservationType, $schedule)
     {
         $this->startDate = $startDate;
         $this->endDate = $endDate;
+        $this->reservationType = $reservationType;
+        $this->schedule = $schedule;
     }
 
     /**
@@ -28,7 +32,14 @@ class ReservationsExport implements FromCollection, WithHeadings, WithStyles, Sh
     {
         return DB::table('reservations as r')
             ->join('reservation_types as rt', 'r.reservation_type_id', '=', 'rt.id')
+            ->join('schedules as s', 'r.schedule_id', '=', 's.id')
             ->where('r.is_deleted', '=', false)
+            ->when($this->reservationType, function ($query) {
+                $query->where('r.reservation_type_id', '=', $this->reservationType);
+            })
+            ->when($this->schedule, function ($query) {
+                $query->where('r.schedule_id', '=', $this->schedule);
+            })
             ->when(
                 $this->startDate || $this->endDate,
                 function (Builder $query): void  {
@@ -45,6 +56,7 @@ class ReservationsExport implements FromCollection, WithHeadings, WithStyles, Sh
                 'r.initial_reservation_date',
                 'r.final_reservation_date',
                 'rt.description',
+                's.description',
                 'r.facilities_import',
                 'r.people_extra_import',
                 'r.hours_extra_import',
@@ -68,6 +80,7 @@ class ReservationsExport implements FromCollection, WithHeadings, WithStyles, Sh
             'Fecha de entrada',
             'Fecha de salida',
             'Tipo de reserva',
+            'Turno',
             'Locker/Room (S/)',
             'Personas extras (S/)',
             'Horas extras (S/)',

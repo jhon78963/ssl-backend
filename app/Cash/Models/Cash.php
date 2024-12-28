@@ -17,6 +17,7 @@ class Cash extends Model
      */
     protected $fillable = [
         'id',
+        'schedule_id',
         'description',
         'name',
         'petty_cash_amount',

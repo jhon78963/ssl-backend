@@ -55,4 +55,29 @@ class CashOperationService
         }
         return $currentSchedule;
     }
+
+    public function currentSchedule(): Schedule
+    {
+        $currentTime = now()->format('H:i:s');
+        $schedules = Schedule::where('is_deleted', '=', false)->get();
+
+        $currentSchedule = null;
+        foreach ($schedules as $schedule) {
+            if ($currentTime >= $schedule->start_time || $currentTime <= $schedule->end_time) {
+                $currentSchedule = $schedule;
+            }
+        }
+        return $currentSchedule;
+    }
+
+    public function update(int $cashOperationId, array $editCashOperation): CashOperation
+    {
+        $cashOperation = CashOperation::find($cashOperationId);
+        return $this->modelService->update($cashOperation, $editCashOperation);
+    }
+
+    public function validateModel(CashOperation $cashOperation, string $modelName): CashOperation
+    {
+        return $this->modelService->validate($cashOperation, $modelName);
+    }
 }

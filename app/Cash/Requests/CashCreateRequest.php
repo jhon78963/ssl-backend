@@ -22,6 +22,7 @@ class CashCreateRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'scheduleId' => 'nullable|integer',
             'description' => 'required',
             'pettyCashAmount' => 'required',
             'name' => 'required',

@@ -3,6 +3,7 @@
 namespace App\Cash\Models;
 
 use App\CashType\Models\CashType;
+use App\Reservation\Models\Reservation;
 use App\Schedule\Models\Schedule;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -22,6 +23,7 @@ class CashOperation extends Model
         'cash_id',
         'cash_type_id',
         'schedule_id',
+        'reservation_id',
         'date',
         'amount',
     ];
@@ -71,5 +73,9 @@ class CashOperation extends Model
 
     public function schedule(): BelongsTo {
         return $this->belongsTo(Schedule::class);
+    }
+
+    public function reservation(): BelongsTo {
+        return $this->belongsTo(Reservation::class);
     }
 }

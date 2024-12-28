@@ -2,6 +2,7 @@
 
 namespace App\Reservation\Controllers;
 
+use App\Cash\Models\CashOperation;
 use App\Cash\Services\CashOperationService;
 use App\Cash\Services\CashService;
 use App\Reservation\Enums\ReservationStatus;
@@ -15,6 +16,7 @@ use App\Reservation\Requests\ReservationUpdateRequest;
 use App\Reservation\Resources\FacilitiesResource;
 use App\Reservation\Resources\ProductsResource;
 use App\Reservation\Resources\ReservationResource;
+use App\Reservation\Resources\ReservationSchedule;
 use App\Reservation\Resources\ReservationTypeResource;
 use App\Reservation\Services\ReservationService;
 use App\Shared\Controllers\Controller;
@@ -68,8 +70,18 @@ class ReservationController extends Controller
         DB::beginTransaction();
         try {
             $newReservation = $this->sharedService->convertCamelToSnake($request->validated());
+            $newReservation['schedule_id'] = $this->cashOperationService->schedule();
             $createdReservation = $this->reservationService->create($newReservation);
             DB::commit();
+            $cash = $this->cashService->currentCash();
+            $this->cashOperationService->create([
+                'cash_id' => $cash->id,
+                'reservation_id' => $createdReservation->id,
+                'cash_type_id' => 2,
+                'schedule_id' => $this->cashOperationService->schedule(),
+                'date' => now(),
+                'amount' => $createdReservation->total_paid,
+            ]);
             return response()->json([
                 'message' => 'Reservation created.',
                 'reservationId' => $createdReservation->id,
@@ -84,9 +96,16 @@ class ReservationController extends Controller
     {
         $startDate = $request->input('startDate');
         $endDate = $request->input('endDate');
+        $reservationType = $request->input('reservationType');
+        $schedule = $request->input('schedule');
         return Excel::download(
-            new ReservationsExport($startDate, $endDate),
-            'users.xlsx'
+            new ReservationsExport(
+                $startDate,
+                $endDate,
+                $reservationType,
+                $schedule
+            ),
+            'reservation.xlsx'
         );
     }
 
@@ -117,6 +136,15 @@ class ReservationController extends Controller
         );
     }
 
+    public function schedules(): JsonResponse
+    {
+        return response()->json(
+            ReservationSchedule::collection(
+                $this->reservationService->schedules(),
+            ),
+        );
+    }
+
     public function get(Reservation $reservation): JsonResponse
     {
         $reservationValidated = $this->reservationService->validate($reservation, 'Reservation');
@@ -125,13 +153,14 @@ class ReservationController extends Controller
 
     public function getAll(GetAllRequest $request): JsonResponse
     {
-        $query = $this->sharedService->query(
+        $query = $this->reservationService->getAll(
             $request,
             'Reservation',
             'Reservation',
-            'reservation_type_id',
             $request->input('startDate'),
             $request->input('endDate'),
+            $request->input(key: 'reservationType'),
+            $request->input('schedule'),
         );
         return response()->json(new GetAllCollection(
             ReservationResource::collection($query['collection']),
@@ -151,16 +180,9 @@ class ReservationController extends Controller
                 $editReservationValidated
             );
             DB::commit();
-            if ($reservationUpdated->status == ReservationStatus::Completed) {
-                $cash = $this->cashService->currentCash();
-                $this->cashOperationService->create([
-                    'cash_id' => $cash->id,
-                    'cash_type_id' => 2,
-                    'schedule_id' => $this->cashOperationService->schedule(),
-                    'date' => now(),
-                    'amount' => $reservationUpdated->total,
-                ]);
-            }
+            $this->cashOperationService->update($reservationUpdated->cashOperation->id, [
+                'amount' => $reservationUpdated->total_paid,
+            ]);
             return response()->json(['message' => 'Reservation updated.']);
         } catch (\Exception $e) {
             DB::rollback();

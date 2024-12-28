@@ -35,6 +35,7 @@ class ReservationCreateRequest extends FormRequest
             'hoursExtraImport' => 'required|numeric',
             'brokenThingsImport' => 'nullable|numeric',
             'notes' => 'nullable',
+            'scheduleId' => 'nullable|integer',
         ];
     }
 }

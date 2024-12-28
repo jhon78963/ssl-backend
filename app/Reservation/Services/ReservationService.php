@@ -7,19 +7,31 @@ use App\Product\Models\Product;
 use App\Reservation\Models\Reservation;
 use App\ReservationType\Models\ReservationType;
 use App\Room\Models\Room;
+use App\Schedule\Models\Schedule;
 use App\Service\Models\Service;
+use App\Shared\Requests\GetAllRequest;
 use App\Shared\Services\ModelService;
+use App\Shared\Services\SharedService;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Collection;
 use DB;
 
 class ReservationService
 {
-    protected ModelService $modelService;
+    private int $limit = 10;
+    private int $page = 1;
+    private string $schedule = '';
+    private string $reservationType = '';
+    private string $startDate = '';
+    private string $endDate = '';
 
-    public function __construct(ModelService $modelService)
+    protected ModelService $modelService;
+    protected SharedService $sharedService;
+
+    public function __construct(ModelService $modelService, SharedService $sharedService)
     {
         $this->modelService = $modelService;
+        $this->sharedService = $sharedService;
     }
 
     public function create(array $newReservation): Reservation
@@ -114,16 +126,78 @@ class ReservationService
     }
 
     private function prependReservationType(): ReservationType {
-        $allReservationType = new ReservationType();
-        $allReservationType->id = 0;
-        $allReservationType->description = 'Todos';
-        return $allReservationType;
+        $reservationType = new ReservationType();
+        $reservationType->id = 0;
+        $reservationType->description = 'Todos';
+        return $reservationType;
     }
 
     public function reservationTypes(): Collection {
         $reservationTypes = ReservationType::whereHas('reservations')->get();
         $reservationTypes->prepend($this->prependReservationType());
         return $reservationTypes;
+    }
+
+    private function prependSchedule(): Schedule {
+        $schedule = new Schedule();
+        $schedule->id = 0;
+        $schedule->description = 'Todos';
+        return $schedule;
+    }
+
+    public function schedules(): Collection {
+        $schedules = Schedule::whereHas('reservations')->get();
+        $schedules->prepend($this->prependSchedule());
+        return $schedules;
+    }
+
+    public function getAll(
+        GetAllRequest  $request,
+        string $entityName,
+        string $modelName,
+        ?string $startDate = null,
+        ?string $endDate = null,
+        string $reservationType = null,
+        ?string $schedule = null,
+    ): array {
+        $limit = $request->query('limit', $this->limit);
+        $page = $request->query('page', $this->page);
+        $endDate = $request->query('endDate', $this->endDate);
+        $schedule = $request->query('schedule', $this->schedule);
+        $reservationType = $request->query('reservationType', $this->reservationType);
+        $startDate = $request->query('startDate', $this->startDate);
+
+        $modelClass = "App\\$entityName\\Models\\$modelName";
+
+        $query = $modelClass::query();
+
+
+        if ($reservationType) {
+            $query->where('reservation_type_id', $reservationType);
+        }
+
+        if ($schedule) {
+            $query->where('schedule_id', $schedule);
+        }
+
+        if ($startDate || $endDate) {
+            $query = $this->sharedService->dateFilter($query, $startDate, $endDate);
+        }
+
+        $total = $query->count();
+        $pages = ceil($total / $limit);
+
+        $models = $query->where('is_deleted', false)
+                    ->skip(($page - 1) * $limit)
+                    ->take($limit)
+                    ->orderBy('id', 'asc')
+                    ->get();
+
+        return [
+            'collection' => $models,
+            'total'=> $total,
+            'pages' => $pages,
+        ];
     }
 
     public function update(Reservation $reservation, array $editReservation): Reservation

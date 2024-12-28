@@ -4,7 +4,7 @@ namespace App\Cash\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CashCreateRequest extends FormRequest
+class CashUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,9 +22,6 @@ class CashCreateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'description' => 'required',
-            'pettyCashAmount' => 'required',
-            'name' => 'required',
             'status' => 'required',
         ];
     }

@@ -2,6 +2,9 @@
 
 namespace App\Reservation\Controllers;
 
+use App\Cash\Services\CashOperationService;
+use App\Cash\Services\CashService;
+use App\Reservation\Enums\ReservationStatus;
 use App\Reservation\Models\Reservation;
 use App\Reservation\Requests\ProductSearchRequest;
 use App\Reservation\Requests\ReservationChangeStatus;
@@ -21,11 +24,19 @@ use DB;
 
 class ReservationController extends Controller
 {
+    protected CashService $cashService;
+    protected CashOperationService $cashOperationService;
     protected ReservationService $reservationService;
     protected SharedService $sharedService;
 
-    public function __construct(ReservationService $reservationService, SharedService $sharedService)
-    {
+    public function __construct(
+        CashService $cashService,
+        CashOperationService $cashOperationService,
+        ReservationService $reservationService,
+        SharedService $sharedService
+    ) {
+        $this->cashService = $cashService;
+        $this->cashOperationService = $cashOperationService;
         $this->reservationService = $reservationService;
         $this->sharedService = $sharedService;
     }
@@ -121,8 +132,21 @@ class ReservationController extends Controller
         try {
             $editReservationValidated = $this->sharedService->convertCamelToSnake($request->validated());
             $reservationValidated = $this->reservationService->validate($reservation, 'ProductType');
-            $this->reservationService->update($reservationValidated, $editReservationValidated);
+            $reservationUpdated = $this->reservationService->update(
+                $reservationValidated,
+                $editReservationValidated
+            );
             DB::commit();
+            if ($reservationUpdated->status == ReservationStatus::Completed) {
+                $cash = $this->cashService->currentCash();
+                $this->cashOperationService->create([
+                    'cash_id' => $cash->id,
+                    'cash_type_id' => 2,
+                    'schedule_id' => $this->cashOperationService->schedule(),
+                    'date' => now(),
+                    'amount' => $reservationUpdated->total,
+                ]);
+            }
             return response()->json(['message' => 'Reservation updated.']);
         } catch (\Exception $e) {
             DB::rollback();

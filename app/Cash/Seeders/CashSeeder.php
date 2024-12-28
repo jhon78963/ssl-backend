@@ -12,8 +12,8 @@ class CashSeeder extends Seeder
      */
     public function run(): void
     {
-        $cash = new Cash();
-        $cash->description = 'Caja Principal';
-        $cash->save();
+        // $cash = new Cash();
+        // $cash->description = 'Caja Principal';
+        // $cash->save();
     }
 }

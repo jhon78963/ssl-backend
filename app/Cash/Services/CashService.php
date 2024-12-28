@@ -2,9 +2,7 @@
 
 namespace App\Cash\Services;
 
-use App\Cash\Models\CashOperation;
-use App\CashType\Models\CashType;
-use App\Reservation\Models\Reservation;
+use App\Cash\Models\Cash;
 use App\Shared\Services\ModelService;
 
 class CashService
@@ -16,25 +14,30 @@ class CashService
         $this->modelService = $modelService;
     }
 
-    public function create(array $newCash): void
+    public function create(array $newCash): Cash
     {
-        $this->modelService->create(new CashOperation(), $newCash);
+        return $this->modelService->create(
+            new Cash(),
+            $newCash
+        );
     }
 
-    public function total(): mixed {
-        return Reservation::where('is_deleted', '=', false)
-            ->where('status', 'COMPLETED')
-            ->sum('total');
-    }
-
-    public function validate() : CashType {
-        $cashOperation = CashOperation::where('is_deleted', '=', false)
-            ->orderBy('id', 'desc')
+    public function currentCash(): ?Cash
+    {
+        $cash = Cash::where('is_deleted', '=', false)
+            ->where('status', 'OPEN')
+            ->latest('id')
             ->first();
+        return $cash ?: $cash;
+    }
 
-        return match ($cashOperation->cash_type_id) {
-            1 => CashType::find(2),
-            2 => CashType::find(1),
-        };
+    public function update(Cash $cash, array $editCash): Cash
+    {
+        return $this->modelService->update($cash, $editCash);
+    }
+
+    public function validate(Cash $cash, string $modelName): Cash
+    {
+        return $this->modelService->validate($cash, $modelName);
     }
 }

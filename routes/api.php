@@ -295,9 +295,12 @@ Route::group([
     });
 
     Route::controller(CashController::class)->group(function() {
-        Route::post('/cashes', 'create');
+        Route::post('/cashes', 'createCash');
+        Route::post('/cashes/operation', 'create');
         Route::get('/cashes', 'getAll');
         Route::get('/cashes/total', 'total');
         Route::get('/cashes/validate', 'validate');
+        Route::get('/cashes/currentCash', 'currentCash');
+        Route::put('/cashes/{cash}', 'updateCash');
     });
 });

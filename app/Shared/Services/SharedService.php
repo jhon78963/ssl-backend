@@ -98,7 +98,10 @@ class SharedService {
 
     private function dateFilter(Builder $query, ?string $startDate, ?string $endDate): Builder
     {
-        return $query->when($startDate || $endDate, function (Builder $query) use ($startDate, $endDate) {
+        return $query->when(
+            $startDate || $endDate,
+            function (Builder $query) use ($startDate, $endDate)
+        {
             $query->where(function ($query) use ($startDate, $endDate) {
                 if ($startDate) {
                     $query->whereDate('initial_reservation_date', '>=', $startDate);

@@ -13,11 +13,15 @@ class ScheduleSeeder extends Seeder
     public function run(): void
     {
         $schedule = new Schedule();
-        $schedule->description = 'Tarde';
+        $schedule->description = 'Día';
+        $schedule->start_time = '08:00';
+        $schedule->end_time = '18:59:59';
         $schedule->save();
 
         $schedule = new Schedule();
         $schedule->description = 'Noche';
+        $schedule->start_time = '19:00';
+        $schedule->end_time = '07:00';
         $schedule->save();
     }
 }

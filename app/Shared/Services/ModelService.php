@@ -99,7 +99,7 @@ class ModelService
         $model->$relation()->attach($id, $attributes);
     }
 
-    function create(Model $model, array $data): Model
+    public function create(Model $model, array $data): Model
     {
         $this->setCreationAuditFields($model);
         $model->fill($data);
@@ -137,7 +137,7 @@ class ModelService
 
 
 
-    function update(Model $model, array $data): Model
+    public function update(Model $model, array $data): Model
     {
         $this->setUpdateAuditFields($model);
         $model->fill($data);

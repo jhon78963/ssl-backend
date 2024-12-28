@@ -30,9 +30,7 @@ return new class extends Migration
             $table->integer('schedule_id')->nullable();
             $table->foreign('schedule_id')->references('id')->on('schedules');
             $table->datetime('date');
-            $table->float('petty_cash_amount')->default(0);
-            $table->float('initial_amount')->default(0);
-            $table->string('name');
+            $table->float('amount')->default(0);
         });
     }
 

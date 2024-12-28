@@ -24,6 +24,9 @@ return new class extends Migration
             $table->foreign('deleter_user_id')->references('id')->on('users');
             $table->datetime('deletion_time')->nullable();
             $table->string('description');
+            $table->string('name');
+            $table->float('petty_cash_amount')->default(0);
+            $table->enum('status', ['OPEN', 'CLOSE']);
         });
     }
 

@@ -23,9 +23,7 @@ class CashOperation extends Model
         'cash_type_id',
         'schedule_id',
         'date',
-        'petty_cash_amount',
-        'initial_amount',
-        'name',
+        'amount',
     ];
 
     /**

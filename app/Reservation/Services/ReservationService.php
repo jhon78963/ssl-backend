@@ -126,10 +126,10 @@ class ReservationService
         return $reservationTypes;
     }
 
-    public function update(Reservation $reservation, array $editReservation): void
+    public function update(Reservation $reservation, array $editReservation): Reservation
     {
         $editReservation['total_paid'] += $reservation->total_paid;
-        $this->modelService->update($reservation, $editReservation);
+        return $this->modelService->update($reservation, $editReservation);
     }
 
     public function validate(Reservation $reservation, string $modelName): Reservation

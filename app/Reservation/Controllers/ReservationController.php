@@ -2,10 +2,8 @@
 
 namespace App\Reservation\Controllers;
 
-use App\Cash\Models\CashOperation;
 use App\Cash\Services\CashOperationService;
 use App\Cash\Services\CashService;
-use App\Reservation\Enums\ReservationStatus;
 use App\Reservation\Exports\ReservationsExport;
 use App\Reservation\Models\Reservation;
 use App\Reservation\Requests\ProductSearchRequest;
@@ -25,8 +23,8 @@ use App\Shared\Resources\GetAllCollection;
 use App\Shared\Services\SharedService;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\JsonResponse;
-use DB;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use DB;
 
 class ReservationController extends Controller
 {
@@ -116,6 +114,13 @@ class ReservationController extends Controller
                 $this->reservationService->facilities(),
             ),
         );
+    }
+
+    public function validateFacilities(): JsonResponse
+    {
+        return response()->json([
+            'count' => $this->reservationService->validateFacilities(),
+        ]);
     }
 
     public function products(ProductSearchRequest $request): JsonResponse

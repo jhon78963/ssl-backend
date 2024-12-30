@@ -98,6 +98,18 @@ class ReservationService
                 })->values();
     }
 
+    public function validateFacilities(): float|int
+    {
+        $lockers = Locker::where('is_deleted', '=', false)
+            ->where('status', '=', 'IN_USE')
+            ->count();
+        $rooms = Room::where('is_deleted', '=', false)
+            ->where('status', '=', 'IN_USE')
+            ->count();
+
+        return $lockers + $rooms;
+    }
+
     public function products(?string $nameFilter = null): Collection
     {
         $products = Product::where('is_deleted', '=', false)

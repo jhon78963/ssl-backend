@@ -252,6 +252,7 @@ Route::group([
         Route::get('/reservations', 'getAll');
         Route::get('/reservations/reservationTypes', 'reservationTypes');
         Route::get('/reservations/schedules', 'schedules');
+        Route::get('/reservations/facilities/count', 'validateFacilities');
         Route::get('/reservations/facilities', 'facilities');
         Route::get('/reservations/products', 'products');
         Route::get('/reservations/{reservation}', 'get');

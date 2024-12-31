@@ -6,7 +6,7 @@ use App\Schedule\Models\Schedule;
 
 class ScheduleService
 {
-    public function get(bool $isCurrentSchedule = false): Schedule
+    public function get(bool $isCurrentSchedule = false): mixed
     {
         $currentTime = now()->format('H:i:s');
         $schedules = Schedule::where('is_deleted', '=', false)->get();

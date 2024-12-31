@@ -4,7 +4,7 @@ use App\Amenity\Controllers\AmenityController;
 use App\Auth\Controllers\AuthController;
 use App\Cash\Controllers\CashController;
 use App\Cash\Controllers\CashOperationController;
-use App\CashType\Controllers\CashTypeController;
+use App\Cash\Controllers\CashTypeController;
 use App\Category\Controllers\CategoryController;
 use App\Company\Controllers\CompanyController;
 use App\Company\Controllers\SocialNetworkController;

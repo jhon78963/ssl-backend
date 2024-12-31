@@ -1,8 +1,8 @@
 <?php
 
-namespace App\CashType\Seeders;
+namespace App\Cash\Seeders;
 
-use App\CashType\Models\CashType;
+use App\Cash\Models\CashType;
 use Illuminate\Database\Seeder;
 
 class CashTypeSeeder extends Seeder

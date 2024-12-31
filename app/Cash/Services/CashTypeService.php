@@ -1,9 +1,9 @@
 <?php
 
-namespace App\CashType\Services;
+namespace App\Cash\Services;
 
 use App\Cash\Models\CashOperation;
-use App\CashType\Models\CashType;
+use App\Cash\Models\CashType;
 use App\Shared\Services\ModelService;
 
 class CashTypeService

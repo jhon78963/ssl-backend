@@ -2,7 +2,7 @@
 
 namespace App\Cash\Models;
 
-use App\CashType\Models\CashType;
+use App\Cash\Models\CashType;
 use App\Reservation\Models\Reservation;
 use App\Schedule\Models\Schedule;
 use Illuminate\Database\Eloquent\Factories\HasFactory;

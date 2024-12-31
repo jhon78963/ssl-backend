@@ -4,9 +4,10 @@ namespace App\Schedule\Controllers;
 
 use App\Schedule\Resources\ScheduleResource;
 use App\Schedule\Services\ScheduleService;
+use App\Shared\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 
-class ScheduleController
+class ScheduleController extends Controller
 {
     protected ScheduleService $scheduleService;
 

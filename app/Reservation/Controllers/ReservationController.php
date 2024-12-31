@@ -17,6 +17,7 @@ use App\Reservation\Resources\ReservationResource;
 use App\Reservation\Resources\ReservationSchedule;
 use App\Reservation\Resources\ReservationTypeResource;
 use App\Reservation\Services\ReservationService;
+use App\Schedule\Services\ScheduleService;
 use App\Shared\Controllers\Controller;
 use App\Shared\Requests\GetAllRequest;
 use App\Shared\Resources\GetAllCollection;
@@ -31,17 +32,20 @@ class ReservationController extends Controller
     protected CashService $cashService;
     protected CashOperationService $cashOperationService;
     protected ReservationService $reservationService;
+    protected ScheduleService $scheduleService;
     protected SharedService $sharedService;
 
     public function __construct(
         CashService $cashService,
         CashOperationService $cashOperationService,
         ReservationService $reservationService,
-        SharedService $sharedService
+        ScheduleService $scheduleService,
+        SharedService $sharedService,
     ) {
         $this->cashService = $cashService;
         $this->cashOperationService = $cashOperationService;
         $this->reservationService = $reservationService;
+        $this->scheduleService = $scheduleService;
         $this->sharedService = $sharedService;
     }
 
@@ -68,7 +72,7 @@ class ReservationController extends Controller
         DB::beginTransaction();
         try {
             $newReservation = $this->sharedService->convertCamelToSnake($request->validated());
-            $newReservation['schedule_id'] = $this->cashOperationService->schedule();
+            $newReservation['schedule_id'] = $this->scheduleService->get();
             $createdReservation = $this->reservationService->create($newReservation);
             DB::commit();
             $cash = $this->cashService->currentCash();
@@ -76,7 +80,7 @@ class ReservationController extends Controller
                 'cash_id' => $cash->id,
                 'reservation_id' => $createdReservation->id,
                 'cash_type_id' => 2,
-                'schedule_id' => $this->cashOperationService->schedule(),
+                'schedule_id' => $this->scheduleService->get(),
                 'date' => now(),
                 'amount' => $createdReservation->total_paid,
             ]);

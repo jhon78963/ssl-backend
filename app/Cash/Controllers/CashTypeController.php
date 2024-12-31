@@ -1,11 +1,12 @@
 <?php
 
-namespace App\CashType\Controllers;
+namespace App\Cash\Controllers;
 
-use App\CashType\Services\CashTypeService;
+use App\Cash\Services\CashTypeService;
+use App\Shared\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 
-class CashTypeController
+class CashTypeController extends Controller
 {
     protected CashTypeService $cashTypeService;
     public function __construct(

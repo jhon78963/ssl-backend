@@ -6,12 +6,13 @@ use App\Cash\Requests\CashOperationCreateRequest;
 use App\Cash\Services\CashOperationService;
 use App\Cash\Services\CashService;
 use App\Schedule\Services\ScheduleService;
+use App\Shared\Controllers\Controller;
 use App\Shared\Services\SharedService;
 use Illuminate\Http\JsonResponse;
 use DB;
 
 
-class CashOperationController
+class CashOperationController extends Controller
 {
     protected CashService $cashService;
     protected CashOperationService $cashOperationService;

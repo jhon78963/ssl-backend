@@ -1,6 +1,6 @@
 <?php
 
-namespace App\CashType\Models;
+namespace App\Cash\Models;
 
 use App\Cash\Models\CashOperation;
 use Illuminate\Database\Eloquent\Factories\HasFactory;

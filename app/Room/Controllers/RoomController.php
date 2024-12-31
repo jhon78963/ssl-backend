@@ -6,7 +6,6 @@ use App\Room\Models\Room;
 use App\Room\Requests\RoomChangeStatus;
 use App\Room\Requests\RoomCreateRequest;
 use App\Room\Requests\RoomUpdateRequest;
-use App\Room\Resources\RoomResource;
 use App\Room\Resources\RoomTableResource;
 use App\Room\Services\RoomService;
 use App\Shared\Controllers\Controller;

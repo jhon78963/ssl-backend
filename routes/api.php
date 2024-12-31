@@ -3,6 +3,8 @@
 use App\Amenity\Controllers\AmenityController;
 use App\Auth\Controllers\AuthController;
 use App\Cash\Controllers\CashController;
+use App\Cash\Controllers\CashOperationController;
+use App\CashType\Controllers\CashTypeController;
 use App\Category\Controllers\CategoryController;
 use App\Company\Controllers\CompanyController;
 use App\Company\Controllers\SocialNetworkController;
@@ -30,6 +32,7 @@ use App\Room\Controllers\RoomReviewController;
 use App\RoomType\Controllers\RoomTypeAmenityController;
 use App\RoomType\Controllers\RoomTypeController;
 use App\RoomType\Controllers\RoomTypeRateController;
+use App\Schedule\Controllers\ScheduleController;
 use App\Service\Controllers\ServiceController;
 use App\Unit\Controllers\UnitController;
 use App\User\Controllers\UserController;
@@ -298,13 +301,23 @@ Route::group([
     });
 
     Route::controller(CashController::class)->group(function() {
-        Route::post('/cashes', 'createCash');
-        Route::post('/cashes/operation', 'create');
+        Route::post('/cashes', 'create');
         Route::get('/cashes', 'getAll');
-        Route::get('/cashes/total', 'total');
-        Route::get('/cashes/validate', 'validate');
-        Route::get('/cashes/currentCash', 'currentCash');
-        Route::get('/cashes/currentSchedule', 'currentSchedule');
-        Route::put('/cashes/{cash}', 'updateCash');
+        Route::get('/cashes/current', 'get');
+        Route::put('/cashes/{cash}', 'update');
+    });
+
+    Route::controller(CashOperationController::class)->group(function() {
+        Route::post('/cash-operations', 'create');
+        Route::get('/cash-operations/total', 'total');
+    });
+
+    Route::controller(CashTypeController::class)->group(function() {
+
+        Route::get('/cash-types/get', 'get');
+    });
+
+    Route::controller(ScheduleController::class)->group(function() {
+        Route::get('/schedules/current', 'get');
     });
 });

@@ -4,12 +4,11 @@ namespace App\Cash\Controllers;
 
 use App\Cash\Models\Cash;
 use App\Cash\Requests\CashCreateRequest;
-use App\Cash\Requests\CashOperationCreateRequest;
 use App\Cash\Requests\CashUpdateRequest;
 use App\Cash\Resources\CashResource;
-use App\Cash\Resources\ScheduleResource;
 use App\Cash\Services\CashOperationService;
 use App\Cash\Services\CashService;
+use App\Schedule\Services\ScheduleService;
 use App\Shared\Requests\GetAllRequest;
 use App\Shared\Resources\GetAllCollection;
 use App\Shared\Services\SharedService;
@@ -20,39 +19,27 @@ class CashController
 {
     protected CashService $cashService;
     protected CashOperationService $cashOperationService;
+    protected ScheduleService $scheduleService;
     protected SharedService $sharedService;
 
     public function __construct(
         CashService $cashService,
         CashOperationService $cashOperationService,
-        SharedService $sharedService
+        ScheduleService $scheduleService,
+        SharedService $sharedService,
     ) {
         $this->cashService = $cashService;
         $this->cashOperationService = $cashOperationService;
+        $this->scheduleService = $scheduleService;
         $this->sharedService = $sharedService;
     }
 
-    public function create(CashOperationCreateRequest $request): JsonResponse
+    public function create(CashCreateRequest $request): JsonResponse
     {
         DB::beginTransaction();
         try {
             $newCash = $this->sharedService->convertCamelToSnake($request->validated());
-            $newCash['schedule_id'] = $this->cashOperationService->schedule();
-            $this->cashOperationService->create($newCash);
-            DB::commit();
-            return response()->json(['message' => 'Cash created.'], 201);
-        } catch (\Exception $e) {
-            DB::rollback();
-            return response()->json(['error' =>  $e->getMessage()]);
-        }
-    }
-
-    public function createCash(CashCreateRequest $request): JsonResponse
-    {
-        DB::beginTransaction();
-        try {
-            $newCash = $this->sharedService->convertCamelToSnake($request->validated());
-            $newCash['schedule_id'] = $this->cashOperationService->schedule();
+            $newCash['schedule_id'] = $this->scheduleService->get();
             $cash = $this->cashService->create($newCash);
             DB::commit();
             return response()->json([
@@ -65,44 +52,9 @@ class CashController
         }
     }
 
-    public function updateCash(CashUpdateRequest $request, Cash $cash): JsonResponse
+    public function get():JsonResponse
     {
-        DB::beginTransaction();
-        try {
-            $editCashValidated = $this->sharedService->convertCamelToSnake($request->validated());
-            $cashValidated = $this->cashService->validate($cash, 'Cash');
-            $this->cashService->update(
-                $cashValidated,
-                $editCashValidated
-            );
-            DB::commit();
-            return response()->json(['message' => 'Cash closed.']);
-        } catch (\Exception $e) {
-            DB::rollback();
-            return response()->json(['error' =>  $e->getMessage()]);
-        }
-    }
-
-    public function currentCash() {
         return response()->json($this->cashService->currentCash());
-    }
-
-    public function currentSchedule() {
-        return response()->json(
-            new ScheduleResource($this->cashOperationService->currentSchedule())
-        );
-    }
-
-    public function validate()
-    {
-        return response()->json($this->cashOperationService->validate());
-    }
-
-    public function total(): JsonResponse {
-        $cash = $this->cashService->currentCash();
-        return response()->json([
-            'total' => (float) $this->cashOperationService->total($cash->id),
-        ]);
     }
 
     public function getAll(GetAllRequest $request): JsonResponse
@@ -118,5 +70,23 @@ class CashController
             $query['total'],
             $query['pages'],
         ));
+    }
+
+    public function update(CashUpdateRequest $request, Cash $cash): JsonResponse
+    {
+        DB::beginTransaction();
+        try {
+            $editCashValidated = $this->sharedService->convertCamelToSnake($request->validated());
+            $cashValidated = $this->cashService->validate($cash, 'Cash');
+            $this->cashService->update(
+                $cashValidated,
+                $editCashValidated
+            );
+            DB::commit();
+            return response()->json(['message' => 'Cash closed.']);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json(['error' =>  $e->getMessage()]);
+        }
     }
 }

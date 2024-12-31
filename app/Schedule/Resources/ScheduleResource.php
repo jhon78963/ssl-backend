@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Cash\Resources;
+namespace App\Schedule\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;

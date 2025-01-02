@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Reservation\Controllers;
+namespace App\Book\Controllers;
 
-use App\Reservation\Models\Reservation;
+use App\Book\Models\Book;
+use App\Book\Services\BookService;
 use App\Room\Models\Room;
 use App\Shared\Controllers\Controller;
 use App\Shared\Requests\AddRequest;
@@ -12,21 +13,23 @@ use App\Shared\Services\ModelService;
 use Illuminate\Http\JsonResponse;
 use DB;
 
-class ReservationRoomController extends Controller
+class BookRoomController extends Controller
 {
+    protected BookService $bookService;
     protected ModelService $modelService;
 
-    public function __construct(ModelService $modelService)
+    public function __construct(BookService $bookService, ModelService $modelService)
     {
+        $this->bookService = $bookService;
         $this->modelService = $modelService;
     }
 
-    public function add(AddRequest $request, Reservation $reservation, Room $room): JsonResponse
+    public function add(AddRequest $request, Book $book, Room $room): JsonResponse
     {
         DB::beginTransaction();
         try {
             $this->modelService->attach(
-                $reservation,
+                $book,
                 'rooms',
                 $room->id,
                 $request->input('price'),
@@ -37,22 +40,23 @@ class ReservationRoomController extends Controller
                 null,
                 null,
                 $request->input('additionalPeople'),
-                $request->input('extraHours'),
+                null,
             );
             DB::commit();
-            return response()->json(['message' => 'Room added to the reservation.'], 201);
+            $this->updateEndDate($book, $room);
+            return response()->json(['message' => 'Room added to the booking.'], 201);
         } catch (\Exception $e) {
             DB::rollback();
             return response()->json($e->getMessage());
         }
     }
 
-    public function modify(ModifyRequest $request, Reservation $reservation, Room $room): JsonResponse
+    public function modify(ModifyRequest $request, Book $book, Room $room): JsonResponse
     {
         DB::beginTransaction();
         try {
             $this->modelService->modify(
-                $reservation,
+                $book,
                 'rooms',
                 $room->id,
                 null,
@@ -63,36 +67,44 @@ class ReservationRoomController extends Controller
                 null,
                 null,
                 $request->input('additionalPeople'),
-                $request->input('extraHours'),
+                null,
             );
             DB::commit();
-            return response()->json(['message' => 'Room modified to the reservation.'], 201);
+            return response()->json(['message' => 'Room modified to the booking.'], 201);
         } catch (\Exception $e) {
             DB::rollback();
             return response()->json($e->getMessage());
         }
     }
 
-    public function getAll(Reservation $reservation): JsonResponse
+    public function getAll(Book $book): JsonResponse
     {
-        $rooms = $reservation->rooms()->get();
+        $rooms = $book->rooms()->get();
         return response()->json( GetAllAddResource::collection($rooms));
     }
 
-    public function remove(Reservation $reservation, Room $room, float $price): JsonResponse
+    public function remove(Book $book, Room $room, float $price): JsonResponse
     {
         DB::beginTransaction();
         try {
-            $this->modelService->detach($reservation, 'rooms', $room->id);
-            $editReservation = [
-                'total' => $reservation->total - $price,
+            $this->modelService->detach($book, 'rooms', $room->id);
+            $editBooking = [
+                'total' => $book->total - $price,
             ];
-            $this->modelService->update($reservation, $editReservation);
+            $this->modelService->update($book, $editBooking);
             DB::commit();
-            return response()->json(['message' => 'Room removed from the reservation']);
+            return response()->json(['message' => 'Room removed from the booking']);
         } catch (\Exception $e) {
             DB::rollback();
             return response()->json(['error' => $e->getMessage()]);
         }
+    }
+
+    private function updateEndDate(Book $book, Room $room): void {
+        $book->end_date = $this->bookService->increaseHours(
+            $book->start_date,
+            $room->roomType->rental_hours,
+        );
+        $book->save();
     }
 }

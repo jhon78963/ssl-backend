@@ -4,10 +4,10 @@ namespace App\Reservation\Controllers;
 
 use App\Locker\Models\Locker;
 use App\Reservation\Models\Reservation;
-use App\Service\Resources\ServiceGetAllAddResource;
 use App\Shared\Controllers\Controller;
 use App\Shared\Requests\AddRequest;
 use App\Shared\Requests\ModifyRequest;
+use App\Shared\Resources\GetAllAddResource;
 use App\Shared\Services\ModelService;
 use Illuminate\Http\JsonResponse;
 use DB;
@@ -64,7 +64,7 @@ class ReservationLockerController extends Controller
     public function getAll(Reservation $reservation): JsonResponse
     {
         $lockers = $reservation->lockers()->get();
-        return response()->json( ServiceGetAllAddResource::collection($lockers));
+        return response()->json( GetAllAddResource::collection($lockers));
     }
 
     public function remove(Reservation $reservation, Locker $locker, float $price): JsonResponse

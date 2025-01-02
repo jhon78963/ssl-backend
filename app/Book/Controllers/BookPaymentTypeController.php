@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Reservation\Controllers;
+namespace App\Book\Controllers;
 
+use App\Book\Models\Book;
 use App\PaymentType\Models\PaymentType;
-use App\Reservation\Models\Reservation;
 use App\Shared\Controllers\Controller;
 use App\Shared\Requests\AddRequest;
 use App\Shared\Resources\GetAllAddResource;
@@ -11,7 +11,7 @@ use App\Shared\Services\ModelService;
 use Illuminate\Http\JsonResponse;
 use DB;
 
-class ReservationPaymentTypeController extends Controller
+class BookPaymentTypeController extends Controller
 {
     protected ModelService $modelService;
 
@@ -20,12 +20,12 @@ class ReservationPaymentTypeController extends Controller
         $this->modelService = $modelService;
     }
 
-    public function add(AddRequest $request, Reservation $reservation, PaymentType $paymentType): JsonResponse
+    public function add(AddRequest $request, Book $book, PaymentType $paymentType): JsonResponse
     {
         DB::beginTransaction();
         try {
             $this->modelService->attach(
-                $reservation,
+                $book,
                 'paymentTypes',
                 $paymentType->id,
                 null,
@@ -37,21 +37,21 @@ class ReservationPaymentTypeController extends Controller
                 $request->input('cardPayment'),
             );
             DB::commit();
-            return response()->json(['message' => 'Payment Type added to the reservation.'], 201);
+            return response()->json(['message' => 'Payment Type added to the booking.'], 201);
         } catch (\Exception $e) {
             DB::rollback();
             return response()->json($e->getMessage());
         }
     }
 
-    public function getAll(Reservation $reservation): JsonResponse
+    public function getAll(Book $book): JsonResponse
     {
-        $paymentTypes = $reservation->paymentTypes()->get();
+        $paymentTypes = $book->paymentTypes()->get();
         return response()->json( GetAllAddResource::collection($paymentTypes));
     }
 
     public function remove(
-        Reservation $reservation,
+        Book $book,
         PaymentType $paymentType,
         float $payment,
         float $cashPayment,
@@ -59,13 +59,13 @@ class ReservationPaymentTypeController extends Controller
     ): JsonResponse {
         DB::beginTransaction();
         try {
-            $this->modelService->detach($reservation, 'paymentTypes', $paymentType->id);
-            $editReservation = [
-                'total' => $reservation->total - ($paymentType->id == 3 ? $cashPayment + $cardPayment : $payment),
+            $this->modelService->detach($book, 'paymentTypes', $paymentType->id);
+            $editBooking = [
+                'total' => $book->total - ($paymentType->id == 3 ? $cashPayment + $cardPayment : $payment),
             ];
-            $this->modelService->update($reservation, $editReservation);
+            $this->modelService->update($book, $editBooking);
             DB::commit();
-            return response()->json(['message' => 'Payment Type removed from the reservation']);
+            return response()->json(['message' => 'Payment Type removed from the booking']);
         } catch (\Exception $e) {
             DB::rollback();
             return response()->json(['error' => $e->getMessage()]);

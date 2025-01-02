@@ -6,6 +6,7 @@ use App\Book\Models\Book;
 use App\Shared\Requests\GetAllRequest;
 use App\Shared\Services\ModelService;
 use App\Shared\Services\SharedService;
+use Carbon\Carbon;
 
 class BookService {
     private int $limit = 10;
@@ -68,6 +69,14 @@ class BookService {
             'pages' => $pages,
         ];
     }
+
+    public function increaseHours(string $startDate, int $hours): string
+    {
+        $date = Carbon::parse($startDate);
+        $date->addHours($hours);
+        return $date->toDateTimeString();
+    }
+
 
     public function update(Book $book, array $editBook): Book
     {

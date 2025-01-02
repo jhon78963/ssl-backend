@@ -3,6 +3,8 @@
 use App\Amenity\Controllers\AmenityController;
 use App\Auth\Controllers\AuthController;
 use App\Book\Controllers\BookController;
+use App\Book\Controllers\BookPaymentTypeController;
+use App\Book\Controllers\BookRoomController;
 use App\Cash\Controllers\CashController;
 use App\Cash\Controllers\CashOperationController;
 use App\Cash\Controllers\CashTypeController;
@@ -329,5 +331,21 @@ Route::group([
         // Route::delete('/books/{book}', 'delete');
         Route::get('/books', 'getAll');
         Route::get('/books/{book}', 'get');
+    });
+
+    Route::controller(BookRoomController::class)->group(function() {
+        Route::post('/rooms/{book}/add/{room}', 'add');
+        Route::post('/rooms/{book}/modify/{room}', 'modify');
+        Route::delete('/rooms/{book}/remove/{room}/price/{price}', 'remove');
+        Route::get('/rooms/{book}/all', 'getAll');
+    });
+
+    Route::controller(BookPaymentTypeController::class)->group(function() {
+        Route::post('/payment-types/{book}/add/{paymentType}', 'add');
+        Route::delete(
+            '/payment-types/{book}/remove/{paymentType}/cash-payment/{cashPayment}/card-payment/{cardPayment}',
+            'remove'
+        );
+        Route::get('/payment-types/{book}/all', 'getAll');
     });
 });

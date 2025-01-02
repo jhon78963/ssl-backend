@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use App\Cash\Seeders\CashSeeder;
-use App\CashType\Seeders\CashTypeSeeder;
+use App\Cash\Seeders\CashTypeSeeder;
 use App\Category\Seeders\CategorySeeder;
 use App\Company\Seeders\CompanySeed;
 use App\Gender\Seeders\GenderSeeder;

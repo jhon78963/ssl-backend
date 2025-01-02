@@ -25,8 +25,8 @@ return new class extends Migration
             $table->datetime('deletion_time')->nullable();
             $table->integer('customer_id')->nullable();
             $table->foreign('customer_id')->references('id')->on('customers');
-            $table->unsignedBigInteger('room_id');
-            $table->foreign('room_id')->references('id')->on('rooms');
+            $table->integer('schedule_id')->nullable();
+            $table->foreign('schedule_id')->references('id')->on('schedules');
             $table->string('title');
             $table->string('location');
             $table->datetime('start_date');
@@ -35,6 +35,11 @@ return new class extends Migration
             $table->string('background_color');
             $table->string('border_color');
             $table->string('text_color');
+            $table->float('total')->nullable();
+            $table->float('total_paid')->nullable();
+            $table->float('facilities_import')->nullable();
+            $table->float('people_extra_import')->nullable();
+            $table->string('notes')->nullable();
             $table->enum('status', ['PENDING', 'IN_USE', 'COMPLETED', 'CANCELLED'])->default('PENDING');
         });
     }

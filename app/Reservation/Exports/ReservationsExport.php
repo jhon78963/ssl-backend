@@ -45,16 +45,16 @@ class ReservationsExport implements FromCollection, WithHeadings, WithStyles, Sh
                 function (Builder $query): void  {
                     $query->where(function (Builder $query): void  {
                         if ($this->endDate) {
-                            $query->whereDate('initial_reservation_date', '>=', $this->startDate);
+                            $query->whereDate('start_date', '>=', $this->startDate);
                         }
                         if ($this->endDate) {
-                            $query->whereDate('initial_reservation_date', '<=', $this->endDate);
+                            $query->whereDate('start_date', '<=', $this->endDate);
                         }
                     });
             })
             ->select(
-                'r.initial_reservation_date',
-                'r.final_reservation_date',
+                'r.start_date',
+                'r.end_date',
                 'rt.description as rt_description',
                 's.description as s_description',
                 'r.facilities_import',

@@ -1,20 +1,18 @@
 <?php
 
-namespace App\Room\Models;
+namespace App\Book\Models;
 
-use App\Book\Models\Book;
-use App\Image\Models\Image;
-use App\Reservation\Models\Reservation;
-use App\Review\Models\Review;
-use App\Room\Enums\RoomStatus;
-use App\RoomType\Models\RoomType;
+use App\Book\Enums\BookStatus;
+use App\Customer\Models\Customer;
+use App\PaymentType\Models\PaymentType;
+use App\Room\Models\Room;
+use App\Schedule\Models\Schedule;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Room extends Model
+class Book extends Model
 {
     use HasFactory;
 
@@ -25,10 +23,22 @@ class Room extends Model
      */
     protected $fillable = [
         'id',
-        'number',
-        'description',
-        'room_type_id',
+        'customer_id',
+        'schedule_id',
+        'start_date',
+        'end_date',
+        'total',
+        'total_paid',
+        'people_extra_import',
+        'facilities_import',
+        'notes',
         'status',
+        'title',
+        'description',
+        'location',
+        'background_color',
+        'border_color',
+        'text_color',
     ];
 
     /**
@@ -37,7 +47,6 @@ class Room extends Model
      * @var array<int, string>
      */
     protected $hidden = [
-        'creation_time',
         'creator_user_id',
         'last_modification_time',
         'last_modifier_user_id',
@@ -51,9 +60,7 @@ class Room extends Model
      *
      * @var bool
      */
-
     public $timestamps = false;
-
     /**
      * Get the attributes that should be cast.
      *
@@ -62,44 +69,36 @@ class Room extends Model
     protected function casts(): array
     {
         return [
-            'status' => RoomStatus::class,
+            'status' => BookStatus::class,
+            'total' => 'float',
+            'total_paid' => 'float',
             'price' => 'float',
+            'facilities_import' => 'float',
         ];
     }
 
-    public function roomType(): BelongsTo {
-        return $this->belongsTo(RoomType::class);
+    public function customer(): BelongsTo {
+        return $this->belongsTo(Customer::class);
     }
 
-    public function images(): BelongsToMany
+    public function schedule(): BelongsTo
+    {
+        return $this->belongsTo(Schedule::class);
+    }
+
+    public function rooms(): BelongsToMany
     {
         return $this->belongsToMany(
-            Image::class,
-            'room_image'
-        );
-    }
-
-    public function reviews(): HasMany {
-        return $this->hasMany(Review::class);
-    }
-
-    public function reservations(): BelongsToMany
-    {
-        return $this->belongsToMany(
-            Reservation::class,
-            'reservation_room',
-        )->withPivot(['price', 'quantity', 'is_paid', 'additional_people', 'extra_hours']);
-    }
-
-    public function books(): BelongsToMany
-    {
-        return $this->belongsToMany(
-            Book::class,
+            Room::class,
             'book_room',
         )->withPivot(['price', 'quantity', 'additional_people']);
     }
 
-    public function reservationsInUse(): HasMany {
-        return $this->hasMany(Reservation::class)->where('status', 'IN_USE');
+    public function paymentTypes(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            PaymentType::class,
+            'book_payment_type',
+        )->withPivot(['payment', 'cash_payment', 'card_payment']);
     }
 }

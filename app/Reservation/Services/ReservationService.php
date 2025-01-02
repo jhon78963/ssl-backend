@@ -7,7 +7,6 @@ use App\Product\Models\Product;
 use App\Reservation\Models\Reservation;
 use App\ReservationType\Models\ReservationType;
 use App\Room\Models\Room;
-use App\Schedule\Models\Schedule;
 use App\Service\Models\Service;
 use App\Shared\Requests\GetAllRequest;
 use App\Shared\Services\ModelService;
@@ -24,7 +23,6 @@ class ReservationService
     private string $reservationType = '';
     private string $startDate = '';
     private string $endDate = '';
-
     protected ModelService $modelService;
     protected SharedService $sharedService;
 
@@ -150,19 +148,6 @@ class ReservationService
         return $reservationTypes;
     }
 
-    private function prependSchedule(): Schedule {
-        $schedule = new Schedule();
-        $schedule->id = 0;
-        $schedule->description = 'Todos';
-        return $schedule;
-    }
-
-    public function schedules(): Collection {
-        $schedules = Schedule::whereHas('reservations')->get();
-        $schedules->prepend($this->prependSchedule());
-        return $schedules;
-    }
-
     public function getAll(
         GetAllRequest  $request,
         string $entityName,
@@ -174,10 +159,10 @@ class ReservationService
     ): array {
         $limit = $request->query('limit', $this->limit);
         $page = $request->query('page', $this->page);
+        $startDate = $request->query('startDate', $this->startDate);
         $endDate = $request->query('endDate', $this->endDate);
         $schedule = $request->query('schedule', $this->schedule);
         $reservationType = $request->query('reservationType', $this->reservationType);
-        $startDate = $request->query('startDate', $this->startDate);
 
         $modelClass = "App\\$entityName\\Models\\$modelName";
 

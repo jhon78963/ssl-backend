@@ -2,6 +2,7 @@
 
 use App\Amenity\Controllers\AmenityController;
 use App\Auth\Controllers\AuthController;
+use App\Book\Controllers\BookController;
 use App\Cash\Controllers\CashController;
 use App\Cash\Controllers\CashOperationController;
 use App\Cash\Controllers\CashTypeController;
@@ -254,7 +255,6 @@ Route::group([
         // Route::delete('/reservations/{reservation}', 'delete');
         Route::get('/reservations', 'getAll');
         Route::get('/reservations/reservationTypes', 'reservationTypes');
-        Route::get('/reservations/schedules', 'schedules');
         Route::get('/reservations/facilities/count', 'validateFacilities');
         Route::get('/reservations/facilities', 'facilities');
         Route::get('/reservations/products', 'products');
@@ -319,5 +319,15 @@ Route::group([
 
     Route::controller(ScheduleController::class)->group(function() {
         Route::get('/schedules/current', 'get');
+        Route::get('/schedules', 'getAll');
+    });
+
+    Route::controller(BookController::class)->group(function() {
+        Route::post('/books', 'create');
+        Route::patch('/books/change-status/{book}', 'changeStatus');
+        Route::patch('/books/{book}', 'update');
+        // Route::delete('/books/{book}', 'delete');
+        Route::get('/books', 'getAll');
+        Route::get('/books/{book}', 'get');
     });
 });

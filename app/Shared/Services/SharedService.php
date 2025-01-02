@@ -110,10 +110,10 @@ class SharedService {
         {
             $query->where(function ($query) use ($startDate, $endDate) {
                 if ($startDate) {
-                    $query->whereDate('initial_reservation_date', '>=', $startDate);
+                    $query->whereDate('start_date', '>=', $startDate);
                 }
                 if ($endDate) {
-                    $query->whereDate('initial_reservation_date', '<=', $endDate);
+                    $query->whereDate('start_date', '<=', $endDate);
                 }
             });
         });

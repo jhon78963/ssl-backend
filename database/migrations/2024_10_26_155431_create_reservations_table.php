@@ -29,8 +29,8 @@ return new class extends Migration
             $table->foreign('customer_id')->references('id')->on('customers');
             $table->integer('schedule_id')->nullable();
             $table->foreign('schedule_id')->references('id')->on('schedules');
-            $table->datetime('initial_reservation_date');
-            $table->datetime('final_reservation_date')->nullable();
+            $table->datetime('start_date');
+            $table->datetime('end_date')->nullable();
             $table->float('total')->nullable();
             $table->float('total_paid')->nullable();
             $table->float('people_extra_import')->nullable();

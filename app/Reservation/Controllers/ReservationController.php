@@ -7,14 +7,13 @@ use App\Cash\Services\CashService;
 use App\Reservation\Exports\ReservationsExport;
 use App\Reservation\Models\Reservation;
 use App\Reservation\Requests\ProductSearchRequest;
-use App\Reservation\Requests\ReservationChangeStatus;
+use App\Reservation\Requests\ReservationChangeStatusRequest;
 use App\Reservation\Requests\ReservationCreateRequest;
 use App\Reservation\Requests\ReservationExportRequest;
 use App\Reservation\Requests\ReservationUpdateRequest;
 use App\Reservation\Resources\FacilitiesResource;
 use App\Reservation\Resources\ProductsResource;
 use App\Reservation\Resources\ReservationResource;
-use App\Reservation\Resources\ReservationSchedule;
 use App\Reservation\Resources\ReservationTypeResource;
 use App\Reservation\Services\ReservationService;
 use App\Schedule\Services\ScheduleService;
@@ -49,16 +48,16 @@ class ReservationController extends Controller
         $this->sharedService = $sharedService;
     }
 
-    public function changeStatus(ReservationChangeStatus $request, Reservation $reservation)
+    public function changeStatus(ReservationChangeStatusRequest $request, Reservation $reservation)
     {
         DB::beginTransaction();
         try {
-            $editLocker = $this->sharedService->convertCamelToSnake($request->validated());
+            $editReservation = $this->sharedService->convertCamelToSnake($request->validated());
             $reservationValidated = $this->reservationService->validate(
                 $reservation,
                 'Reservation'
             );
-            $this->reservationService->update($reservationValidated, $editLocker);
+            $this->reservationService->update($reservationValidated, $editReservation);
             DB::commit();
             return response()->json(['message' => 'Reservation status changed.'], 201);
         } catch (\Exception $e) {
@@ -145,15 +144,6 @@ class ReservationController extends Controller
         );
     }
 
-    public function schedules(): JsonResponse
-    {
-        return response()->json(
-            ReservationSchedule::collection(
-                $this->reservationService->schedules(),
-            ),
-        );
-    }
-
     public function get(Reservation $reservation): JsonResponse
     {
         $reservationValidated = $this->reservationService->validate($reservation, 'Reservation');
@@ -183,7 +173,7 @@ class ReservationController extends Controller
         DB::beginTransaction();
         try {
             $editReservationValidated = $this->sharedService->convertCamelToSnake($request->validated());
-            $reservationValidated = $this->reservationService->validate($reservation, 'ProductType');
+            $reservationValidated = $this->reservationService->validate($reservation, 'Reservation');
             $reservationUpdated = $this->reservationService->update(
                 $reservationValidated,
                 $editReservationValidated

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Reservation\Requests;
+namespace App\Book\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ReservationChangeStatus extends FormRequest
+class BookChangeStatusRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

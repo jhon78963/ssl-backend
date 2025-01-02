@@ -2,6 +2,7 @@
 
 namespace App\PaymentType\Models;
 
+use App\Book\Models\Book;
 use App\Reservation\Models\Reservation;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -47,6 +48,14 @@ class PaymentType extends Model
         return $this->belongsToMany(
             Reservation::class,
             'reservation_payment_type',
+        )->withPivot(['payment', 'cash_payment', 'card_payment']);
+    }
+
+    public function books(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            Book::class,
+            'book_payment_type',
         )->withPivot(['payment', 'cash_payment', 'card_payment']);
     }
 }

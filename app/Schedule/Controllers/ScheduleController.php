@@ -23,4 +23,13 @@ class ScheduleController extends Controller
             ),
         );
     }
+
+    public function getAll(): JsonResponse
+    {
+        return response()->json(
+            ScheduleResource::collection(
+                $this->scheduleService->getAll(),
+            ),
+        );
+    }
 }

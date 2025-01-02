@@ -22,8 +22,8 @@ class ReservationCreateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'initialReservationDate' => 'required',
-            'finalReservationDate' => 'nullable',
+            'startDate' => 'required',
+            'endDate' => 'nullable',
             'total' => 'required|numeric',
             'totalPaid' => 'nullable|numeric',
             'status' => 'nullable|string',

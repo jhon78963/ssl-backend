@@ -9,20 +9,22 @@ class SunatService
     public function dniConsultation($dni): mixed
     {
         // data
-        $token = 'apis-token-1.aTSI1U7KEuT-6bbbCguH-4Y8TI6KS73N';
+        $token = 'apis-token-12491.Nnf3wt2ZokI0xlxPqsWljsVuWdLdAs9X';
+        //$token_v1 = 'apis-token-1.aTSI1U7KEuT-6bbbCguH-4Y8TI6KS73N';
 
         // start to API call
         $curl = curl_init();
 
         // search by DNI
         curl_setopt_array($curl, [
-            CURLOPT_URL => "https://api.apis.net.pe/v1/dni?numero=$dni",
+            // CURLOPT_URL => "https://api.apis.net.pe/v1/dni?numero=$dni",
+            CURLOPT_URL => "https://api.apis.net.pe/v2/reniec/dni?numero=$dni",
             CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_SSL_VERIFYPEER => 0,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 2,
             CURLOPT_TIMEOUT => 0,
             CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => 'GET',
             CURLOPT_HTTPHEADER => [
                 'Referer: https://apis.net.pe/consulta-dni-api',
@@ -42,20 +44,22 @@ class SunatService
     public function rucConsultation($ruc): mixed
     {
         // data
-        $token = 'apis-token-1.aTSI1U7KEuT-6bbbCguH-4Y8TI6KS73N';
+        $token = 'apis-token-12491.Nnf3wt2ZokI0xlxPqsWljsVuWdLdAs9X';
+        //$token_v1 = 'apis-token-1.aTSI1U7KEuT-6bbbCguH-4Y8TI6KS73N';
 
         // start to API call
         $curl = curl_init();
 
         // Search by RUC
         curl_setopt_array($curl, [
-        CURLOPT_URL => 'https://api.apis.net.pe/v1/ruc?numero=' . $ruc,
+        // CURLOPT_URL => "https://api.apis.net.pe/v1/ruc?numero=$ruc",
+        CURLOPT_URL => "https://api.apis.net.pe/v2/sunat/ruc?numero=$ruc",
         CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_SSL_VERIFYPEER => 0,
         CURLOPT_ENCODING => '',
         CURLOPT_MAXREDIRS => 10,
         CURLOPT_TIMEOUT => 0,
         CURLOPT_FOLLOWLOCATION => true,
-        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
         CURLOPT_CUSTOMREQUEST => 'GET',
         CURLOPT_HTTPHEADER => [
             'Referer: http://apis.net.pe/api-ruc',

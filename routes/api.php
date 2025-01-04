@@ -49,6 +49,13 @@ Route::post('auth/login', [AuthController::class, 'login']);
 Route::post('auth/refresh-token', [AuthController::class, 'refreshToken']);
 Route::post('auth/logout', [AuthController::class,'logout']);
 
+Route::controller(CustomerController::class)->group(function() {
+    Route::get('/consultation-dni/{dni}', 'searchByDni');
+    Route::get('/consultation-ruc/{ruc}', 'searchByRuc');
+});
+
+
+
 Route::group([
     'middleware' => 'auth:sanctum',
 ], function (): void {
@@ -197,8 +204,8 @@ Route::group([
         Route::get('/customers', 'getAll');
         Route::get('/customers/dni/{customer}', 'getByDni');
         Route::get('/customers/{customer}', 'get');
-        Route::get('/consultation-dni/{dni}', 'searchByDni');
-        Route::get('/consultation-ruc/{ruc}', 'searchByRuc');
+        // Route::get('/consultation-dni/{dni}', 'searchByDni');
+        // Route::get('/consultation-ruc/{ruc}', 'searchByRuc');
     });
 
     Route::controller(UnitController::class)->group(function() {

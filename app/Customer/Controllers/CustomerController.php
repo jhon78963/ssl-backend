@@ -86,11 +86,39 @@ class CustomerController extends Controller
         ));
     }
 
-    public function searchByDni(string $dni)
+    public function searchByDni(string $dni): JsonResponse
     {
-        $person = $this->sunatService->dniConsultation($dni);
-        return response()->json(new DniConsultationResource($person));
+        $customer = $this->findOrCreateCustomerByDni($dni);
+        return response()->json(new CustomerResource($customer));
     }
+
+    private function findOrCreateCustomerByDni(string $dni): ?Customer
+    {
+        $existingCustomer = $this->customerService->get('dni', $dni);
+
+        if ($existingCustomer) {
+            return $existingCustomer;
+        }
+
+        $personData = $this->getPersonDataFromSunat($dni);
+        $formattedData = $this->formatCustomerData($personData);
+        return $this->customerService->create($formattedData);
+    }
+
+    private function getPersonDataFromSunat(string $dni): mixed
+    {
+        return $this->sunatService->dniConsultation($dni);
+    }
+
+    private function formatCustomerData($person): array
+    {
+        return $this->sharedService->convertCamelToSnake([
+            'dni' => $person->numeroDocumento,
+            'name' => $person->nombres,
+            'surname' => trim("{$person->apellidoPaterno} {$person->apellidoMaterno}")
+        ]);
+    }
+
 
     public function searchByRuc(string $ruc)
     {

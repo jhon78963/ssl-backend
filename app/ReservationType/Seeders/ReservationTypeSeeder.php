@@ -12,16 +12,16 @@ class ReservationTypeSeeder extends Seeder
      */
     public function run(): void
     {
-        $bookType = new ReservationType();
-        $bookType->description = 'General';
-        $bookType->save();
+        $reservationType = new ReservationType();
+        $reservationType->description = 'General';
+        $reservationType->save();
 
-        $bookType = new ReservationType();
-        $bookType->description = 'Privado';
-        $bookType->save();
+        $reservationType = new ReservationType();
+        $reservationType->description = 'Privado';
+        $reservationType->save();
 
-        $bookType = new ReservationType();
-        $bookType->description = 'Personal';
-        $bookType->save();
+        $reservationType = new ReservationType();
+        $reservationType->description = 'Personal';
+        $reservationType->save();
     }
 }

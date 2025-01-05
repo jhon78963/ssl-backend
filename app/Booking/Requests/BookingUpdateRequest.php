@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Book\Requests;
+namespace App\Booking\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class BookCreateRequest extends FormRequest
+class BookingUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,22 +22,22 @@ class BookCreateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'startDate' => 'required',
+            'startDate' => 'sometimes',
             'endDate' => 'nullable',
-            'total' => 'required|numeric',
+            'total' => 'sometimes|numeric',
             'totalPaid' => 'nullable|numeric',
             'status' => 'nullable|string',
             'customerId' => 'nullable|integer',
-            'facilitiesImport' => 'required|numeric',
-            'peopleExtraImport' => 'required|numeric',
+            'facilitiesImport' => 'sometimes|numeric',
+            'peopleExtraImport' => 'sometimes|numeric',
             'notes' => 'nullable',
             'scheduleId' => 'nullable|integer',
-            'title' => 'required',
-            'description' => 'required',
-            'location' => 'required',
-            'backgroundColor' => 'required',
-            'borderColor' => 'required',
-            'textColor' => 'required',
+            'title' => 'nullable',
+            'description' => 'nullable',
+            'location' => 'nullable',
+            'backgroundColor' => 'nullable',
+            'borderColor' => 'nullable',
+            'textColor' => 'nullable',
         ];
     }
 }

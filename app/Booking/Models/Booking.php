@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Book\Models;
+namespace App\Booking\Models;
 
-use App\Book\Enums\BookStatus;
+use App\Booking\Enums\BookingStatus;
 use App\Customer\Models\Customer;
 use App\PaymentType\Models\PaymentType;
 use App\Product\Models\Product;
@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-class Book extends Model
+class Booking extends Model
 {
     use HasFactory;
 
@@ -71,7 +71,7 @@ class Book extends Model
     protected function casts(): array
     {
         return [
-            'status' => BookStatus::class,
+            'status' => BookingStatus::class,
             'total' => 'float',
             'total_paid' => 'float',
             'price' => 'float',
@@ -92,7 +92,7 @@ class Book extends Model
     {
         return $this->belongsToMany(
             Room::class,
-            'book_room',
+            'booking_room',
         )->withPivot(['price', 'quantity', 'additional_people']);
     }
 
@@ -100,7 +100,7 @@ class Book extends Model
     {
         return $this->belongsToMany(
             Product::class,
-            'book_product',
+            'booking_product',
         )->withPivot(['price', 'quantity', 'is_paid', 'is_free']);
     }
 
@@ -115,7 +115,7 @@ class Book extends Model
     {
         return $this->belongsToMany(
             PaymentType::class,
-            'book_payment_type',
+            'booking_payment_type',
         )->withPivot(['payment', 'cash_payment', 'card_payment']);
     }
 }

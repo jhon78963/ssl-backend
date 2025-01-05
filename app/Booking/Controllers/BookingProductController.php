@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Book\Controllers;
+namespace App\Booking\Controllers;
 
-use App\Book\Models\Book;
-use App\Service\Models\Service;
+use App\Booking\Models\Booking;
+use App\Product\Models\Product;
 use App\Shared\Controllers\Controller;
 use App\Shared\Requests\AddRequest;
 use App\Shared\Requests\ModifyRequest;
@@ -11,7 +11,7 @@ use App\Shared\Services\ModelService;
 use Illuminate\Http\JsonResponse;
 use DB;
 
-class BookServiceController extends Controller
+class BookingProductController extends Controller
 {
     protected ModelService $modelService;
 
@@ -20,59 +20,59 @@ class BookServiceController extends Controller
         $this->modelService = $modelService;
     }
 
-    public function add(AddRequest $request, Book $book, Service $service): JsonResponse
+    public function add(AddRequest $request, Booking $booking, Product $product): JsonResponse
     {
         DB::beginTransaction();
         try {
             $this->modelService->attach(
-                $book,
-                'services',
-                $service->id,
-                $service->price,
+                $booking,
+                'products',
+                $product->id,
+                $product->price,
                 $request->input('quantity'),
                 $request->input('isPaid'),
                 $request->input('isFree'),
             );
             DB::commit();
-            return response()->json(['message' => 'Service added to the booking.'], 201);
+            return response()->json(['message' => 'Product added to the booking.'], 201);
         } catch (\Exception $e) {
             DB::rollback();
             return response()->json($e->getMessage());
         }
     }
 
-    public function modify(ModifyRequest $request, Book $book, Service $service): JsonResponse
+    public function modify(ModifyRequest $request, Booking $booking, Product $product): JsonResponse
     {
         DB::beginTransaction();
         try {
             $this->modelService->modify(
-                $book,
-                'services',
-                $service->id,
+                $booking,
+                'products',
+                $product->id,
                 null,
                 $request->input('quantity'),
                 $request->input('isPaid'),
                 $request->input('isFree'),
             );
             DB::commit();
-            return response()->json(['message' => 'Service modified to the boking.'], 201);
+            return response()->json(['message' => 'Product modified to the booking.'], 201);
         } catch (\Exception $e) {
             DB::rollback();
             return response()->json($e->getMessage());
         }
     }
 
-    public function remove(Book $book, Service $service, int $quantity): JsonResponse
+    public function remove(Booking $booking, Product $product, int $quantity): JsonResponse
     {
         DB::beginTransaction();
         try {
-            $this->modelService->detach($book, 'services', $service->id);
+            $this->modelService->detach($booking, 'products', $product->id);
             $editBooking = [
-                'total' => $book->total - $service->price * $quantity,
+                'total' => $booking->total - $product->price * $quantity,
             ];
-            $this->modelService->update($book, $editBooking);
+            $this->modelService->update($booking, $editBooking);
             DB::commit();
-            return response()->json(['message' => 'Service removed from the booking']);
+            return response()->json(['message' => 'Product removed from the booking']);
         } catch (\Exception $e) {
             DB::rollback();
             return response()->json(['error' => $e->getMessage()]);

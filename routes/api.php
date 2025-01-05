@@ -2,11 +2,11 @@
 
 use App\Amenity\Controllers\AmenityController;
 use App\Auth\Controllers\AuthController;
-use App\Book\Controllers\BookController;
-use App\Book\Controllers\BookPaymentTypeController;
-use App\Book\Controllers\BookProductController;
-use App\Book\Controllers\BookRoomController;
-use App\Book\Controllers\BookServiceController;
+use App\Booking\Controllers\BookingController;
+use App\Booking\Controllers\BookingPaymentTypeController;
+use App\Booking\Controllers\BookingProductController;
+use App\Booking\Controllers\BookingRoomController;
+use App\Booking\Controllers\BookingServiceController;
 use App\Cash\Controllers\CashController;
 use App\Cash\Controllers\CashOperationController;
 use App\Cash\Controllers\CashTypeController;
@@ -319,38 +319,38 @@ Route::group([
         Route::get('/schedules', 'getAll');
     });
 
-    Route::controller(BookController::class)->group(function() {
-        Route::post('/books', 'create');
-        Route::patch('/books/change-status/{book}', 'changeStatus');
-        Route::patch('/books/{book}', 'update');
-        // Route::delete('/books/{book}', 'delete');
-        Route::get('/books', 'getAll');
-        Route::get('/books/{book}', 'get');
+    Route::controller(BookingController::class)->group(function() {
+        Route::post('/bookings', 'create');
+        Route::patch('/bookings/change-status/{booking}', 'changeStatus');
+        Route::patch('/bookings/{booking}', 'update');
+        // Route::delete('/bookings/{booking}', 'delete');
+        Route::get('/bookings', 'getAll');
+        Route::get('/bookings/{booking}', 'get');
     });
 
-    Route::controller(BookRoomController::class)->group(function() {
-        Route::post('books/{book}/rooms/{room}', 'add');
-        Route::patch('books/{book}/rooms/{room}', 'modify');
-        Route::delete('books/{book}/rooms/{room}/price/{price}', 'remove');
-        Route::get('books/{book}/rooms/{room}', 'getAll');
+    Route::controller(BookingRoomController::class)->group(function() {
+        Route::post('bookings/{booking}/rooms/{room}', 'add');
+        Route::patch('bookings/{booking}/rooms/{room}', 'modify');
+        Route::delete('bookings/{booking}/rooms/{room}/price/{price}', 'remove');
+        Route::get('bookings/{booking}/rooms/{room}', 'getAll');
     });
 
-    Route::controller(BookProductController::class)->group(function() {
-        Route::post('books/{book}/products/{product}', 'add');
-        Route::patch('books/{book}/products/{product}', 'modify');
-        Route::delete('books/{book}/products/{product}/quantity/{quantity}', 'remove');
+    Route::controller(BookingProductController::class)->group(function() {
+        Route::post('bookings/{booking}/products/{product}', 'add');
+        Route::patch('bookings/{booking}/products/{product}', 'modify');
+        Route::delete('bookings/{booking}/products/{product}/quantity/{quantity}', 'remove');
     });
 
-    Route::controller(BookServiceController::class)->group(function() {
-        Route::post('books/{book}/services/{service}', 'add');
-        Route::patch('books/{book}/services/{service}', 'modify');
-        Route::delete('books/{book}/services/{service}/quantity/{quantity}', 'remove');
+    Route::controller(BookingServiceController::class)->group(function() {
+        Route::post('bookings/{booking}/services/{service}', 'add');
+        Route::patch('bookings/{booking}/services/{service}', 'modify');
+        Route::delete('bookings/{booking}/services/{service}/quantity/{quantity}', 'remove');
     });
 
-    Route::controller(BookPaymentTypeController::class)->group(function() {
-        Route::post('books/{book}/payment-types/{paymentType}', 'add');
+    Route::controller(BookingPaymentTypeController::class)->group(function() {
+        Route::post('bookings/{booking}/payment-types/{paymentType}', 'add');
         Route::delete(
-            'books/{book}/payment-types/{paymentType}/payment/{payment}/cash-payment/{cashPayment}/card-payment/{cardPayment}',
+            'bookings/{booking}/payment-types/{paymentType}/payment/{payment}/cash-payment/{cashPayment}/card-payment/{cardPayment}',
             'remove'
         );
     });

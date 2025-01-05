@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Book\Services;
+namespace App\Booking\Services;
 
-use App\Book\Models\Book;
+use App\Booking\Models\Booking;
 use App\Shared\Requests\GetAllRequest;
 use App\Shared\Services\ModelService;
 use App\Shared\Services\SharedService;
 use Carbon\Carbon;
 
-class BookService {
+class BookingService {
     private int $limit = 10;
     private int $page = 1;
     private string $schedule = '';
@@ -23,9 +23,9 @@ class BookService {
         $this->sharedService = $sharedService;
     }
 
-    public function create(array $newBook): Book
+    public function create(array $newBooking): Booking
     {
-        return $this->modelService->create(new Book(), $newBook);
+        return $this->modelService->create(new Booking(), $newBooking);
     }
 
     public function getAll(
@@ -78,14 +78,14 @@ class BookService {
     }
 
 
-    public function update(Book $book, array $editBook): Book
+    public function update(Booking $booking, array $editBooking): Booking
     {
-        $editBook['total_paid'] += $book->total_paid;
-        return $this->modelService->update($book, $editBook);
+        $editBooking['total_paid'] += $booking->total_paid;
+        return $this->modelService->update($booking, $editBooking);
     }
 
-    public function validate(Book $book, string $modelName): Book
+    public function validate(Booking $booking, string $modelName): Booking
     {
-        return $this->modelService->validate($book, $modelName);
+        return $this->modelService->validate($booking, $modelName);
     }
 }

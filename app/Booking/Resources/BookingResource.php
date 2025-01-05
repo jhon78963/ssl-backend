@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Book\Resources;
+namespace App\Booking\Resources;
 
 use App\Reservation\Resources\RoomsResource;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class BookResource extends JsonResource
+class BookingResource extends JsonResource
 {
     /**
      * Transform the resource into an array.

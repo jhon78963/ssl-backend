@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Book\Enums;
+namespace App\Booking\Enums;
 
-enum BookStatus: string
+enum BookingStatus: string
 {
     case Pending = 'PENDING';
     case InUse = 'IN_USE';

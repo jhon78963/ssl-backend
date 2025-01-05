@@ -1,17 +1,16 @@
 <?php
 
-namespace App\Book\Controllers;
+namespace App\Booking\Controllers;
 
-use App\Book\Models\Book;
+use App\Booking\Models\Booking;
 use App\PaymentType\Models\PaymentType;
 use App\Shared\Controllers\Controller;
 use App\Shared\Requests\AddRequest;
-use App\Shared\Resources\GetAllAddResource;
 use App\Shared\Services\ModelService;
 use Illuminate\Http\JsonResponse;
 use DB;
 
-class BookPaymentTypeController extends Controller
+class BookingPaymentTypeController extends Controller
 {
     protected ModelService $modelService;
 
@@ -20,12 +19,12 @@ class BookPaymentTypeController extends Controller
         $this->modelService = $modelService;
     }
 
-    public function add(AddRequest $request, Book $book, PaymentType $paymentType): JsonResponse
+    public function add(AddRequest $request, Booking $booking, PaymentType $paymentType): JsonResponse
     {
         DB::beginTransaction();
         try {
             $this->modelService->attach(
-                $book,
+                $booking,
                 'paymentTypes',
                 $paymentType->id,
                 null,
@@ -45,7 +44,7 @@ class BookPaymentTypeController extends Controller
     }
 
     public function remove(
-        Book $book,
+        Booking $booking,
         PaymentType $paymentType,
         float $payment,
         float $cashPayment,
@@ -53,11 +52,11 @@ class BookPaymentTypeController extends Controller
     ): JsonResponse {
         DB::beginTransaction();
         try {
-            $this->modelService->detach($book, 'paymentTypes', $paymentType->id);
+            $this->modelService->detach($booking, 'paymentTypes', $paymentType->id);
             $editBooking = [
-                'total' => $book->total - ($paymentType->id == 3 ? $cashPayment + $cardPayment : $payment),
+                'total' => $booking->total - ($paymentType->id == 3 ? $cashPayment + $cardPayment : $payment),
             ];
-            $this->modelService->update($book, $editBooking);
+            $this->modelService->update($booking, $editBooking);
             DB::commit();
             return response()->json(['message' => 'Payment Type removed from the booking']);
         } catch (\Exception $e) {

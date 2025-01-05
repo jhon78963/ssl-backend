@@ -2,7 +2,7 @@
 
 namespace App\Room\Models;
 
-use App\Book\Models\Book;
+use App\Booking\Models\Booking;
 use App\Image\Models\Image;
 use App\Reservation\Models\Reservation;
 use App\Review\Models\Review;
@@ -91,11 +91,11 @@ class Room extends Model
         )->withPivot(['price', 'quantity', 'is_paid', 'additional_people', 'extra_hours']);
     }
 
-    public function books(): BelongsToMany
+    public function bookings(): BelongsToMany
     {
         return $this->belongsToMany(
-            Book::class,
-            'book_room',
+            Booking::class,
+            'booking_room',
         )->withPivot(['price', 'quantity', 'additional_people']);
     }
 

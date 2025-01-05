@@ -4,11 +4,9 @@ namespace App\Reservation\Controllers;
 
 use App\Reservation\Models\Reservation;
 use App\Service\Models\Service;
-use App\Service\Resources\ServiceGetLeftAddResource;
 use App\Shared\Controllers\Controller;
 use App\Shared\Requests\AddRequest;
 use App\Shared\Requests\ModifyRequest;
-use App\Shared\Resources\GetAllAddResource;
 use App\Shared\Services\ModelService;
 use Illuminate\Http\JsonResponse;
 use DB;

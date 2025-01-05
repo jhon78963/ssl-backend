@@ -3,8 +3,6 @@
 namespace App\Reservation\Controllers;
 
 use App\Product\Models\Product;
-use App\Product\Resources\ProductGetAllAddResource;
-use App\Product\Resources\ProductGetLeftAddResource;
 use App\Reservation\Models\Reservation;
 use App\Shared\Controllers\Controller;
 use App\Shared\Requests\AddRequest;

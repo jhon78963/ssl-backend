@@ -2,6 +2,7 @@
 
 namespace App\Service\Models;
 
+use App\Book\Models\Book;
 use App\Reservation\Models\Reservation;
 use App\Unit\Models\Unit;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -60,6 +61,13 @@ class Service extends Model
     {
         return $this->belongsToMany(
             Reservation::class
+        )->withPivot(['price', 'quantity', 'is_paid']);
+    }
+
+    public function books(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            Book::class
         )->withPivot(['price', 'quantity', 'is_paid']);
     }
 

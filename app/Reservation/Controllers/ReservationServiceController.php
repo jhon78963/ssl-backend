@@ -64,20 +64,6 @@ class ReservationServiceController extends Controller
         }
     }
 
-    public function getAll(Reservation $reservation): JsonResponse
-    {
-        $services = $reservation->services()->get();
-        return response()->json( GetAllAddResource::collection($services));
-    }
-
-    public function getLeft(Reservation $reservation): JsonResponse
-    {
-        $allServices = Service::where('is_deleted', false)->get();
-        $associatedServices = $reservation->services()->pluck('id')->toArray();
-        $leftServices = $allServices->whereNotIn('id', $associatedServices);
-        return response()->json( ServiceGetLeftAddResource::collection($leftServices));
-    }
-
     public function remove(Reservation $reservation, Service $service, int $quantity): JsonResponse
     {
         DB::beginTransaction();

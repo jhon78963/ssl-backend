@@ -44,12 +44,6 @@ class ReservationPaymentTypeController extends Controller
         }
     }
 
-    public function getAll(Reservation $reservation): JsonResponse
-    {
-        $paymentTypes = $reservation->paymentTypes()->get();
-        return response()->json( GetAllAddResource::collection($paymentTypes));
-    }
-
     public function remove(
         Reservation $reservation,
         PaymentType $paymentType,

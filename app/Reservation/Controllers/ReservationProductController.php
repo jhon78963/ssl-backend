@@ -64,20 +64,6 @@ class ReservationProductController extends Controller
         }
     }
 
-    public function getAll(Reservation $reservation): JsonResponse
-    {
-        $products = $reservation->products()->get();
-        return response()->json( ProductGetAllAddResource::collection($products));
-    }
-
-    public function getLeft(Reservation $reservation): JsonResponse
-    {
-        $allProducts = Product::where('is_deleted', false)->get();
-        $associatedProducts = $reservation->products()->pluck('id')->toArray();
-        $leftProducts = $allProducts->whereNotIn('id', $associatedProducts);
-        return response()->json( ProductGetLeftAddResource::collection($leftProducts));
-    }
-
     public function remove(Reservation $reservation, Product $product, int $quantity): JsonResponse
     {
         DB::beginTransaction();

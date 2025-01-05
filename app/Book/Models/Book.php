@@ -5,8 +5,10 @@ namespace App\Book\Models;
 use App\Book\Enums\BookStatus;
 use App\Customer\Models\Customer;
 use App\PaymentType\Models\PaymentType;
+use App\Product\Models\Product;
 use App\Room\Models\Room;
 use App\Schedule\Models\Schedule;
+use App\Service\Models\Service;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -92,6 +94,21 @@ class Book extends Model
             Room::class,
             'book_room',
         )->withPivot(['price', 'quantity', 'additional_people']);
+    }
+
+    public function products(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            Product::class,
+            'book_product',
+        )->withPivot(['price', 'quantity', 'is_paid', 'is_free']);
+    }
+
+    public function services(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            Service::class,
+        )->withPivot(['price', 'quantity', 'is_paid', 'is_free']);
     }
 
     public function paymentTypes(): BelongsToMany

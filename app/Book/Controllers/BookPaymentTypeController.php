@@ -44,12 +44,6 @@ class BookPaymentTypeController extends Controller
         }
     }
 
-    public function getAll(Book $book): JsonResponse
-    {
-        $paymentTypes = $book->paymentTypes()->get();
-        return response()->json( GetAllAddResource::collection($paymentTypes));
-    }
-
     public function remove(
         Book $book,
         PaymentType $paymentType,

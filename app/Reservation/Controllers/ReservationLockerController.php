@@ -61,12 +61,6 @@ class ReservationLockerController extends Controller
         }
     }
 
-    public function getAll(Reservation $reservation): JsonResponse
-    {
-        $lockers = $reservation->lockers()->get();
-        return response()->json( GetAllAddResource::collection($lockers));
-    }
-
     public function remove(Reservation $reservation, Locker $locker, float $price): JsonResponse
     {
         DB::beginTransaction();

@@ -73,12 +73,6 @@ class ReservationRoomController extends Controller
         }
     }
 
-    public function getAll(Reservation $reservation): JsonResponse
-    {
-        $rooms = $reservation->rooms()->get();
-        return response()->json( GetAllAddResource::collection($rooms));
-    }
-
     public function remove(Reservation $reservation, Room $room, float $price): JsonResponse
     {
         DB::beginTransaction();

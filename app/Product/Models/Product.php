@@ -2,6 +2,7 @@
 
 namespace App\Product\Models;
 
+use App\Book\Models\Book;
 use App\Reservation\Models\Reservation;
 use App\Unit\Models\Unit;
 use App\ProductType\Models\ProductType;
@@ -68,6 +69,14 @@ class Product extends Model
         return $this->belongsToMany(
             Reservation::class,
             'reservation_product',
+        )->withPivot(['price', 'quantity', 'is_paid']);
+    }
+
+    public function books(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            Book::class,
+            'book_product',
         )->withPivot(['price', 'quantity', 'is_paid']);
     }
 

@@ -4,7 +4,9 @@ use App\Amenity\Controllers\AmenityController;
 use App\Auth\Controllers\AuthController;
 use App\Book\Controllers\BookController;
 use App\Book\Controllers\BookPaymentTypeController;
+use App\Book\Controllers\BookProductController;
 use App\Book\Controllers\BookRoomController;
+use App\Book\Controllers\BookServiceController;
 use App\Cash\Controllers\CashController;
 use App\Cash\Controllers\CashOperationController;
 use App\Cash\Controllers\CashTypeController;
@@ -48,13 +50,6 @@ use Illuminate\Support\Facades\Route;
 Route::post('auth/login', [AuthController::class, 'login']);
 Route::post('auth/refresh-token', [AuthController::class, 'refreshToken']);
 Route::post('auth/logout', [AuthController::class,'logout']);
-
-Route::controller(CustomerController::class)->group(function() {
-    Route::get('/consultation-dni/{dni}', 'searchByDni');
-    Route::get('/consultation-ruc/{ruc}', 'searchByRuc');
-});
-
-
 
 Route::group([
     'middleware' => 'auth:sanctum',
@@ -204,8 +199,8 @@ Route::group([
         Route::get('/customers', 'getAll');
         Route::get('/customers/dni/{customer}', 'getByDni');
         Route::get('/customers/{customer}', 'get');
-        // Route::get('/consultation-dni/{dni}', 'searchByDni');
-        // Route::get('/consultation-ruc/{ruc}', 'searchByRuc');
+        Route::get('/consultation-dni/{dni}', 'searchByDni');
+        Route::get('/consultation-ruc/{ruc}', 'searchByRuc');
     });
 
     Route::controller(UnitController::class)->group(function() {
@@ -271,42 +266,42 @@ Route::group([
     });
 
     Route::controller(ReservationProductController::class)->group(function() {
-        Route::post('/products/{reservation}/add/{product}', 'add');
-        Route::post('/products/{reservation}/modify/{product}', 'modify');
-        Route::delete('/products/{reservation}/remove/{product}/quantity/{quantity}', 'remove');
-        Route::get('/products/{reservation}/all', 'getAll');
-        Route::get('/products/{reservation}/left', 'getLeft');
+        Route::post('/reservations/{reservation}/products/{product}', 'add');
+        Route::patch('/reservations/{reservation}/products/{product}', 'modify');
+        Route::delete('/reservations/{reservation}/products/{product}/quantity/{quantity}', 'remove');
+        Route::get('/reservations/{reservation}/products/all', 'getAll');
+        Route::get('/reservations/{reservation}/products/left', 'getLeft');
     });
 
     Route::controller(ReservationServiceController::class)->group(function() {
-        Route::post('/services/{reservation}/add/{service}', 'add');
-        Route::post('/services/{reservation}/modify/{service}', 'modify');
-        Route::delete('/services/{reservation}/remove/{service}/quantity/{quantity}', 'remove');
-        Route::get('/services/{reservation}/all', 'getAll');
-        Route::get('/services/{reservation}/left', 'getLeft');
+        Route::post('/reservations/{reservation}/services/{service}', 'add');
+        Route::patch('/reservations/{reservation}/services/{service}', 'modify');
+        Route::delete('/reservations/{reservation}/services/{service}/quantity/{quantity}', 'remove');
+        Route::get('/reservations/{reservation}/services/all', 'getAll');
+        Route::get('/reservations/{reservation}/services/left', 'getLeft');
     });
 
     Route::controller(ReservationLockerController::class)->group(function() {
-        Route::post('/lockers/{reservation}/add/{locker}', 'add');
-        Route::post('/lockers/{reservation}/modify/{locker}', 'modify');
-        Route::delete('/lockers/{reservation}/remove/{locker}/price/{price}', 'remove');
-        Route::get('/lockers/{reservation}/all', 'getAll');
+        Route::post('/reservations/{reservation}/lockers/{locker}', 'add');
+        Route::patch('/reservations/{reservation}/lockers/{locker}', 'modify');
+        Route::delete('/reservations/{reservation}/lockers/{locker}/price/{price}', 'remove');
+        Route::get('/reservations/{reservation}/lockers', 'getAll');
     });
 
     Route::controller(ReservationRoomController::class)->group(function() {
-        Route::post('/rooms/{reservation}/add/{room}', 'add');
-        Route::post('/rooms/{reservation}/modify/{room}', 'modify');
-        Route::delete('/rooms/{reservation}/remove/{room}/price/{price}', 'remove');
-        Route::get('/rooms/{reservation}/all', 'getAll');
+        Route::post('/reservations/{reservation}/rooms/{room}', 'add');
+        Route::patch('/reservations/{reservation}/rooms/{room}', 'modify');
+        Route::delete('/reservations/{reservation}/rooms/{room}/price/{price}', 'remove');
+        Route::get('/reservations/{reservation}/rooms', 'getAll');
     });
 
     Route::controller(ReservationPaymentTypeController::class)->group(function() {
-        Route::post('/payment-types/{reservation}/add/{paymentType}', 'add');
+        Route::post('/reservations/{reservation}/payment-types/{paymentType}', 'add');
         Route::delete(
-            '/payment-types/{reservation}/remove/{paymentType}/cash-payment/{cashPayment}/card-payment/{cardPayment}',
+            '/reservations/{reservation}/payment-types/{paymentType}/cash-payment/{cashPayment}/card-payment/{cardPayment}',
             'remove'
         );
-        Route::get('/payment-types/{reservation}/all', 'getAll');
+        Route::get('/reservations/{reservation}/payment-types', 'getAll');
     });
 
     Route::controller(CashController::class)->group(function() {
@@ -341,18 +336,32 @@ Route::group([
     });
 
     Route::controller(BookRoomController::class)->group(function() {
-        Route::post('/rooms/{book}/add/{room}', 'add');
-        Route::post('/rooms/{book}/modify/{room}', 'modify');
-        Route::delete('/rooms/{book}/remove/{room}/price/{price}', 'remove');
-        Route::get('/rooms/{book}/all', 'getAll');
+        Route::post('books/{book}/rooms/{room}', 'add');
+        Route::patch('books/{book}/rooms/{room}', 'modify');
+        Route::delete('books/{book}/rooms/{room}/price/{price}', 'remove');
+        Route::get('books/{book}/rooms/{room}', 'getAll');
+    });
+
+    Route::controller(BookProductController::class)->group(function() {
+        Route::post('books/{book}/products/{product}', 'add');
+        Route::patch('books/{book}/products/{product}', 'modify');
+        Route::delete('books/{book}/products/{product}/quantity/{quantity}', 'remove');
+        Route::get('books/{book}/products/{product}', 'getAll');
+    });
+
+    Route::controller(BookServiceController::class)->group(function() {
+        Route::post('books/{book}/services/{service}', 'add');
+        Route::patch('books/{book}/services/{service}', 'modify');
+        Route::delete('books/{book}/services/{service}/quantity/{quantity}', 'remove');
+        Route::get('books/{book}/services/{service}', 'getAll');
     });
 
     Route::controller(BookPaymentTypeController::class)->group(function() {
-        Route::post('/payment-types/{book}/add/{paymentType}', 'add');
+        Route::post('books/{book}/payment-types/{paymentType}', 'add');
         Route::delete(
-            '/payment-types/{book}/remove/{paymentType}/cash-payment/{cashPayment}/card-payment/{cardPayment}',
+            'books/{book}/payment-types/{paymentType}/cash-payment/{cashPayment}/card-payment/{cardPayment}',
             'remove'
         );
-        Route::get('/payment-types/{book}/all', 'getAll');
+        Route::get('books/{book}/payment-types', 'getAll');
     });
 });

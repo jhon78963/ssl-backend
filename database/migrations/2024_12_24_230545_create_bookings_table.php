@@ -37,8 +37,9 @@ return new class extends Migration
             $table->string('text_color');
             $table->float('total')->nullable();
             $table->float('total_paid')->nullable();
-            $table->float('facilities_import')->nullable();
             $table->float('people_extra_import')->nullable();
+            $table->float('facilities_import')->nullable();
+            $table->float('consumptions_import')->nullable();
             $table->string('notes')->nullable();
             $table->enum('status', ['PENDING', 'IN_USE', 'COMPLETED', 'CANCELLED'])->default('PENDING');
         });

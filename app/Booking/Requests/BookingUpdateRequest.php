@@ -30,6 +30,7 @@ class BookingUpdateRequest extends FormRequest
             'customerId' => 'nullable|integer',
             'facilitiesImport' => 'sometimes|numeric',
             'peopleExtraImport' => 'sometimes|numeric',
+            'consumptionsImport' => 'sometimes|numeric',
             'notes' => 'nullable',
             'scheduleId' => 'nullable|integer',
             'title' => 'nullable',

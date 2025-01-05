@@ -30,6 +30,7 @@ class BookingCreateRequest extends FormRequest
             'customerId' => 'nullable|integer',
             'facilitiesImport' => 'required|numeric',
             'peopleExtraImport' => 'required|numeric',
+            'consumptionsImport' => 'required|numeric',
             'notes' => 'nullable',
             'scheduleId' => 'nullable|integer',
             'title' => 'required',

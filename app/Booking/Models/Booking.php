@@ -33,6 +33,7 @@ class Booking extends Model
         'total_paid',
         'people_extra_import',
         'facilities_import',
+        'consumptions_import',
         'notes',
         'status',
         'title',

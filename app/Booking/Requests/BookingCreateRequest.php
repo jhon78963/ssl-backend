@@ -32,13 +32,7 @@ class BookingCreateRequest extends FormRequest
             'peopleExtraImport' => 'required|numeric',
             'consumptionsImport' => 'required|numeric',
             'notes' => 'nullable',
-            'scheduleId' => 'nullable|integer',
-            'title' => 'required',
             'description' => 'required',
-            'location' => 'required',
-            'backgroundColor' => 'required',
-            'borderColor' => 'required',
-            'textColor' => 'required',
         ];
     }
 }

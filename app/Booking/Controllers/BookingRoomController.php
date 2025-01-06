@@ -77,12 +77,6 @@ class BookingRoomController extends Controller
         }
     }
 
-    public function getAll(Booking $booking): JsonResponse
-    {
-        $rooms = $booking->rooms()->get();
-        return response()->json( GetAllAddResource::collection($rooms));
-    }
-
     public function remove(Booking $booking, Room $room, float $price): JsonResponse
     {
         DB::beginTransaction();

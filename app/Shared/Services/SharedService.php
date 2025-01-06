@@ -90,7 +90,7 @@ class SharedService {
         ];
     }
 
-    private function searchFilter(Builder $query, string $searchTerm, string $columnSearch): Builder
+    public function searchFilter(Builder $query, string $searchTerm, string $columnSearch): Builder
     {
         $searchTerm = strtolower($searchTerm);
 

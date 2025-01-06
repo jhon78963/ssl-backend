@@ -7,7 +7,6 @@ use App\Customer\Models\Customer;
 use App\PaymentType\Models\PaymentType;
 use App\Product\Models\Product;
 use App\Room\Models\Room;
-use App\Schedule\Models\Schedule;
 use App\Service\Models\Service;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -26,7 +25,6 @@ class Booking extends Model
     protected $fillable = [
         'id',
         'customer_id',
-        'schedule_id',
         'start_date',
         'end_date',
         'total',
@@ -36,12 +34,7 @@ class Booking extends Model
         'consumptions_import',
         'notes',
         'status',
-        'title',
         'description',
-        'location',
-        'background_color',
-        'border_color',
-        'text_color',
     ];
 
     /**
@@ -77,16 +70,13 @@ class Booking extends Model
             'total_paid' => 'float',
             'price' => 'float',
             'facilities_import' => 'float',
+            'consumptions_import' => 'float',
+            'people_extra_import' => 'float',
         ];
     }
 
     public function customer(): BelongsTo {
         return $this->belongsTo(Customer::class);
-    }
-
-    public function schedule(): BelongsTo
-    {
-        return $this->belongsTo(Schedule::class);
     }
 
     public function rooms(): BelongsToMany

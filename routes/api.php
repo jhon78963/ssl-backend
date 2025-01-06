@@ -332,7 +332,6 @@ Route::group([
         Route::post('bookings/{booking}/rooms/{room}', 'add');
         Route::patch('bookings/{booking}/rooms/{room}', 'modify');
         Route::delete('bookings/{booking}/rooms/{room}/price/{price}', 'remove');
-        Route::get('bookings/{booking}/rooms/{room}', 'getAll');
     });
 
     Route::controller(BookingProductController::class)->group(function() {

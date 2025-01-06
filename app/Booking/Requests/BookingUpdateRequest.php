@@ -32,13 +32,7 @@ class BookingUpdateRequest extends FormRequest
             'peopleExtraImport' => 'sometimes|numeric',
             'consumptionsImport' => 'sometimes|numeric',
             'notes' => 'nullable',
-            'scheduleId' => 'nullable|integer',
-            'title' => 'nullable',
             'description' => 'nullable',
-            'location' => 'nullable',
-            'backgroundColor' => 'nullable',
-            'borderColor' => 'nullable',
-            'textColor' => 'nullable',
         ];
     }
 }

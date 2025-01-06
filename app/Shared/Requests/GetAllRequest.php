@@ -30,7 +30,8 @@ class GetAllRequest extends FormRequest
             'reservationType' => 'nullable|string',
             'startDate' => 'nullable|string',
             'endDate' => 'nullable|string',
-            'schedule' => 'nullable|string'
+            'schedule' => 'nullable|string',
+            'dni' => 'nullable|string',
         ];
     }
 }

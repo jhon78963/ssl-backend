@@ -8,7 +8,6 @@ use App\Booking\Requests\BookingCreateRequest;
 use App\Booking\Requests\BookingUpdateRequest;
 use App\Booking\Resources\BookingResource;
 use App\Booking\Services\BookingService;
-use App\Schedule\Services\ScheduleService;
 use App\Shared\Controllers\Controller;
 use App\Shared\Requests\GetAllRequest;
 use App\Shared\Resources\GetAllCollection;
@@ -19,18 +18,16 @@ use DB;
 class BookingController extends Controller
 {
     protected BookingService $bookingService;
-    protected ScheduleService $scheduleService;
     protected SharedService $sharedService;
 
     public function __construct(
         BookingService $bookingService,
-        ScheduleService $scheduleService,
         SharedService $sharedService,
     ) {
         $this->bookingService = $bookingService;
-        $this->scheduleService = $scheduleService;
         $this->sharedService = $sharedService;
     }
+
     public function changeStatus(BookingChangeStatusRequest $request, Booking $booking): JsonResponse
     {
         DB::beginTransaction();
@@ -54,7 +51,6 @@ class BookingController extends Controller
         DB::beginTransaction();
         try {
             $newBooking = $this->sharedService->convertCamelToSnake($request->validated());
-            $newBooking['schedule_id'] = $this->scheduleService->get();
             $createdBooking = $this->bookingService->create($newBooking);
             DB::commit();
             return response()->json([
@@ -81,7 +77,7 @@ class BookingController extends Controller
             'Booking',
             $request->input('startDate'),
             $request->input('endDate'),
-            $request->input('schedule'),
+            $request->input('dni'),
         );
         return response()->json(new GetAllCollection(
             BookingResource::collection($query['collection']),

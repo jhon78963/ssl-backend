@@ -11,9 +11,9 @@ use Carbon\Carbon;
 class BookingService {
     private int $limit = 10;
     private int $page = 1;
-    private string $schedule = '';
     private string $startDate = '';
     private string $endDate = '';
+    private string $dni = '';
     protected ModelService $modelService;
     protected SharedService $sharedService;
 
@@ -34,24 +34,24 @@ class BookingService {
         string $modelName,
         ?string $startDate = null,
         ?string $endDate = null,
-        ?string $schedule = null,
+        ?string $dni = null,
     ): array {
         $limit = $request->query('limit', $this->limit);
         $page = $request->query('page', $this->page);
         $startDate = $request->query('startDate', $this->startDate);
         $endDate = $request->query('endDate', $this->endDate);
-        $schedule = $request->query('schedule', $this->schedule);
+        $dni = $request->query('dni', $this->dni);
 
         $modelClass = "App\\$entityName\\Models\\$modelName";
 
         $query = $modelClass::query();
 
-        if ($schedule) {
-            $query->where('schedule_id', $schedule);
-        }
-
         if ($startDate || $endDate) {
             $query = $this->sharedService->dateFilter($query, $startDate, $endDate);
+        }
+
+        if ($dni) {
+            $query = $this->sharedService->searchFilter($query, $dni, 'description');
         }
 
         $total = $query->count();

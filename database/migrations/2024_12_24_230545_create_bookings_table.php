@@ -25,16 +25,9 @@ return new class extends Migration
             $table->datetime('deletion_time')->nullable();
             $table->integer('customer_id')->nullable();
             $table->foreign('customer_id')->references('id')->on('customers');
-            $table->integer('schedule_id')->nullable();
-            $table->foreign('schedule_id')->references('id')->on('schedules');
-            $table->string('title');
-            $table->string('location');
+            $table->string('description');
             $table->datetime('start_date');
             $table->datetime('end_date')->nullable();
-            $table->string('description');
-            $table->string('background_color');
-            $table->string('border_color');
-            $table->string('text_color');
             $table->float('total')->nullable();
             $table->float('total_paid')->nullable();
             $table->float('people_extra_import')->nullable();

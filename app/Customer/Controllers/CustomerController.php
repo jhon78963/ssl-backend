@@ -90,15 +90,13 @@ class CustomerController extends Controller
     public function searchByDni(string $dni): JsonResponse
     {
         $customer = $this->findCustomerByDni($dni);
-
         if ($customer) {
             return response()->json(new CustomerResource($customer));
+        } else {
+            $personData = $this->getPersonDataFromSunat($dni);
+            dispatch(new ProcessCustomerDataJob($personData));
+            return response()->json(new CustomerResource($personData));
         }
-
-        $personData = $this->getPersonDataFromSunat($dni);
-        dispatch(new ProcessCustomerDataJob($personData));
-
-        return response()->json(new CustomerResource($personData));
     }
 
     private function findCustomerByDni(string $dni): ?Customer

@@ -26,7 +26,8 @@ class BookingResource extends JsonResource
             'peopleExtraImport' => $this->people_extra_import ?? 0,
             'facilitiesImport' => $this->facilities_import ?? 0,
             'consumptionsImport' => $this->consumptions_import ?? 0,
-            'status' => $this->status->label(),
+            'statusLabel' => $this->status->label(),
+            'status' => $this->status,
             'customer' => [
                 'id' => $this->customer_id,
                 'name' => $this->customer->name,

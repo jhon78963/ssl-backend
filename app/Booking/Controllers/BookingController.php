@@ -4,10 +4,12 @@ namespace App\Booking\Controllers;
 
 use App\Booking\Models\Booking;
 use App\Booking\Requests\BookingChangeStatusRequest;
+use App\Booking\Requests\BookingCheckScheduleRequest;
 use App\Booking\Requests\BookingCreateRequest;
 use App\Booking\Requests\BookingUpdateRequest;
 use App\Booking\Resources\BookingResource;
 use App\Booking\Services\BookingService;
+use App\Room\Models\Room;
 use App\Shared\Controllers\Controller;
 use App\Shared\Requests\GetAllRequest;
 use App\Shared\Resources\GetAllCollection;
@@ -37,13 +39,21 @@ class BookingController extends Controller
                 $booking,
                 'Booking'
             );
-            $this->bookingService->update($bookingValidated, $editBooking);
+            $this->bookingService->changeStatus($bookingValidated, $editBooking);
             DB::commit();
             return response()->json(['message' => 'Booking status changed.'], 201);
         } catch (\Exception $e) {
             DB::rollback();
             return response()->json(['error' =>  $e->getMessage()]);
         }
+    }
+
+    public function checkSchedule(Room $room, BookingCheckScheduleRequest $request): array
+    {
+        return $this->bookingService->checkSchedule(
+            $request->input('startDate'),
+            $room->roomType->rental_hours
+        );
     }
 
     public function create(BookingCreateRequest $request): JsonResponse

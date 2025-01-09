@@ -321,6 +321,7 @@ Route::group([
 
     Route::controller(BookingController::class)->group(function() {
         Route::post('/bookings', 'create');
+        Route::post('/bookings/check-schedule/room/{room}', 'checkSchedule');
         Route::patch('/bookings/change-status/{booking}', 'changeStatus');
         Route::patch('/bookings/{booking}', 'update');
         // Route::delete('/bookings/{booking}', 'delete');

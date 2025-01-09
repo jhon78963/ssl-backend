@@ -3,6 +3,7 @@
 namespace App\Booking\Services;
 
 use App\Booking\Models\Booking;
+use App\Room\Models\Room;
 use App\Shared\Requests\GetAllRequest;
 use App\Shared\Services\ModelService;
 use App\Shared\Services\SharedService;
@@ -21,6 +22,38 @@ class BookingService {
     {
         $this->modelService = $modelService;
         $this->sharedService = $sharedService;
+    }
+
+    public function changeStatus(Booking $booking, array $editBooking): Booking
+    {
+        return $this->modelService->update($booking, $editBooking);
+    }
+
+    public function checkSchedule(string $startDate, int $hours): array
+    {
+        $startDateParsed = Carbon::parse($startDate);
+        $endDate = $startDateParsed->addHours($hours)->toDateTimeString();
+
+        $conflictingBooking = Booking::where(function ($query) use ($startDate, $endDate) {
+            $query->whereBetween('start_date', [$startDate, $endDate])
+                  ->orWhereBetween('end_date', [$startDate, $endDate])
+                  ->orWhere(function ($query) use ($startDate, $endDate) {
+                      $query->where('start_date', '<=', $startDate)
+                            ->where('end_date', '>=', $endDate);
+                  });
+        })->first();
+
+        if ($conflictingBooking) {
+            return [
+                'conflict' => true,
+                'conflictingStartDate' => Carbon::parse($conflictingBooking->start_date)->format('H:i'),
+                'conflictingEndDate' => Carbon::parse($conflictingBooking->end_date)->format('H:i'),
+            ];
+        }
+
+        return [
+            'conflict' => false,
+        ];
     }
 
     public function create(array $newBooking): Booking

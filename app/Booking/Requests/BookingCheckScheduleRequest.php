@@ -4,7 +4,7 @@ namespace App\Booking\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class BookingChangeStatusRequest extends FormRequest
+class BookingCheckScheduleRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,8 +22,7 @@ class BookingChangeStatusRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'status' => 'required|string',
-            'price' => 'nullable|string',
+            'startDate' => 'nullable',
         ];
     }
 }

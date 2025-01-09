@@ -94,8 +94,10 @@ class CustomerController extends Controller
             return response()->json(new CustomerResource($customer));
         } else {
             $personData = $this->getPersonDataFromSunat($dni);
-            dispatch(new ProcessCustomerDataJob($personData));
-            return response()->json($this->formatCustomerData($personData));
+            $createdCustomer = $this->customerService->create(
+                $this->formatCustomerData($personData)
+            );
+            return response()->json(new CustomerResource($createdCustomer));
         }
     }
 

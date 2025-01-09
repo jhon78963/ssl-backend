@@ -2,6 +2,7 @@
 
 namespace App\Customer\Jobs;
 
+use App\Customer\Models\Customer;
 use App\Customer\Services\CustomerService;
 use App\Shared\Services\SharedService;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -29,7 +30,12 @@ class ProcessCustomerDataJob implements ShouldQueue
     public function handle(): void
     {
         $formattedData = $this->formatCustomerData($this->personData);
-        app(CustomerService::class)->create($formattedData);
+        $customer = new Customer();
+        $customer->dni = $formattedData['dni'];
+        $customer->name = $formattedData['name'];
+        $customer->surname = $formattedData['surname'];
+        $customer->save();
+        // app(CustomerService::class)->create($formattedData);
     }
 
     private function formatCustomerData($person): array

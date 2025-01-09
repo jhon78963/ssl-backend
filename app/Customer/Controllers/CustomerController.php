@@ -95,7 +95,7 @@ class CustomerController extends Controller
         } else {
             $personData = $this->getPersonDataFromSunat($dni);
             dispatch(new ProcessCustomerDataJob($personData));
-            return response()->json(new CustomerResource($personData));
+            return response()->json($this->formatCustomerData($personData));
         }
     }
 
@@ -113,6 +113,15 @@ class CustomerController extends Controller
     {
         $company = $this->sunatService->rucConsultation($ruc);
         return response()->json(new RUCConsultationResource($company));
+    }
+
+    private function formatCustomerData($person): array
+    {
+        return app(SharedService::class)->convertCamelToSnake([
+            'dni' => $person->numeroDocumento,
+            'name' => $person->nombres,
+            'surname' => trim("{$person->apellidoPaterno} {$person->apellidoMaterno}")
+        ]);
     }
 
     public function update(CustomerUpdateRequest $request, Customer $customer): JsonResponse

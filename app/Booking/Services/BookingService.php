@@ -41,7 +41,7 @@ class BookingService {
                       $query->where('start_date', '<=', $startDate)
                             ->where('end_date', '>=', $endDate);
                   });
-        })->first();
+        })->where('status', '!=', 'COMPLETED')->first();
 
         if ($conflictingBooking) {
             return [

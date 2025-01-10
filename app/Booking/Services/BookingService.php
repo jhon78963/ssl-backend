@@ -41,19 +41,23 @@ class BookingService {
         return $this->modelService->update($booking, $editBooking);
     }
 
-    public function checkSchedule(string $startDate, int $hours): array
+    public function checkSchedule(int $roomId, string $startDate, int $hours): array
     {
         $startDateParsed = Carbon::parse($startDate);
         $endDate = $startDateParsed->addHours($hours)->toDateTimeString();
 
         $conflictingBooking = Booking::where(function ($query) use ($startDate, $endDate) {
             $query->whereBetween('start_date', [$startDate, $endDate])
-                  ->orWhereBetween('end_date', [$startDate, $endDate])
-                  ->orWhere(function ($query) use ($startDate, $endDate) {
+                ->orWhereBetween('end_date', [$startDate, $endDate])
+                ->orWhere(function ($query) use ($startDate, $endDate) {
                       $query->where('start_date', '<=', $startDate)
-                            ->where('end_date', '>=', $endDate);
-                  });
-        })->where('status', '!=', 'COMPLETED')->first();
+                        ->where('end_date', '>=', $endDate);
+                    });
+                })
+            ->where('status', '!=', 'COMPLETED')
+            ->whereHas('rooms', function ($query) use ($roomId) {
+                $query->where('room_id', $roomId);
+            })->first();
 
         if ($conflictingBooking) {
             return [

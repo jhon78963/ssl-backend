@@ -51,6 +51,7 @@ class BookingController extends Controller
     public function checkSchedule(Room $room, BookingCheckScheduleRequest $request): array
     {
         return $this->bookingService->checkSchedule(
+            $room->id,
             $request->input('startDate'),
             $room->roomType->rental_hours
         );

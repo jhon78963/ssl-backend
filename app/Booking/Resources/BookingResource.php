@@ -23,6 +23,7 @@ class BookingResource extends JsonResource
             'startDate' => $this->dateFormat($this->start_date),
             'endDate' => $this->dateFormat($this->end_date),
             'total' => $this->total,
+            'totalPaid' => $this->total_paid,
             'peopleExtraImport' => $this->people_extra_import ?? 0,
             'facilitiesImport' => $this->facilities_import ?? 0,
             'consumptionsImport' => $this->consumptions_import ?? 0,

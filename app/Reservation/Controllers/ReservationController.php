@@ -55,7 +55,7 @@ class ReservationController extends Controller
             $editReservation = $this->sharedService->convertCamelToSnake($request->validated());
             $reservationValidated = $this->reservationService->validate(
                 $reservation,
-                'Reservation'
+                'Reservation',
             );
             $this->reservationService->update($reservationValidated, $editReservation);
             DB::commit();
@@ -72,20 +72,12 @@ class ReservationController extends Controller
         try {
             $newReservation = $this->sharedService->convertCamelToSnake($request->validated());
             $newReservation['schedule_id'] = $this->scheduleService->get();
-            $createdReservation = $this->reservationService->create($newReservation);
+            $reservationCreated = $this->reservationService->create($newReservation);
             DB::commit();
-            $cash = $this->cashService->currentCash();
-            $this->cashOperationService->create([
-                'cash_id' => $cash->id,
-                'reservation_id' => $createdReservation->id,
-                'cash_type_id' => 2,
-                'schedule_id' => $this->scheduleService->get(),
-                'date' => now(),
-                'amount' => $createdReservation->total_paid,
-            ]);
+            $this->createCash($reservationCreated, $newReservation['total_paid_cash']);
             return response()->json([
                 'message' => 'Reservation created.',
-                'reservationId' => $createdReservation->id,
+                'reservationId' => $reservationCreated->id,
             ], 201);
         } catch (\Exception $e) {
             DB::rollback();
@@ -104,7 +96,7 @@ class ReservationController extends Controller
                 $startDate,
                 $endDate,
                 $reservationType,
-                $schedule
+                $schedule,
             ),
             'reservation.xlsx'
         );
@@ -172,20 +164,28 @@ class ReservationController extends Controller
     {
         DB::beginTransaction();
         try {
-            $editReservationValidated = $this->sharedService->convertCamelToSnake($request->validated());
-            $reservationValidated = $this->reservationService->validate($reservation, 'Reservation');
-            $reservationUpdated = $this->reservationService->update(
-                $reservationValidated,
-                $editReservationValidated
+            $editReservation = $this->sharedService->convertCamelToSnake($request->validated());
+            $reservation = $this->reservationService->validate($reservation, 'Reservation');
+            $this->reservationService->update(
+                $reservation,
+                $editReservation,
             );
             DB::commit();
-            $this->cashOperationService->update($reservationUpdated->cashOperation->id, [
-                'amount' => $reservationUpdated->total_paid,
-            ]);
+            $this->createCash($reservation, $editReservation['total_paid_cash']);
             return response()->json(['message' => 'Reservation updated.']);
         } catch (\Exception $e) {
             DB::rollback();
             return response()->json(['error' =>  $e->getMessage()]);
+        }
+    }
+
+    private function createCash(Reservation $reservation, float $totalPaid): void
+    {
+        if ($totalPaid > 0) {
+            $this->reservationService->createCash(
+                $reservation,
+                $totalPaid,
+            );
         }
     }
 }

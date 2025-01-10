@@ -21,6 +21,7 @@ class CashOperation extends Model
     protected $fillable = [
         'id',
         'cash_id',
+        'booking_id',
         'cash_type_id',
         'schedule_id',
         'reservation_id',
@@ -60,6 +61,7 @@ class CashOperation extends Model
         return [
             'petty_cash_amount' => 'float',
             'initial_amount' => 'float',
+            'amount' => 'float'
         ];
     }
 

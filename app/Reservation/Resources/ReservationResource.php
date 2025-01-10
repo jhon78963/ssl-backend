@@ -27,6 +27,7 @@ class ReservationResource extends JsonResource
             'schedule' => $this->schedule->description,
             'cash' => $this->cashOperation?->cash?->name,
             'total' => $this->total,
+            'totalPaid' => $this->total_paid,
             'peopleExtraImport' => $this->people_extra_import ?? 0,
             'hoursExtraImport' => $this->hours_extra_import ?? 0,
             'facilitiesImport' => $this->facilities_import ?? 0,

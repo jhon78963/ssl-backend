@@ -3,7 +3,11 @@
 namespace App\Booking\Services;
 
 use App\Booking\Models\Booking;
+use App\Cash\Models\Cash;
+use App\Cash\Models\CashOperation;
+use App\Cash\Services\CashService;
 use App\Room\Models\Room;
+use App\Schedule\Services\ScheduleService;
 use App\Shared\Requests\GetAllRequest;
 use App\Shared\Services\ModelService;
 use App\Shared\Services\SharedService;
@@ -15,12 +19,20 @@ class BookingService {
     private string $startDate = '';
     private string $endDate = '';
     private string $dni = '';
+    protected CashService $cashService;
     protected ModelService $modelService;
+    protected ScheduleService $scheduleService;
     protected SharedService $sharedService;
 
-    public function __construct(ModelService $modelService, SharedService $sharedService)
-    {
+    public function __construct(
+        CashService $cashService,
+        ModelService $modelService,
+        ScheduleService $scheduleService,
+        SharedService $sharedService
+    ) {
+        $this->cashService = $cashService;
         $this->modelService = $modelService;
+        $this->scheduleService = $scheduleService;
         $this->sharedService = $sharedService;
     }
 
@@ -59,6 +71,21 @@ class BookingService {
     public function create(array $newBooking): Booking
     {
         return $this->modelService->create(new Booking(), $newBooking);
+    }
+
+    public function createCash(Booking $booking, float $totalPaid): void
+    {
+        $cash = $this->cashService->currentCash();
+        $this->modelService->create(
+            new CashOperation(),
+            [
+            'cash_id' => $cash->id,
+            'booking_id' => $booking->id,
+            'cash_type_id' => 2,
+            'schedule_id' => $this->scheduleService->get(),
+            'date' => now(),
+            'amount' => $totalPaid,
+        ]);
     }
 
     public function getAll(

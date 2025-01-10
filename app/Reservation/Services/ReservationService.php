@@ -2,11 +2,14 @@
 
 namespace App\Reservation\Services;
 
+use App\Cash\Models\CashOperation;
+use App\Cash\Services\CashService;
 use App\Locker\Models\Locker;
 use App\Product\Models\Product;
 use App\Reservation\Models\Reservation;
 use App\ReservationType\Models\ReservationType;
 use App\Room\Models\Room;
+use App\Schedule\Services\ScheduleService;
 use App\Service\Models\Service;
 use App\Shared\Requests\GetAllRequest;
 use App\Shared\Services\ModelService;
@@ -23,18 +26,41 @@ class ReservationService
     private string $reservationType = '';
     private string $startDate = '';
     private string $endDate = '';
+    protected CashService $cashService;
     protected ModelService $modelService;
+    protected ScheduleService $scheduleService;
     protected SharedService $sharedService;
 
-    public function __construct(ModelService $modelService, SharedService $sharedService)
-    {
+    public function __construct(
+        CashService $cashService,
+        ModelService $modelService,
+        ScheduleService $scheduleService,
+        SharedService $sharedService
+    ) {
+        $this->cashService = $cashService;
         $this->modelService = $modelService;
+        $this->scheduleService = $scheduleService;
         $this->sharedService = $sharedService;
     }
 
     public function create(array $newReservation): Reservation
     {
         return $this->modelService->create(new Reservation(), $newReservation);
+    }
+
+    public function createCash(Reservation $reservation, float $totalPaid): void
+    {
+        $cash = $this->cashService->currentCash();
+        $this->modelService->create(
+            new CashOperation(),
+            [
+            'cash_id' => $cash->id,
+            'reservation_id' => $reservation->id,
+            'cash_type_id' => 2,
+            'schedule_id' => $this->scheduleService->get(),
+            'date' => now(),
+            'amount' => $totalPaid,
+        ]);
     }
 
     public function facilities(): Collection

@@ -14,14 +14,22 @@ class CashResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return [
+        $data = [
             'id' => $this->id,
             'cash' => $this->cash->description,
             'cashType' => $this->cashType->label,
+            'cashTypeKey' => $this->cashType->key,
             'schedule' => $this->schedule->description,
-            'pettyCash' => $this->petty_cash_amount,
-            'initialAmount' => $this->initial_amount,
-            'employee' => $this->name,
+            'pettyCash' => $this->cash->petty_cash_amount,
         ];
+
+        $data['pettyCash'] = in_array($this->cashType->key, ['CASH_OPENING', 'CASH_CLOSURE'])
+            ? $this->cash->petty_cash_amount
+            : 0;
+
+        $data['amount'] = $this->amount;
+        $data['employee'] = $this->cash->name;
+
+        return $data;
     }
 }

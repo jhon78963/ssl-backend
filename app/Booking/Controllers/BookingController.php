@@ -63,6 +63,7 @@ class BookingController extends Controller
             $newBooking = $this->sharedService->convertCamelToSnake($request->validated());
             $createdBooking = $this->bookingService->create($newBooking);
             DB::commit();
+            $this->createCash($createdBooking, $newBooking['total_paid']);
             return response()->json([
                 'message' => 'Booking created.',
                 'bookingId' => $createdBooking->id,
@@ -100,17 +101,27 @@ class BookingController extends Controller
     {
         DB::beginTransaction();
         try {
-            $editBookingValidated = $this->sharedService->convertCamelToSnake($request->validated());
-            $bookingValidated = $this->bookingService->validate($booking, 'Booking');
-            $this->bookingService->update(
-                $bookingValidated,
-                $editBookingValidated
+            $editBooking = $this->sharedService->convertCamelToSnake($request->validated());
+            $booking = $this->bookingService->validate($booking, 'Booking');
+            $bookingCreated = $this->bookingService->update(
+                $booking,
+                $editBooking
             );
             DB::commit();
             return response()->json(['message' => 'Booking updated.']);
         } catch (\Exception $e) {
             DB::rollback();
             return response()->json(['error' =>  $e->getMessage()]);
+        }
+    }
+
+    private function createCash(Booking $booking, float $totalPaid): void
+    {
+        if ($totalPaid > 0) {
+            $this->bookingService->createCash(
+                $booking,
+                $totalPaid,
+            );
         }
     }
 }

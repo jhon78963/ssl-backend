@@ -26,6 +26,7 @@ class ReservationUpdateRequest extends FormRequest
             'endDate' => 'nullable',
             'total' => 'sometimes|numeric',
             'totalPaid' => 'nullable|numeric',
+            'totalPaidCash' => 'nullable|numeric',
             'status' => 'nullable|string',
             'customerId' => 'nullable|integer',
             'reservationTypeId' => 'sometimes|integer',

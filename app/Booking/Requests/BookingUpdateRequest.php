@@ -22,15 +22,15 @@ class BookingUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'startDate' => 'sometimes',
+            'startDate' => 'nullable',
             'endDate' => 'nullable',
-            'total' => 'sometimes|numeric',
+            'total' => 'nullable|numeric',
             'totalPaid' => 'nullable|numeric',
             'status' => 'nullable|string',
             'customerId' => 'nullable|integer',
-            'facilitiesImport' => 'sometimes|numeric',
-            'peopleExtraImport' => 'sometimes|numeric',
-            'consumptionsImport' => 'sometimes|numeric',
+            'facilitiesImport' => 'nullable|numeric',
+            'peopleExtraImport' => 'nullable|numeric',
+            'consumptionsImport' => 'nullable|numeric',
             'notes' => 'nullable',
             'description' => 'nullable',
         ];

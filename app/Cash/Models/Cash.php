@@ -46,6 +46,18 @@ class Cash extends Model
      */
     public $timestamps = false;
 
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'petty_cash_amount' => 'float',
+        ];
+    }
+
     public function cashOperations(): HasMany {
         return $this->hasMany(CashOperation::class);
     }

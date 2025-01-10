@@ -22,10 +22,11 @@ class CashTypeService
             ->orderBy('id', 'desc')
             ->first();
 
-        return match ($cashOperation->cash_type_id ?? 3) {
-            1 => CashType::find(3),
-            2 => CashType::find(3),
-            3 => CashType::find(1),
+        return match ($cashOperation->cash_type_id ?? 4) {
+            1 => CashType::find(4),
+            2 => CashType::find(4),
+            3 => CashType::find(4),
+            4 => CashType::find(1),
         };
     }
 }

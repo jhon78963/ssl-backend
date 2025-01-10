@@ -18,8 +18,13 @@ class CashTypeSeeder extends Seeder
         $cashType->save();
 
         $cashType = new CashType();
-        $cashType->key = 'CASH_OPERATION';
-        $cashType->label = 'Operación';
+        $cashType->key = 'CASH_INCOME';
+        $cashType->label = 'Ingreso';
+        $cashType->save();
+
+        $cashType = new CashType();
+        $cashType->key = 'CASH_EXPENSE';
+        $cashType->label = 'Egreso';
         $cashType->save();
 
         $cashType = new CashType();

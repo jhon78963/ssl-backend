@@ -34,6 +34,7 @@ return new class extends Migration
             $table->integer('booking_id')->nullable();
             $table->foreign('booking_id')->references('id')->on('bookings');
             $table->datetime('date');
+            $table->string('description')->nullable();
             $table->float('amount')->default(0);
         });
     }

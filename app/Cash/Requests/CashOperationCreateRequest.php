@@ -25,7 +25,8 @@ class CashOperationCreateRequest extends FormRequest
             'cashId' => 'nullable|integer',
             'cashTypeId' => 'required|integer',
             'scheduleId' => 'nullable|integer',
-            'date' => 'required',
+            'date' => 'nullable',
+            'description' => 'nullable',
             'amount' => 'required',
         ];
     }

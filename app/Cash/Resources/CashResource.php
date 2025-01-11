@@ -17,11 +17,10 @@ class CashResource extends JsonResource
         $data = [
             'id' => $this->id,
             'date' => $this->date,
-            'cash' => $this->cash->description,
-            'cashType' => $this->cashType->label,
-            'cashTypeKey' => $this->cashType->key,
+            'cash' => $this->description,
+            //'cashType' => $this->cashType->label,
             'schedule' => $this->schedule->description,
-            'pettyCash' => $this->cash->petty_cash_amount,
+            // 'pettyCash' => $this->cash->petty_cash_amount,
         ];
 
         $data['pettyCash'] = in_array($this->cashType->key, ['CASH_OPENING', 'CASH_CLOSURE'])
@@ -29,7 +28,7 @@ class CashResource extends JsonResource
             : 0;
 
         $data['amount'] = $this->amount;
-        $data['employee'] = $this->cash->name;
+        // $data['employee'] = $this->cash->name;
 
         return $data;
     }

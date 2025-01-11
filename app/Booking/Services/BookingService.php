@@ -88,6 +88,7 @@ class BookingService {
             'cash_type_id' => 2,
             'schedule_id' => $this->scheduleService->get(),
             'date' => now(),
+            'description' => 'Ingreso Reserva',
             'amount' => $totalPaid,
         ]);
     }

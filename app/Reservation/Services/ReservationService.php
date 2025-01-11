@@ -59,6 +59,7 @@ class ReservationService
             'cash_type_id' => 2,
             'schedule_id' => $this->scheduleService->get(),
             'date' => now(),
+            'description' => 'Ingreso Locker/Hab',
             'amount' => $totalPaid,
         ]);
     }

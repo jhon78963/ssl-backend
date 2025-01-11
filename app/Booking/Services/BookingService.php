@@ -111,7 +111,7 @@ class BookingService {
         $query = $modelClass::query();
 
         if ($startDate || $endDate) {
-            $query = $this->sharedService->dateFilter($query, $startDate, $endDate);
+            $query = $this->sharedService->dateRangeFilter($query, $startDate, $endDate);
         }
 
         if ($dni) {

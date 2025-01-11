@@ -63,7 +63,7 @@ class SharedService {
         }
 
         if ($startDate || $endDate) {
-            $query = $this->dateFilter($query, $startDate, $endDate);
+            $query = $this->dateFilter($query, $startDate, $endDate, $columnSearch);
         }
 
         if ($gender) {
@@ -102,7 +102,7 @@ class SharedService {
         });
     }
 
-    public function dateFilter(Builder $query, ?string $startDate, ?string $endDate): Builder
+    public function dateRangeFilter(Builder $query, ?string $startDate, ?string $endDate): Builder
     {
         return $query->when(
             $startDate || $endDate,
@@ -117,5 +117,20 @@ class SharedService {
                 }
             });
         });
+    }
+
+    public function dateFilter(Builder $query, ?string $startDate, ?string $endDate, string $columnSearch): Builder
+    {
+        return $query->when(
+            $startDate || $endDate,
+            function (Builder $query) use ($startDate, $endDate, $columnSearch) {
+                $query->when($startDate, function ($query) use ($startDate, $columnSearch): Builder {
+                    return $query->whereDate($columnSearch, '>=', $startDate);
+                })
+                ->when($endDate, function ($query) use ($endDate, $columnSearch): Builder {
+                    return $query->whereDate($columnSearch, '<=', $endDate);
+                });
+            }
+        );
     }
 }

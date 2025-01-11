@@ -204,7 +204,7 @@ class ReservationService
         }
 
         if ($startDate || $endDate) {
-            $query = $this->sharedService->dateFilter($query, $startDate, $endDate);
+            $query = $this->sharedService->dateRangeFilter($query, $startDate, $endDate);
         }
 
         $total = $query->count();

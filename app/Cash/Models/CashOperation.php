@@ -20,11 +20,11 @@ class CashOperation extends Model
      */
     protected $fillable = [
         'id',
-        'cash_id',
+        'reservation_id',
         'booking_id',
+        'cash_id',
         'cash_type_id',
         'schedule_id',
-        'reservation_id',
         'date',
         'amount',
     ];

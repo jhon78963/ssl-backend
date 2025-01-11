@@ -16,6 +16,7 @@ class CashResource extends JsonResource
     {
         $data = [
             'id' => $this->id,
+            'date' => $this->date,
             'cash' => $this->cash->description,
             'cashType' => $this->cashType->label,
             'cashTypeKey' => $this->cashType->key,

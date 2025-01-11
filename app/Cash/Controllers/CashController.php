@@ -64,7 +64,7 @@ class CashController extends Controller
             $request,
             'Cash',
             'CashOperation',
-            'name'
+            'date',
         );
         return response()->json(new GetAllCollection(
             CashResource::collection($query['collection']),

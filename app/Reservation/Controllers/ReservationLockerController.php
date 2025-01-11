@@ -61,6 +61,26 @@ class ReservationLockerController extends Controller
         }
     }
 
+    public function change(Reservation $reservation, Locker $locker, Locker $newLocker): JsonResponse
+    {
+        DB::beginTransaction();
+        try {
+            $this->modelService->change(
+                'reservation_locker',
+                'reservation_id',
+                'locker_id',
+                $reservation->id,
+                $locker->id,
+                $newLocker->id,
+            );
+            DB::commit();
+            return response()->json(['message' => 'Locker changed to the reservation.'], 201);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json($e->getMessage());
+        }
+    }
+
     public function remove(Reservation $reservation, Locker $locker, float $price): JsonResponse
     {
         DB::beginTransaction();

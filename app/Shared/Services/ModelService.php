@@ -3,6 +3,7 @@
 namespace App\Shared\Services;
 
 use App\User\Models\User;
+use DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Collection;
@@ -97,6 +98,22 @@ class ModelService
             $attributes['extra_hours'] = $extraHours;
         }
         $model->$relation()->attach($id, $attributes);
+    }
+
+    public function change(
+        string $tableName,
+        string $firstIdName,
+        string $secondIdName,
+        int $firstId,
+        int $oldId,
+        int $newId,
+    ): void {
+        DB::table($tableName)
+            ->where($firstIdName, '=', $firstId)
+            ->where($secondIdName, '=', $oldId)
+            ->update([
+                $secondIdName => $newId,
+            ]);
     }
 
     public function create(Model $model, array $data): Model

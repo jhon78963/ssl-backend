@@ -5,8 +5,9 @@ namespace App\Locker\Controllers;
 use App\Locker\Models\Locker;
 use App\Locker\Requests\LockerChangeStatus;
 use App\Locker\Requests\LockerCreateRequest;
+use App\Locker\Requests\LockerUpdatePriceRequest;
 use App\Locker\Requests\LockerUpdateRequest;
-use App\Locker\Resources\LockerResource;
+use App\Locker\Resources\LockersResource;
 use App\Locker\Services\LockerService;
 use App\Reservation\Resources\FacilitiesResource;
 use App\Shared\Controllers\Controller;
@@ -76,7 +77,13 @@ class LockerController extends Controller
     public function get(Locker $locker): JsonResponse
     {
         $lockerValidated = $this->lockerService->validate($locker, 'Locker');
-        return response()->json(new LockerResource($lockerValidated));
+        return response()->json(new LockersResource($lockerValidated));
+    }
+
+    public function getLockerAvailable(): JsonResponse
+    {
+        $lockersAvailabled = $this->lockerService->getLockerAvailable();
+        return response()->json(LockersResource::collection($lockersAvailabled));
     }
 
     public function getAll(GetAllRequest $request): JsonResponse
@@ -88,7 +95,7 @@ class LockerController extends Controller
             'number'
         );
         return response()->json(new GetAllCollection(
-            LockerResource::collection($query['collection']),
+            LockersResource::collection($query['collection']),
             $query['total'],
             $query['pages'],
         ));
@@ -107,5 +114,11 @@ class LockerController extends Controller
             DB::rollback();
             return response()->json(['error' =>  $e->getMessage()]);
         }
+    }
+
+    public function updatePrice(LockerUpdatePriceRequest $request): JsonResponse
+    {
+        $this->lockerService->updatePrice($request->input('price'));
+        return response()->json(['message' => 'Locker price updated.']);
     }
 }

@@ -139,7 +139,7 @@ class ReservationService
     {
         $products = Product::where('is_deleted', '=', false)
             ->when($nameFilter, function ($query) use ($nameFilter) {
-                $query->whereRaw('LOWER(name) LIKE ?', [strtolower("{$nameFilter}%")]);
+                $query->whereRaw('LOWER(name) LIKE ?', [strtolower("%{$nameFilter}%")]);
             })
             ->select('id', 'name', 'price')
             ->get()
@@ -150,7 +150,7 @@ class ReservationService
 
         $services = Service::where('is_deleted', '=', false)
             ->when($nameFilter, function ($query) use ($nameFilter) {
-                $query->whereRaw('LOWER(name) LIKE ?', [strtolower("{$nameFilter}%")]);
+                $query->whereRaw('LOWER(name) LIKE ?', [strtolower("%{$nameFilter}%")]);
             })
             ->select('id', 'name', 'price')
             ->get()

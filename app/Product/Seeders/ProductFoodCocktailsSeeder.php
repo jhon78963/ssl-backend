@@ -77,5 +77,53 @@ class ProductFoodCocktailsSeeder extends Seeder
         $product->price = 20;
         $product->product_type_id = 5;
         $product->save();
+
+        $product = new Product();
+        $product->name = 'Sex on the laiss';
+        $product->price = 15;
+        $product->product_type_id = 5;
+        $product->save();
+
+        $product = new Product();
+        $product->name = 'Pisco sour';
+        $product->price = 15;
+        $product->product_type_id = 5;
+        $product->save();
+
+        $product = new Product();
+        $product->name = 'Pisco sour';
+        $product->price = 15;
+        $product->product_type_id = 5;
+        $product->save();
+
+        $product = new Product();
+        $product->name = 'Sacsayhuaman';
+        $product->price = 15;
+        $product->product_type_id = 5;
+        $product->save();
+
+        $product = new Product();
+        $product->name = 'Sacsayhuaman';
+        $product->price = 15;
+        $product->product_type_id = 5;
+        $product->save();
+
+        $product = new Product();
+        $product->name = 'Martini';
+        $product->price = 15;
+        $product->product_type_id = 5;
+        $product->save();
+
+        $product = new Product();
+        $product->name = 'Apple Martini';
+        $product->price = 15;
+        $product->product_type_id = 5;
+        $product->save();
+
+        $product = new Product();
+        $product->name = 'Amor en llamas';
+        $product->price = 15;
+        $product->product_type_id = 5;
+        $product->save();
     }
 }

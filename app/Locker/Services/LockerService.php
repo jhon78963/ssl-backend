@@ -2,7 +2,6 @@
 
 namespace App\Locker\Services;
 
-use App\Gender\Models\Gender;
 use App\Locker\Models\Locker;
 use App\Shared\Services\ModelService;
 use Illuminate\Database\Eloquent\Collection;
@@ -28,13 +27,31 @@ class LockerService
 
     public function get(int $genderId): Collection
     {
-        $lockers = Locker::where('gender_id', '=', $genderId)->get();
+        $lockers = Locker::where('is_deleted', '=', false)->where('gender_id', '=', $genderId)->get();
         return $lockers;
+    }
+
+    public function getLockerAvailable(): Collection
+    {
+        return Locker::where('is_deleted', '=', false)
+            ->where('status', '=', 'AVAILABLE')
+            ->orderBy('id')
+            ->get();
     }
 
     public function update(Locker $locker, array $editLocker): Locker
     {
         return $this->modelService->update($locker, $editLocker);
+    }
+
+    public function updatePrice(float $newPrice): mixed
+    {
+        return $this->modelService->updatePrice(
+            'Locker',
+            'Locker',
+            'price',
+            $newPrice
+        );
     }
 
     public function validate(Locker $locker, string $modelName): Locker

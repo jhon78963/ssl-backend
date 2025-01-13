@@ -101,6 +101,7 @@ Route::group([
         Route::patch('/rooms/{room}', 'update');
         Route::delete('/rooms/{room}', 'delete');
         Route::get('/rooms', 'getAll');
+        Route::get('/rooms/available', 'getRoomAvailable');
         Route::get('/rooms/{room}', 'get');
     });
 
@@ -185,10 +186,12 @@ Route::group([
 
     Route::controller(LockerController::class)->group(function() {
         Route::post('/lockers', 'create');
+        Route::post('/lockers/price', 'updatePrice');
         Route::patch('/lockers/change-status/{locker}', 'changeStatus');
         Route::patch('/lockers/{locker}', 'update');
         Route::delete('/lockers/{locker}', 'delete');
         Route::get('/lockers', 'getAll');
+        Route::get('/lockers/available', 'getLockerAvailable');
         Route::get('/lockers/{locker}', 'get');
     });
 
@@ -286,6 +289,7 @@ Route::group([
 
     Route::controller(ReservationRoomController::class)->group(function() {
         Route::post('/reservations/{reservation}/rooms/{room}', 'add');
+        Route::post('/reservations/{reservation}/rooms/{room}/new-rooms/{newRoom}', 'change');
         Route::patch('/reservations/{reservation}/rooms/{room}', 'modify');
         Route::delete('/reservations/{reservation}/rooms/{room}/price/{price}', 'remove');
     });

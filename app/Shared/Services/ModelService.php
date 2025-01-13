@@ -162,6 +162,17 @@ class ModelService
         return $model;
     }
 
+    public function updatePrice(string $entityName, string $modelName, string $column, $value): mixed
+    {
+        $modelClass = "App\\$entityName\\Models\\$modelName";
+
+        return $modelClass::query()->update([
+            $column => $value,
+            'last_modifier_user_id' => Auth::id(),
+            'last_modification_time' => now()->format('Y-m-d H:i:s'),
+        ]);
+    }
+
     public function validate(User | Model $model, string $modelName): User | Model
     {
         if ($model->is_deleted == true) {

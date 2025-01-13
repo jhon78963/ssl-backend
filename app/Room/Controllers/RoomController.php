@@ -6,6 +6,7 @@ use App\Room\Models\Room;
 use App\Room\Requests\RoomChangeStatus;
 use App\Room\Requests\RoomCreateRequest;
 use App\Room\Requests\RoomUpdateRequest;
+use App\Room\Resources\RoomsResource;
 use App\Room\Resources\RoomTableResource;
 use App\Room\Services\RoomService;
 use App\Shared\Controllers\Controller;
@@ -75,6 +76,12 @@ class RoomController extends Controller
     {
         $roomValidated = $this->roomService->validate($room, 'Room');
         return response()->json(new RoomTableResource( $roomValidated));
+    }
+
+    public function getRoomAvailable(): JsonResponse
+    {
+        $roomsAvailabled = $this->roomService->getRoomAvailable();
+        return response()->json(RoomsResource::collection($roomsAvailabled));
     }
 
     public function getAll(GetAllRequest $request): JsonResponse

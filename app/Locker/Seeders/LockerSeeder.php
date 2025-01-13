@@ -15,7 +15,7 @@ class LockerSeeder extends Seeder
         for ($i = 1; $i <= 40; $i++) {
             $locker = new Locker();
             $locker->number = $i;
-            $locker->price = 25;
+            $locker->price = 30;
             $locker->gender_id = 1;
             $locker->save();
         }
@@ -23,7 +23,7 @@ class LockerSeeder extends Seeder
         for ($i = 41; $i <= 56; $i++) {
             $locker = new Locker();
             $locker->number = $i;
-            $locker->price = 25;
+            $locker->price = 30;
             $locker->gender_id = 2;
             $locker->save();
         }

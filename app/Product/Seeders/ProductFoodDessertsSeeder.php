@@ -13,14 +13,20 @@ class ProductFoodDessertsSeeder extends Seeder
     public function run(): void
     {
         $product = new Product();
-        $product->name = 'Ensalada de Frutas';
+        $product->name = 'Ensalada de Frutas Plato';
         $product->price = 10;
         $product->product_type_id = 4;
         $product->save();
 
         $product = new Product();
-        $product->name = 'Ensalada de Frutas';
+        $product->name = 'Ensalada de Frutas Copa';
         $product->price = 15;
+        $product->product_type_id = 4;
+        $product->save();
+
+        $product = new Product();
+        $product->name = 'Kekes';
+        $product->price = 3.5;
         $product->product_type_id = 4;
         $product->save();
     }

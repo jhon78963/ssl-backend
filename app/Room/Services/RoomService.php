@@ -4,6 +4,7 @@ namespace App\Room\Services;
 
 use App\Room\Models\Room;
 use App\Shared\Services\ModelService;
+use Illuminate\Database\Eloquent\Collection;
 
 class RoomService
 {
@@ -22,6 +23,14 @@ class RoomService
     public function delete(Room $room): void
     {
         $this->modelService->delete($room);
+    }
+
+    public function getRoomAvailable(): Collection
+    {
+        return Room::where('is_deleted', '=', false)
+            ->where('status', '=', 'AVAILABLE')
+            ->orderBy('id')
+            ->get();
     }
 
     public function update(Room $room, array $editRoom): void

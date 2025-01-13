@@ -7,7 +7,6 @@ use App\Room\Models\Room;
 use App\Shared\Controllers\Controller;
 use App\Shared\Requests\AddRequest;
 use App\Shared\Requests\ModifyRequest;
-use App\Shared\Resources\GetAllAddResource;
 use App\Shared\Services\ModelService;
 use Illuminate\Http\JsonResponse;
 use DB;
@@ -67,6 +66,26 @@ class ReservationRoomController extends Controller
             );
             DB::commit();
             return response()->json(['message' => 'Room modified to the reservation.'], 201);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json($e->getMessage());
+        }
+    }
+
+    public function change(Reservation $reservation, Room $room, Room $newRoom): JsonResponse
+    {
+        DB::beginTransaction();
+        try {
+            $this->modelService->change(
+                'reservation_room',
+                'reservation_id',
+                'room_id',
+                $reservation->id,
+                $room->id,
+                $newRoom->id,
+            );
+            DB::commit();
+            return response()->json(['message' => 'Room changed to the reservation.'], 201);
         } catch (\Exception $e) {
             DB::rollback();
             return response()->json($e->getMessage());

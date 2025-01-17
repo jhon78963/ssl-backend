@@ -11,6 +11,51 @@ use Auth;
 
 class ModelService
 {
+    public function attach(
+        Model $model,
+        string $relation,
+        int $id,
+        ?float $price = null,
+        ?int $quantity = null,
+        ?bool $isPaid = null,
+        ?bool $isFree = null,
+        ?float $payment = null,
+        ?float $cashPayment = null,
+        ?float $cardPayment = null,
+        ?int $additionalPeople = null,
+        ?int $extraHours = null,
+    ): void {
+        $attributes = [];
+        if ($price !== null) {
+            $attributes['price'] = $price;
+        }
+        if ($quantity !== null) {
+            $attributes['quantity'] = $quantity;
+        }
+        if ($isPaid !== null) {
+            $attributes['is_paid'] = $isPaid;
+        }
+        if ($isFree !== null) {
+            $attributes['is_free'] = $isFree;
+        }
+        if ($payment !== null) {
+            $attributes['payment'] = $payment;
+        }
+        if ($cashPayment !== null) {
+            $attributes['cash_payment'] = $cashPayment;
+        }
+        if ($cardPayment !== null) {
+            $attributes['card_payment'] = $cardPayment;
+        }
+        if ($additionalPeople !== null) {
+            $attributes['additional_people'] = $additionalPeople;
+        }
+        if ($extraHours !== null) {
+            $attributes['extra_hours'] = $extraHours;
+        }
+        $model->$relation()->attach($id, $attributes);
+    }
+
     public function modify(
         Model $model,
         string $relation,
@@ -55,49 +100,19 @@ class ModelService
         }
         $model->$relation()->updateExistingPivot($id, $attributes);
     }
-    public function attach(
+
+    public function modifyQuantity(
         Model $model,
         string $relation,
         int $id,
-        ?float $price = null,
         ?int $quantity = null,
-        ?bool $isPaid = null,
-        ?bool $isFree = null,
-        ?float $payment = null,
-        ?float $cashPayment = null,
-        ?float $cardPayment = null,
-        ?int $additionalPeople = null,
-        ?int $extraHours = null,
+        bool $isRemove = false,
     ): void {
-        $attributes = [];
-        if ($price !== null) {
-            $attributes['price'] = $price;
+        $pivot = $model->$relation()->find($id);
+        if ($pivot) {
+            $newQuantity = $pivot->pivot->quantity + ($isRemove ? -$quantity : $quantity);
+            $model->$relation()->updateExistingPivot($id, ['quantity' => $newQuantity]);
         }
-        if ($quantity !== null) {
-            $attributes['quantity'] = $quantity;
-        }
-        if ($isPaid !== null) {
-            $attributes['is_paid'] = $isPaid;
-        }
-        if ($isFree !== null) {
-            $attributes['is_free'] = $isFree;
-        }
-        if ($payment !== null) {
-            $attributes['payment'] = $payment;
-        }
-        if ($cashPayment !== null) {
-            $attributes['cash_payment'] = $cashPayment;
-        }
-        if ($cardPayment !== null) {
-            $attributes['card_payment'] = $cardPayment;
-        }
-        if ($additionalPeople !== null) {
-            $attributes['additional_people'] = $additionalPeople;
-        }
-        if ($extraHours !== null) {
-            $attributes['extra_hours'] = $extraHours;
-        }
-        $model->$relation()->attach($id, $attributes);
     }
 
     public function change(
@@ -152,8 +167,6 @@ class ModelService
         return $collection;
     }
 
-
-
     public function update(Model $model, array $data): Model
     {
         $this->setUpdateAuditFields($model);
@@ -180,6 +193,19 @@ class ModelService
         }
 
         return $model;
+    }
+
+    public function validatePivote(
+        string $tableName,
+        string $firstIdName,
+        string $secondIdName,
+        int $firstId,
+        int $secondId,
+    ): bool  {
+        return DB::table($tableName)
+            ->where($firstIdName, '=', $firstId)
+            ->where($secondIdName, '=', $secondId)
+            ->exists();
     }
 
     private static function setCreationAuditFields(Model $model): void

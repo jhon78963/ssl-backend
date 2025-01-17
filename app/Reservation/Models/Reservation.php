@@ -4,6 +4,7 @@ namespace App\Reservation\Models;
 
 use App\Cash\Models\CashOperation;
 use App\Customer\Models\Customer;
+use App\Inventory\Models\Inventory;
 use App\Locker\Models\Locker;
 use App\PaymentType\Models\PaymentType;
 use App\Product\Models\Product;
@@ -135,6 +136,14 @@ class Reservation extends Model
             PaymentType::class,
             'reservation_payment_type',
         )->withPivot(['payment', 'cash_payment', 'card_payment']);
+    }
+
+    public function inventories(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            Inventory::class,
+            'reservation_inventory',
+        )->withPivot(['quantity']);
     }
 
     public function cashOperation(): HasOne

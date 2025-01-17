@@ -16,6 +16,7 @@ use App\Company\Controllers\SocialNetworkController;
 use App\Customer\Controllers\CustomerController;
 use App\Gender\Controllers\GenderController;
 use App\Image\Controllers\ImageController;
+use App\Inventory\Controllers\InventoryController;
 use App\Locker\Controllers\LockerController;
 use App\Product\Controllers\ProductController;
 use App\ProductType\Controllers\ProductTypeController;
@@ -23,6 +24,7 @@ use App\Rate\Controllers\RateController;
 use App\Rate\Controllers\RateDayController;
 use App\Rate\Controllers\RateHourController;
 use App\Reservation\Controllers\ReservationController;
+use App\Reservation\Controllers\ReservationInventoryController;
 use App\Reservation\Controllers\ReservationLockerController;
 use App\Reservation\Controllers\ReservationPaymentTypeController;
 use App\Reservation\Controllers\ReservationProductController;
@@ -302,6 +304,11 @@ Route::group([
         );
     });
 
+    Route::controller(ReservationInventoryController::class)->group(function() {
+        Route::post('/reservations/{reservation}/inventories/{inventory}', 'add');
+        Route::delete('/reservations/{reservation}/inventories/{inventory}/quantity/{quantity}', 'remove');
+    });
+
     Route::controller(CashController::class)->group(function() {
         Route::post('/cashes', 'create');
         Route::get('/cashes', 'getAll');
@@ -358,5 +365,13 @@ Route::group([
             'bookings/{booking}/payment-types/{paymentType}/payment/{payment}/cash-payment/{cashPayment}/card-payment/{cardPayment}',
             'remove'
         );
+    });
+
+    Route::controller(InventoryController::class)->group(function() {
+        Route::post('/inventories', 'create');
+        Route::patch('/inventories/{inventory}', 'update');
+        Route::delete('/inventories/{inventory}', 'delete');
+        Route::get('/inventories', 'getAll');
+        Route::get('/inventories/{inventory}', 'get');
     });
 });

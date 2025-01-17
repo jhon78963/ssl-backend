@@ -7,6 +7,7 @@ use App\Cash\Seeders\CashTypeSeeder;
 use App\Category\Seeders\CategorySeeder;
 use App\Company\Seeders\CompanySeed;
 use App\Gender\Seeders\GenderSeeder;
+use App\Inventory\Seeders\InventorySeeder;
 use App\Locker\Seeders\LockerSeeder;
 use App\PaymentType\Seeders\PaymentTypeSeeder;
 use App\Product\Seeders\ProductFoodAppetizersSeeder;
@@ -63,6 +64,7 @@ class DatabaseSeeder extends Seeder
             CashSeeder::class,
             CashTypeSeeder::class,
             ScheduleSeeder::class,
+            InventorySeeder::class,
         ]);
     }
 }

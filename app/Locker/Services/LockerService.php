@@ -27,7 +27,9 @@ class LockerService
 
     public function get(int $genderId): Collection
     {
-        $lockers = Locker::where('is_deleted', '=', false)->where('gender_id', '=', $genderId)->get();
+        $lockers = Locker::where('is_deleted', '=', false)
+            ->where('gender_id', '=', $genderId)
+            ->get();
         return $lockers;
     }
 

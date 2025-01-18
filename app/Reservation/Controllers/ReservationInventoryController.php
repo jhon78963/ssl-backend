@@ -86,7 +86,8 @@ class ReservationInventoryController extends Controller
         bool $isRemove = false
     ): void {
         $editInventory = [
-            'stock_in_use' => $inventory->stock_in_use + ($isRemove ? -$quantity : $quantity),
+            // 'stock_in_use' => $inventory->stock_in_use + ($isRemove ? -$quantity : $quantity),
+            'stock_in_use' => $quantity,
         ];
         $this->modelService->update($inventory, $editInventory);
     }

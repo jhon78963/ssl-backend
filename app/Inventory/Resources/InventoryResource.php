@@ -19,6 +19,7 @@ class InventoryResource extends JsonResource
             'description' => $this->description,
             'stock' => $this->stock,
             'stockInUse' => $this->stock_in_use,
+            'quantity' => 0,
         ];
     }
 }

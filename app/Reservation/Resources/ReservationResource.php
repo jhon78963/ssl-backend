@@ -2,6 +2,7 @@
 
 namespace App\Reservation\Resources;
 
+use App\Inventory\Resources\InventoryResource;
 use App\PaymentType\Resources\PaymentTypeResource;
 use App\Product\Resources\ProductResource;
 use App\Service\Resources\ServiceResource;
@@ -38,6 +39,7 @@ class ReservationResource extends JsonResource
             'paymentTypes' => PaymentTypeResource::collection($this->paymentTypes),
             'products' => ProductResource::collection($this->products),
             'services' => ServiceResource::collection($this->services),
+            'inventories' => InventoryResource::collection($this->inventories),
             'customer' => [
                 'id' => $this->customer_id,
                 'name' => $this->customer->name,

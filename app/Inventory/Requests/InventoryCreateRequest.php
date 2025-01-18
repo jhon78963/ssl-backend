@@ -24,7 +24,7 @@ class InventoryCreateRequest extends FormRequest
         return [
             'description' => 'required|string',
             'stock' => 'required|integer',
-            'stockInUse' => 'required|integer'
+            'stockInUse' => 'nullable|integer'
         ];
     }
 }

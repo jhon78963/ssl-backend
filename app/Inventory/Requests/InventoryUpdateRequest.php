@@ -24,7 +24,7 @@ class InventoryUpdateRequest extends FormRequest
         return [
             'description' => 'sometimes|string',
             'stock' => 'sometimes|integer',
-            'stockInUse' => 'sometimes|integer'
+            'stockInUse' => 'nullable|integer'
         ];
     }
 }

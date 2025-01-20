@@ -2,6 +2,7 @@
 
 namespace App\Reservation\Services;
 
+use App\Booking\Services\BookingService;
 use App\Cash\Models\CashOperation;
 use App\Cash\Services\CashService;
 use App\Locker\Models\Locker;
@@ -26,17 +27,20 @@ class ReservationService
     private string $reservationType = '';
     private string $startDate = '';
     private string $endDate = '';
+    protected BookingService $bookingService;
     protected CashService $cashService;
     protected ModelService $modelService;
     protected ScheduleService $scheduleService;
     protected SharedService $sharedService;
 
     public function __construct(
+        BookingService $bookingService,
         CashService $cashService,
         ModelService $modelService,
         ScheduleService $scheduleService,
         SharedService $sharedService
     ) {
+        $this->bookingService = $bookingService;
         $this->cashService = $cashService;
         $this->modelService = $modelService;
         $this->scheduleService = $scheduleService;
@@ -84,10 +88,11 @@ class ReservationService
             $rooms = Room::with([
                 'reservations' => function ($query) {
                     $query->where('status', '!=', 'COMPLETED');
-                }
+                },
+                'roomType'
             ])
                 ->where('is_deleted', '=', false)
-                ->select('id', DB::raw("CONCAT('R', number) as number"), 'status')
+                ->select('id', DB::raw("CONCAT('R', number) as number"), 'status', 'room_type_id')
                 ->addSelect([
                     'price' => function (Builder $query): void {
                         $query->select('price_per_capacity')
@@ -111,6 +116,7 @@ class ReservationService
                 ->get()
                 ->map(function (Room $room): Room {
                     $room->type = 'room';
+                    $room->status = $this->getRoomStatus($room);
                     $room->reservation_id = $room->reservations->first()?->id;
                     return $room;
                 });
@@ -160,6 +166,24 @@ class ReservationService
             });
 
         return $products->concat($services);
+    }
+
+    private function checkSchedule(Room $room, string $startDate): array
+    {
+        return $this->bookingService->checkSchedule(
+            $room->id,
+            $startDate,
+            $room->roomType->rental_hours
+        );
+    }
+
+    private function getRoomStatus(Room $room): mixed
+    {
+        $schedule = $this->checkSchedule($room, now());
+        if ($schedule['conflict']) {
+            return 'BOOKED';
+        }
+        return $room->status;
     }
 
     private function prependReservationType(): ReservationType {

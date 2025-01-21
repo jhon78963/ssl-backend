@@ -29,5 +29,11 @@ class ProductFoodDessertsSeeder extends Seeder
         $product->price = 3.5;
         $product->product_type_id = 4;
         $product->save();
+
+        $product = new Product();
+        $product->name = 'Tajadas de fruta';
+        $product->price = 5;
+        $product->product_type_id = 4;
+        $product->save();
     }
 }

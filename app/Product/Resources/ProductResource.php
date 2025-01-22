@@ -21,6 +21,7 @@ class ProductResource extends JsonResource
             'quantity' => $this->pivot->quantity,
             'total' => $this->price * $this->pivot->quantity,
             'isPaid' => $this->pivot->is_paid,
+            'isPaidBd' => $this->pivot->is_paid,
             'isFree' => $this->pivot->is_free,
             'isBd' => true,
             'type' => 'product'

@@ -67,15 +67,26 @@ class ReservationServiceController extends Controller
         DB::beginTransaction();
         try {
             $this->modelService->detach($reservation, 'services', $service->id);
-            $editReservation = [
-                'total' => $reservation->total - $service->price * $quantity,
-            ];
-            $this->modelService->update($reservation, $editReservation);
+            $this->updateReservation(
+                $reservation,
+                $service->price,
+                $quantity
+            );
             DB::commit();
             return response()->json(['message' => 'Service removed from the reservation']);
         } catch (\Exception $e) {
             DB::rollback();
             return response()->json(['error' => $e->getMessage()]);
         }
+    }
+
+    private function updateReservation(Reservation $reservation, float $servicePrice, float $serviceQuantity): void
+    {
+        $editReservation = [
+            'total' => $reservation->total - $servicePrice * $serviceQuantity,
+            'total_paid' => $reservation->total_paid - $servicePrice * $serviceQuantity,
+            'consumptions_import' => $reservation->consumptions_import - $servicePrice * $serviceQuantity,
+        ];
+        $this->modelService->update($reservation, $editReservation);
     }
 }

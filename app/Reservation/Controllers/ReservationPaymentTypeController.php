@@ -24,14 +24,11 @@ class ReservationPaymentTypeController extends Controller
     {
         DB::beginTransaction();
         try {
-            $this->modelService->attach(
+            $pivotExists = $this->validatePivot($reservation->id, $paymentType->id);
+            $this->operatePivote(
+                $pivotExists,
                 $reservation,
-                'paymentTypes',
                 $paymentType->id,
-                null,
-                null,
-                null,
-                null,
                 $request->input('payment'),
                 $request->input('cashPayment'),
                 $request->input('cardPayment'),
@@ -46,23 +43,99 @@ class ReservationPaymentTypeController extends Controller
 
     public function remove(
         Reservation $reservation,
-        PaymentType $paymentType,
+        int $paymentTypeId,
         float $payment,
-        float $cashPayment,
-        float $cardPayment
+        // float $cashPayment,
+        // float $cardPayment
     ): JsonResponse {
         DB::beginTransaction();
         try {
-            $this->modelService->detach($reservation, 'paymentTypes', $paymentType->id);
-            $editReservation = [
-                'total' => $reservation->total - ($paymentType->id == 3 ? $cashPayment + $cardPayment : $payment),
-            ];
-            $this->modelService->update($reservation, $editReservation);
+            $this->updateReservationPaymentType(
+                $reservation,
+                $paymentTypeId,
+                $payment,
+                // $cashPayment,
+                // $cardPayment,
+            );
             DB::commit();
             return response()->json(['message' => 'Payment Type removed from the reservation']);
         } catch (\Exception $e) {
             DB::rollback();
             return response()->json(['error' => $e->getMessage()]);
+        }
+    }
+
+    private function updateReservationPaymentType(
+        Reservation $reservation,
+        int $paymentTypeId,
+        float $payment,
+        // float $cashPayment,
+        // float $cardPayment,
+    ): void {
+        $pivotData = $reservation->paymentTypes()
+                ->where('payment_type_id', $paymentTypeId)
+                ->first()
+                ->pivot;
+
+        $reservation->paymentTypes()->updateExistingPivot($paymentTypeId, [
+            'payment' => $pivotData->payment - $payment,
+            // 'cash_payment' => $pivotData->cash_payment - $cashPayment,
+            // 'card_payment' => $pivotData->card_payment - $cardPayment,
+        ]);
+    }
+
+    private function validatePivot(int $reservationId, int $paymentTypeId): bool
+    {
+        return $this->modelService->validatePivote(
+            'reservation_payment_type',
+            'reservation_id',
+            'payment_type_id',
+            $reservationId,
+            $paymentTypeId
+        );
+    }
+
+    private function operatePivote(
+        bool $pivotExists,
+        Reservation $reservation,
+        int $paymentTypeId,
+        float $payment,
+        float $cashPayment,
+        float $cardPayment
+    ): void {
+        if ($pivotExists) {
+            $pivotData = $reservation->paymentTypes()
+                ->where('payment_type_id', $paymentTypeId)
+                ->first()
+                ->pivot;
+            $payment += $pivotData->payment ?? 0;
+            $cashPayment += $pivotData->cash_payment ?? 0;
+            $cardPayment += $pivotData->card_payment ?? 0;
+            $this->modelService->modify(
+                $reservation,
+                'paymentTypes',
+                $paymentTypeId,
+                null,
+                null,
+                null,
+                null,
+                $payment,
+                $cashPayment,
+                $cardPayment
+            );
+        } else {
+            $this->modelService->attach(
+                $reservation,
+                'paymentTypes',
+                $paymentTypeId,
+                null,
+                null,
+                null,
+                null,
+                $payment,
+                $cashPayment,
+                $cardPayment
+            );
         }
     }
 }

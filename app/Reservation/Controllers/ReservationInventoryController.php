@@ -44,7 +44,7 @@ class ReservationInventoryController extends Controller
         DB::beginTransaction();
         try {
             $this->modelService->detach($reservation, 'inventories', $inventory->id);
-            $this->updateStockInventory($inventory, $quantity, true);
+            $this->updateStockInventory($inventory, $quantity);
             DB::commit();
             return response()->json(['message' => 'Inventory removed from the reservation']);
         } catch (\Exception $e) {
@@ -83,10 +83,8 @@ class ReservationInventoryController extends Controller
     private function updateStockInventory(
         Inventory $inventory,
         int $quantity,
-        bool $isRemove = false
     ): void {
         $editInventory = [
-            // 'stock_in_use' => $inventory->stock_in_use + ($isRemove ? -$quantity : $quantity),
             'stock_in_use' => $quantity,
         ];
         $this->modelService->update($inventory, $editInventory);

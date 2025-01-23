@@ -74,7 +74,6 @@ class ReservationController extends Controller
             $newReservation['schedule_id'] = $this->scheduleService->get();
             $reservationCreated = $this->reservationService->create($newReservation);
             DB::commit();
-            $this->createCash($reservationCreated, $newReservation['total_paid_cash']);
             return response()->json([
                 'message' => 'Reservation created.',
                 'reservationId' => $reservationCreated->id,
@@ -171,21 +170,10 @@ class ReservationController extends Controller
                 $editReservation,
             );
             DB::commit();
-            $this->createCash($reservation, $editReservation['total_paid_cash']);
             return response()->json(['message' => 'Reservation updated.']);
         } catch (\Exception $e) {
             DB::rollback();
             return response()->json(['error' =>  $e->getMessage()]);
-        }
-    }
-
-    private function createCash(Reservation $reservation, float $totalPaid): void
-    {
-        if ($totalPaid > 0) {
-            $this->reservationService->createCash(
-                $reservation,
-                $totalPaid,
-            );
         }
     }
 }

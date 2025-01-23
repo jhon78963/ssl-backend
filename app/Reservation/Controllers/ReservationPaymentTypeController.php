@@ -4,9 +4,9 @@ namespace App\Reservation\Controllers;
 
 use App\PaymentType\Models\PaymentType;
 use App\Reservation\Models\Reservation;
+use App\Reservation\Services\ReservationService;
 use App\Shared\Controllers\Controller;
 use App\Shared\Requests\AddRequest;
-use App\Shared\Resources\GetAllAddResource;
 use App\Shared\Services\ModelService;
 use Illuminate\Http\JsonResponse;
 use DB;
@@ -14,10 +14,12 @@ use DB;
 class ReservationPaymentTypeController extends Controller
 {
     protected ModelService $modelService;
+    protected ReservationService $reservationService;
 
-    public function __construct(ModelService $modelService)
+    public function __construct(ModelService $modelService, ReservationService $reservationService,)
     {
         $this->modelService = $modelService;
+        $this->reservationService = $reservationService;
     }
 
     public function add(AddRequest $request, Reservation $reservation, PaymentType $paymentType): JsonResponse
@@ -34,6 +36,12 @@ class ReservationPaymentTypeController extends Controller
                 $request->input('cardPayment'),
             );
             DB::commit();
+            $this->createCash(
+                $reservation,
+                $request->input('payment'),
+                'Ingreso Locker/Hab',
+                false,
+            );
             return response()->json(['message' => 'Payment Type added to the reservation.'], 201);
         } catch (\Exception $e) {
             DB::rollback();
@@ -58,6 +66,12 @@ class ReservationPaymentTypeController extends Controller
                 // $cardPayment,
             );
             DB::commit();
+            $this->createCash(
+                $reservation,
+                $payment,
+                'Devolución Locker/Hab',
+                true
+            );
             return response()->json(['message' => 'Payment Type removed from the reservation']);
         } catch (\Exception $e) {
             DB::rollback();
@@ -135,6 +149,22 @@ class ReservationPaymentTypeController extends Controller
                 $payment,
                 $cashPayment,
                 $cardPayment
+            );
+        }
+    }
+
+    private function createCash(
+        Reservation $reservation,
+        float $totalPaid,
+        string $description,
+        bool $isRemove,
+    ): void {
+        if ($totalPaid > 0) {
+            $this->reservationService->createCash(
+                $reservation,
+                $totalPaid,
+                $description,
+                $isRemove
             );
         }
     }

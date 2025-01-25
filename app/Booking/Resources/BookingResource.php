@@ -4,6 +4,7 @@ namespace App\Booking\Resources;
 
 use App\Booking\Resources\RoomsResource;
 use App\PaymentType\Resources\PaymentTypeResource;
+use App\Product\Resources\ProductResource;
 use App\Service\Resources\ServiceResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -24,6 +25,7 @@ class BookingResource extends JsonResource
             'endDate' => $this->dateFormat($this->end_date),
             'total' => $this->total,
             'totalPaid' => $this->total_paid,
+            'totalLeft' => $this->total - $this->total_paid,
             'peopleExtraImport' => $this->people_extra_import ?? 0,
             'facilitiesImport' => $this->facilities_import ?? 0,
             'consumptionsImport' => $this->consumptions_import ?? 0,
@@ -35,7 +37,7 @@ class BookingResource extends JsonResource
                 'surname' => $this->customer->surname,
             ],
             'paymentTypes' => PaymentTypeResource::collection($this->paymentTypes),
-            'products' => ProductsResource::collection($this->products),
+            'products' => ProductResource::collection($this->products),
             'services' => ServiceResource::collection($this->services),
             'facilities' => $this->rooms->isNotEmpty()
                 ? RoomsResource::collection($this->rooms)

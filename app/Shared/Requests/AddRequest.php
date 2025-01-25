@@ -31,6 +31,7 @@ class AddRequest extends FormRequest
             'cardPayment' => 'nullable',
             'additionalPeople' => 'nullable',
             'extraHours' => 'nullable',
+            'isReservationPayment' => 'nullable',
         ];
     }
 }

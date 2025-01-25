@@ -97,6 +97,9 @@ class ReservationService
                 'reservations' => function ($query) {
                     $query->where('status', '!=', 'COMPLETED');
                 },
+                'bookings' => function($query) {
+                    $query->where('status', '!=', 'COMPLETED');
+                },
                 'roomType'
             ])
                 ->where('is_deleted', '=', false)
@@ -126,6 +129,7 @@ class ReservationService
                     $room->type = 'room';
                     $room->status = $this->getRoomStatus($room);
                     $room->reservation_id = $room->reservations->first()?->id;
+                    $room->booking_id = $room->bookings->first()?->id;
                     return $room;
                 });
 

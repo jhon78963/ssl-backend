@@ -36,13 +36,15 @@ class ReservationPaymentTypeController extends Controller
                 $request->input('cardPayment'),
             );
             DB::commit();
-            $this->createCash(
-                $reservation,
-                $paymentType->id,
-                $request->input('payment'),
-                'Ingreso Locker/Hab',
-                false,
-            );
+            if ($request->input('isReservationPayment')){
+                $this->createCash(
+                    $reservation,
+                    $paymentType->id,
+                    $request->input('payment'),
+                    'Ingreso Locker/Hab',
+                    false,
+                );
+            }
             return response()->json(['message' => 'Payment Type added to the reservation.'], 201);
         } catch (\Exception $e) {
             DB::rollback();

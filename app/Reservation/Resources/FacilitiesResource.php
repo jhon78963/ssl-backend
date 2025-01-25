@@ -23,6 +23,7 @@ class FacilitiesResource extends JsonResource
             'pricePerExtraHour' => (float)$this->price_per_extra_hour ?? 0,
             'type' => $this->type,
             'reservationId' => $this->reservation_id,
+            'bookingId' => $this->booking_id,
         ];
     }
 }

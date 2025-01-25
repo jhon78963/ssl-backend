@@ -6,6 +6,7 @@ use App\Cash\Seeders\CashSeeder;
 use App\Cash\Seeders\CashTypeSeeder;
 use App\Category\Seeders\CategorySeeder;
 use App\Company\Seeders\CompanySeed;
+use App\Customer\Seeders\CustomerSeeder;
 use App\Gender\Seeders\GenderSeeder;
 use App\Inventory\Seeders\InventorySeeder;
 use App\Locker\Seeders\LockerSeeder;
@@ -41,6 +42,7 @@ class DatabaseSeeder extends Seeder
             CompanySeed::class,
             RoleSeed::class,
             UserSeed::class,
+            CustomerSeeder::class,
             RoomTypeSeeder::class,
             RateHourSeeder::class,
             RateDaySeeder::class,

@@ -77,8 +77,14 @@ class BookingService {
         return $this->modelService->create(new Booking(), $newBooking);
     }
 
-    public function createCash(Booking $booking, float $totalPaid): void
-    {
+    public function createCash(
+        Booking $booking,
+        float $totalPaid,
+        float $totalCashPaid,
+        float $totalCardPaid,
+        string $description,
+        bool $isRemove
+    ): void {
         $cash = $this->cashService->currentCash();
         $this->modelService->create(
             new CashOperation(),
@@ -88,8 +94,10 @@ class BookingService {
             'cash_type_id' => 2,
             'schedule_id' => $this->scheduleService->get(),
             'date' => now(),
-            'description' => 'Ingreso Reserva',
-            'amount' => $totalPaid,
+            'description' => $description,
+            'amount' => $isRemove ? -$totalPaid : $totalPaid,
+            'cash_amount' => $isRemove ? -$totalCashPaid : $totalCashPaid,
+            'card_amount' => $isRemove ? -$totalCardPaid: $totalCardPaid,
         ]);
     }
 

@@ -362,7 +362,7 @@ Route::group([
     Route::controller(BookingPaymentTypeController::class)->group(function() {
         Route::post('bookings/{booking}/payment-types/{paymentType}', 'add');
         Route::delete(
-            'bookings/{booking}/payment-types/{paymentType}/payment/{payment}/cash-payment/{cashPayment}/card-payment/{cardPayment}',
+            'bookings/{booking}/payment-types/{paymentTypeId}/payment/{payment}/cash-payment/{cashPayment}/card-payment/{cardPayment}',
             'remove'
         );
     });

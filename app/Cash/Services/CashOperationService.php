@@ -7,10 +7,12 @@ use App\Shared\Services\ModelService;
 
 class CashOperationService
 {
+    protected CashService $cashService;
     protected ModelService $modelService;
 
-    public function __construct(ModelService $modelService)
+    public function __construct(CashService $cashService, ModelService $modelService)
     {
+        $this->cashService = $cashService;
         $this->modelService = $modelService;
     }
 
@@ -21,16 +23,23 @@ class CashOperationService
 
     public function total(int $cashId): array
     {
+        $cash = $this->cashService->currentCash();
+        $pettyCash = (float) $cash->petty_cash_amount;
+        $amount = (float) CashOperation::where('is_deleted', '=', false)
+            ->where('cash_id', '=', $cashId)
+            ->sum('amount');
+
         return [
-            'amount' => (float) CashOperation::where('is_deleted', '=', false)
-                ->where('cash_id', '=', $cashId)
-                ->sum('amount'),
+            'employee' => $cash->name,
+            'pettyCash' => $pettyCash,
+            'amount' => $amount,
             'cashAmount' => (float) CashOperation::where('is_deleted', '=', false)
                 ->where('cash_id', '=', $cashId)
                 ->sum('cash_amount'),
             'cardAmount' => (float) CashOperation::where('is_deleted', '=', false)
                 ->where('cash_id', '=', $cashId)
                 ->sum('card_amount'),
+            'total' => $pettyCash + $amount,
         ];
     }
 

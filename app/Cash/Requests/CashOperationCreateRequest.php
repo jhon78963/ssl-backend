@@ -28,6 +28,8 @@ class CashOperationCreateRequest extends FormRequest
             'date' => 'nullable',
             'description' => 'nullable',
             'amount' => 'required',
+            'cashAmount' => 'nullable',
+            'cardAmount' => 'nullable',
         ];
     }
 }

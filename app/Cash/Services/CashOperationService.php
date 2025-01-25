@@ -19,11 +19,19 @@ class CashOperationService
         $this->modelService->create(new CashOperation(), $newCash);
     }
 
-    public function total(int $cashId): mixed
+    public function total(int $cashId): array
     {
-        return CashOperation::where('is_deleted', '=', false)
-            ->where('cash_id', '=', $cashId)
-            ->sum('amount');
+        return [
+            'amount' => (float) CashOperation::where('is_deleted', '=', false)
+                ->where('cash_id', '=', $cashId)
+                ->sum('amount'),
+            'cashAmount' => (float) CashOperation::where('is_deleted', '=', false)
+                ->where('cash_id', '=', $cashId)
+                ->sum('cash_amount'),
+            'cardAmount' => (float) CashOperation::where('is_deleted', '=', false)
+                ->where('cash_id', '=', $cashId)
+                ->sum('card_amount'),
+        ];
     }
 
     public function update(int $cashOperationId, array $editCashOperation): CashOperation

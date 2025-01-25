@@ -28,6 +28,8 @@ class CashOperation extends Model
         'date',
         'description',
         'amount',
+        'cash_amount',
+        'card_amount',
     ];
 
     /**

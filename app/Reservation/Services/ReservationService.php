@@ -55,6 +55,8 @@ class ReservationService
     public function createCash(
         Reservation $reservation,
         float $totalPaid,
+        float $totalCashPaid,
+        float $totalCardPaid,
         string $description,
         bool $isRemove
     ): void {
@@ -69,6 +71,8 @@ class ReservationService
             'date' => now(),
             'description' => $description,
             'amount' => $isRemove ? -$totalPaid : $totalPaid,
+            'cash_amount' => $isRemove ? -$totalCashPaid : $totalCashPaid,
+            'card_amount' => $isRemove ? -$totalCardPaid: $totalCardPaid,
         ]);
     }
 

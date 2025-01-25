@@ -36,6 +36,8 @@ return new class extends Migration
             $table->datetime('date');
             $table->string('description')->nullable();
             $table->float('amount')->default(0);
+            $table->float('cash_amount')->default(0);
+            $table->float('card_amount')->default(0);
         });
     }
 

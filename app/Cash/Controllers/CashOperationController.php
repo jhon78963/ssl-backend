@@ -36,7 +36,7 @@ class CashOperationController extends Controller
         DB::beginTransaction();
         try {
             $newCash = $this->sharedService->convertCamelToSnake($request->validated());
-            $newCash['schedule_id'] = $this->scheduleService->get();
+            $newCash = $this->prepareCashData($newCash);
             $this->cashOperationService->create($newCash);
             DB::commit();
             return response()->json(['message' => 'Cash created.'], 201);
@@ -49,8 +49,29 @@ class CashOperationController extends Controller
     public function total(): JsonResponse
     {
         $cash = $this->cashService->currentCash();
-        return response()->json([
-            'total' => (float) $this->cashOperationService->total($cash->id),
-        ]);
+        return response()->json(
+            $this->cashOperationService->total($cash->id)
+        );
+    }
+
+    private function prepareCashData(array $newCash): array
+    {
+        $cash = $this->cashService->currentCash();
+        $newCash['cash_id'] = $cash->id;
+        $newCash['schedule_id'] = $this->scheduleService->get();
+        switch ($newCash['cash_type_id']) {
+            case 3:
+                $newCash['amount'] = -$newCash['amount'];
+                $newCash['cash_amount'] = -$newCash['amount'];
+                break;
+            case 4:
+                $newCash['amount'] = -$newCash['amount'];
+                $newCash['cash_amount'] = -$newCash['cash_amount'];
+                $newCash['card_amount'] = -$newCash['card_amount'];
+            default:
+                $newCash['cash_amount'] = $newCash['amount'];
+                break;
+        }
+        return $newCash;
     }
 }

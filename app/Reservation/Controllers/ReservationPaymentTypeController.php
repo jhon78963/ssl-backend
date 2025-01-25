@@ -38,6 +38,7 @@ class ReservationPaymentTypeController extends Controller
             DB::commit();
             $this->createCash(
                 $reservation,
+                $paymentType->id,
                 $request->input('payment'),
                 'Ingreso Locker/Hab',
                 false,
@@ -53,8 +54,6 @@ class ReservationPaymentTypeController extends Controller
         Reservation $reservation,
         int $paymentTypeId,
         float $payment,
-        // float $cashPayment,
-        // float $cardPayment
     ): JsonResponse {
         DB::beginTransaction();
         try {
@@ -62,12 +61,11 @@ class ReservationPaymentTypeController extends Controller
                 $reservation,
                 $paymentTypeId,
                 $payment,
-                // $cashPayment,
-                // $cardPayment,
             );
             DB::commit();
             $this->createCash(
                 $reservation,
+                $paymentTypeId,
                 $payment,
                 'Devolución Locker/Hab',
                 true
@@ -83,8 +81,6 @@ class ReservationPaymentTypeController extends Controller
         Reservation $reservation,
         int $paymentTypeId,
         float $payment,
-        // float $cashPayment,
-        // float $cardPayment,
     ): void {
         $pivotData = $reservation->paymentTypes()
                 ->where('payment_type_id', $paymentTypeId)
@@ -93,8 +89,6 @@ class ReservationPaymentTypeController extends Controller
 
         $reservation->paymentTypes()->updateExistingPivot($paymentTypeId, [
             'payment' => $pivotData->payment - $payment,
-            // 'cash_payment' => $pivotData->cash_payment - $cashPayment,
-            // 'card_payment' => $pivotData->card_payment - $cardPayment,
         ]);
     }
 
@@ -155,17 +149,36 @@ class ReservationPaymentTypeController extends Controller
 
     private function createCash(
         Reservation $reservation,
+        int $paymentTypeId,
         float $totalPaid,
         string $description,
         bool $isRemove,
     ): void {
         if ($totalPaid > 0) {
-            $this->reservationService->createCash(
-                $reservation,
-                $totalPaid,
-                $description,
-                $isRemove
-            );
+            switch($paymentTypeId) {
+                case 1:
+                    $this->reservationService->createCash(
+                        $reservation,
+                        $totalPaid,
+                        $totalPaid,
+                        0,
+                        $description,
+                        $isRemove
+                    );
+                    break;
+                case 2:
+                    $this->reservationService->createCash(
+                        $reservation,
+                        $totalPaid,
+                        0,
+                        $totalPaid,
+                        $description,
+                        $isRemove
+                    );
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }

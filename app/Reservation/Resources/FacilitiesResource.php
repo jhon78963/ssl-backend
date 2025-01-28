@@ -24,6 +24,7 @@ class FacilitiesResource extends JsonResource
             'type' => $this->type,
             'reservationId' => $this->reservation_id,
             'bookingId' => $this->booking_id,
+            'isSelected' => false,
         ];
     }
 }

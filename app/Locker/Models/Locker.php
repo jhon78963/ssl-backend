@@ -70,7 +70,7 @@ class Locker extends Model
         return $this->belongsToMany(
             Reservation::class,
             'reservation_locker',
-        )->withPivot(['price', 'quantity', 'is_paid']);
+        )->withPivot(['price', 'quantity', 'is_paid', 'consumption']);
     }
 
     public function reservationsInUse(): HasMany {

@@ -104,7 +104,7 @@ class Reservation extends Model
         return $this->belongsToMany(
             Locker::class,
             'reservation_locker',
-        )->withPivot(['price', 'quantity', 'is_paid']);
+        )->withPivot(['price', 'quantity', 'is_paid', 'consumption']);
     }
 
     public function rooms(): BelongsToMany

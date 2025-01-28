@@ -20,6 +20,7 @@ return new class extends Migration
             $table->primary(['reservation_id', 'locker_id', 'is_paid']);
             $table->float('price')->default(0);
             $table->integer('quantity')->default(1);
+            $table->float('consumption')->default(0);
         });
     }
 

@@ -32,6 +32,13 @@ class ReservationLockerController extends Controller
                 $request->input('price'),
                 1,
                 $request->input('isPaid'),
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                $request->input('consumption'),
             );
             DB::commit();
             return response()->json(['message' => 'Locker added to the reservation.'], 201);
@@ -95,6 +102,29 @@ class ReservationLockerController extends Controller
         } catch (\Exception $e) {
             DB::rollback();
             return response()->json(['error' => $e->getMessage()]);
+        }
+    }
+
+    public function updateConsumptionReservationLocker(
+        Reservation $reservation,
+        int $lockerId,
+        float $consumption,
+    ): JsonResponse {
+        DB::beginTransaction();
+        try {
+            $pivotData = $reservation->lockers()
+                    ->where('locker_id', $lockerId)
+                    ->first()
+                    ->pivot;
+
+            $reservation->lockers()->updateExistingPivot($lockerId, [
+                'consumption' => $pivotData->consumption + $consumption,
+            ]);
+            DB::commit();
+            return response()->json(['message' => 'Locker updated to the reservation.'], 201);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json($e->getMessage());
         }
     }
 }

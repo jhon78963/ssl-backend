@@ -284,6 +284,7 @@ Route::group([
 
     Route::controller(ReservationLockerController::class)->group(function() {
         Route::post('/reservations/{reservation}/lockers/{locker}', 'add');
+        Route::post('/reservations/{reservation}/lockers/{locker}/consumption/{consumption}', 'updateConsumptionReservationLocker');
         Route::post('/reservations/{reservation}/lockers/{locker}/new-lockers/{newLocker}', 'change');
         Route::patch('/reservations/{reservation}/lockers/{locker}', 'modify');
         Route::delete('/reservations/{reservation}/lockers/{locker}/price/{price}', 'remove');

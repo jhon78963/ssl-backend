@@ -25,6 +25,7 @@ class ModifyRequest extends FormRequest
             'quantity' => 'nullable|integer',
             'price' => 'nullable',
             'isPaid' => 'nullable',
+            'isPaidBd' => 'nullable',
             'isFree' => 'nullable',
             'payment' => 'nullable',
             'cashPayment' => 'nullable',

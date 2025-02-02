@@ -24,15 +24,31 @@ class ReservationProductController extends Controller
     {
         DB::beginTransaction();
         try {
-            $this->modelService->attach(
+            $pivotExists = $this->validatePivot(
+                $reservation->id,
+                $product->id,
+                $request->input('isPaid'),
+                $request->input('isFree'),
+            );
+
+            $this->operatePivote(
+                $pivotExists,
                 $reservation,
-                'products',
                 $product->id,
                 $product->price,
                 $request->input('quantity'),
                 $request->input('isPaid'),
                 $request->input('isFree'),
             );
+            // $this->modelService->attach(
+            //     $reservation,
+            //     'products',
+            //     $product->id,
+            //     $product->price,
+            //     $request->input('quantity'),
+            //     $request->input('isPaid'),
+            //     $request->input('isFree'),
+            // );
             DB::commit();
             return response()->json(['message' => 'Product added to the reservation.'], 201);
         } catch (\Exception $e) {
@@ -45,15 +61,27 @@ class ReservationProductController extends Controller
     {
         DB::beginTransaction();
         try {
-            $this->modelService->modify(
-                $reservation,
-                'products',
-                $product->id,
-                null,
-                $request->input('quantity'),
-                $request->input('isPaid'),
-                $request->input('isFree'),
-            );
+            $isFree = $request->input('isFree');
+            $isPaid = $request->input('isPaid');
+            $isPaidBd = $request->input('isPaidBd');
+            $quantity = $request->input('quantity');
+
+            DB::table('reservation_product')
+                ->where('reservation_id', $reservation->id)
+                ->where('product_id', $product->id)
+                ->where('is_paid', $isPaidBd)
+                ->where('is_free', $isFree)
+                ->increment(
+                    'quantity', $quantity,
+                    [
+                        'is_paid' => $isPaid,
+                        'is_free' => $isFree
+                    ]);
+
+            // if ($isPaid != $isPaidBd) {
+
+            // }
+
             DB::commit();
             return response()->json(['message' => 'Product modified to the reservation.'], 201);
         } catch (\Exception $e) {
@@ -88,5 +116,47 @@ class ReservationProductController extends Controller
             'consumptions_import' => $reservation->consumptions_import - $productPrice * $productQuantity,
         ];
         $this->modelService->update($reservation, $editReservation);
+    }
+
+    private function validatePivot(int $reservationId, int $productId, bool $isPaid, bool $isFree): bool
+    {
+        return DB::table('reservation_product')
+            ->where('reservation_id', '=', $reservationId)
+            ->where('product_id', '=', $productId)
+            ->where('is_paid', '=', $isPaid)
+            ->where('is_free', '=', $isFree)
+            ->exists();
+    }
+
+    private function operatePivote(
+        bool $pivotExists,
+        Reservation $reservation,
+        int $productId,
+        float $price,
+        int $quantity,
+        bool $isPaid,
+        bool $isFree,
+    ) {
+        if ($pivotExists) {
+            DB::table('reservation_product')
+                ->where('reservation_id', $reservation->id)
+                ->where('product_id', $productId)
+                ->where('is_paid', $isPaid)
+                ->where('is_free', $isFree)
+                ->increment('quantity', $quantity, [
+                    'is_paid' => $isPaid,
+                    'is_free' => $isFree
+                ]);
+        } else {
+            $this->modelService->attach(
+                $reservation,
+                'products',
+                $productId,
+                $price,
+                $quantity,
+                $isPaid,
+                $isFree,
+            );
+        }
     }
 }

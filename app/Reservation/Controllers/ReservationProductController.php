@@ -40,15 +40,6 @@ class ReservationProductController extends Controller
                 $request->input('isPaid'),
                 $request->input('isFree'),
             );
-            // $this->modelService->attach(
-            //     $reservation,
-            //     'products',
-            //     $product->id,
-            //     $product->price,
-            //     $request->input('quantity'),
-            //     $request->input('isPaid'),
-            //     $request->input('isFree'),
-            // );
             DB::commit();
             return response()->json(['message' => 'Product added to the reservation.'], 201);
         } catch (\Exception $e) {
@@ -66,22 +57,72 @@ class ReservationProductController extends Controller
             $isPaidBd = $request->input('isPaidBd');
             $quantity = $request->input('quantity');
 
-            DB::table('reservation_product')
-                ->where('reservation_id', $reservation->id)
-                ->where('product_id', $product->id)
-                ->where('is_paid', $isPaidBd)
-                ->where('is_free', $isFree)
-                ->increment(
-                    'quantity', $quantity,
-                    [
+            $pivotExists = $this->validatePivot(
+                $reservation->id,
+                $product->id,
+                $request->input('isPaid'),
+                $request->input('isFree'),
+            );
+
+            if ($pivotExists) {
+                if ($isPaid != $isPaidBd) {
+                    DB::table('reservation_product')
+                        ->where('reservation_id', $reservation->id)
+                        ->where('product_id', $product->id)
+                        ->where('is_paid', $isPaid)
+                        ->where('is_free', $isFree)
+                        ->increment(
+                            'quantity', $quantity,
+                            [
+                                'is_paid' => $isPaid,
+                                'is_free' => $isFree
+                            ]);
+
+                    DB::table('reservation_product')
+                        ->where('reservation_id', $reservation->id)
+                        ->where('product_id', $product->id)
+                        ->where('is_paid', $isPaidBd)
+                        ->where('is_free', $isFree)
+                        ->delete();
+                } else {
+                    $reservationProduct = DB::table('reservation_product')
+                        ->where('reservation_id', $reservation->id)
+                        ->where('product_id', $product->id)
+                        ->where('is_paid', $isPaid)
+                        ->where('is_free', $isFree)
+                        ->first();
+
+                    $totalQuantity = $reservationProduct->quantity + $quantity;
+
+                    DB::table('reservation_product')
+                        ->where('reservation_id', $reservation->id)
+                        ->where('product_id', $product->id)
+                        ->where('is_paid', $isPaidBd)
+                        ->where('is_free', $isFree)
+                        ->delete();
+
+                    DB::table('reservation_product')->insert([
+                        'reservation_id' => $reservation->id,
+                        'product_id' => $product->id,
                         'is_paid' => $isPaid,
-                        'is_free' => $isFree
+                        'is_free' => $isFree,
+                        'quantity' => $totalQuantity,
+                        'price' => $product->price,
                     ]);
-
-            // if ($isPaid != $isPaidBd) {
-
-            // }
-
+                }
+            } else {
+                DB::table('reservation_product')
+                    ->where('reservation_id', $reservation->id)
+                    ->where('product_id', $product->id)
+                    ->where('is_paid', $isPaidBd)
+                    ->where('is_free', $isFree)
+                    ->increment(
+                        'quantity', $quantity,
+                        [
+                            'is_paid' => $isPaid,
+                            'is_free' => $isFree
+                        ]);
+            }
             DB::commit();
             return response()->json(['message' => 'Product modified to the reservation.'], 201);
         } catch (\Exception $e) {

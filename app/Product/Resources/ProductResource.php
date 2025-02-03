@@ -23,6 +23,7 @@ class ProductResource extends JsonResource
             'isPaid' => $this->pivot->is_paid,
             'isPaidBd' => $this->pivot->is_paid,
             'isFree' => $this->pivot->is_free,
+            'isFreeBd' => $this->pivot->is_free,
             'isBd' => true,
             'type' => 'product'
         ];

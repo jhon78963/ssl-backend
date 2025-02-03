@@ -19,7 +19,6 @@ return new class extends Migration
             $table->foreign('product_id')->references('id')->on('products');
             $table->boolean('is_paid')->default(false);
             $table->boolean('is_free')->default(false);
-            $table->unique(['reservation_id', 'product_id', 'is_paid', 'is_free']);
             $table->integer('quantity');
             $table->float('price');
         });

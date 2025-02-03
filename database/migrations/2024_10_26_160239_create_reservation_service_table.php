@@ -12,13 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('reservation_service', function (Blueprint $table) {
+            $table->id();
             $table->unsignedBigInteger('reservation_id');
             $table->foreign('reservation_id')->references('id')->on('reservations');
             $table->unsignedBigInteger('service_id');
             $table->foreign('service_id')->references('id')->on('services');
             $table->boolean('is_paid')->default(false);
             $table->boolean('is_free')->default(false);
-            $table->primary(['reservation_id', 'service_id', 'is_paid', 'is_free']);
             $table->integer('quantity');
             $table->float('price');
         });

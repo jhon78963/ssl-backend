@@ -24,9 +24,15 @@ class ReservationServiceController extends Controller
     {
         DB::beginTransaction();
         try {
-            $this->modelService->attach(
+            $pivotExists = $this->validatePivot(
+                $reservation->id,
+                $service->id,
+                $request->input('isPaid'),
+                $request->input('isFree'),
+            );
+            $this->operatePivote(
+                $pivotExists,
                 $reservation,
-                'services',
                 $service->id,
                 $service->price,
                 $request->input('quantity'),
@@ -45,15 +51,77 @@ class ReservationServiceController extends Controller
     {
         DB::beginTransaction();
         try {
-            $this->modelService->modify(
-                $reservation,
-                'services',
+            $isFree = $request->input('isFree');
+            $isPaid = $request->input('isPaid');
+            $isPaidBd = $request->input('isPaidBd');
+            $quantity = $request->input('quantity');
+
+            $pivotExists = $this->validatePivot(
+                $reservation->id,
                 $service->id,
-                null,
-                $request->input('quantity'),
                 $request->input('isPaid'),
                 $request->input('isFree'),
             );
+
+            if ($pivotExists) {
+                if ($isPaid != $isPaidBd) {
+                    DB::table('reservation_service')
+                        ->where('reservation_id', $reservation->id)
+                        ->where('service_id', $service->id)
+                        ->where('is_paid', $isPaid)
+                        ->where('is_free', $isFree)
+                        ->increment(
+                            'quantity', $quantity,
+                            [
+                                'is_paid' => $isPaid,
+                                'is_free' => $isFree
+                            ]);
+
+                    DB::table('reservation_service')
+                        ->where('reservation_id', $reservation->id)
+                        ->where('service_id', $service->id)
+                        ->where('is_paid', $isPaidBd)
+                        ->where('is_free', $isFree)
+                        ->delete();
+                } else {
+                    $reservationService = DB::table('reservation_service')
+                        ->where('reservation_id', $reservation->id)
+                        ->where('service_id', $service->id)
+                        ->where('is_paid', $isPaid)
+                        ->where('is_free', $isFree)
+                        ->first();
+
+                    $totalQuantity = $reservationService->quantity + $quantity;
+
+                    DB::table('reservation_service')
+                        ->where('reservation_id', $reservation->id)
+                        ->where('service_id', $service->id)
+                        ->where('is_paid', $isPaidBd)
+                        ->where('is_free', $isFree)
+                        ->delete();
+
+                    DB::table('reservation_service')->insert([
+                        'reservation_id' => $reservation->id,
+                        'service_id' => $service->id,
+                        'is_paid' => $isPaid,
+                        'is_free' => $isFree,
+                        'quantity' => $totalQuantity,
+                        'price' => $service->price,
+                    ]);
+                }
+            } else {
+                DB::table('reservation_service')
+                    ->where('reservation_id', $reservation->id)
+                    ->where('service_id', $service->id)
+                    ->where('is_paid', $isPaidBd)
+                    ->where('is_free', $isFree)
+                    ->increment(
+                        'quantity', $quantity,
+                        [
+                            'is_paid' => $isPaid,
+                            'is_free' => $isFree
+                        ]);
+            }
             DB::commit();
             return response()->json(['message' => 'Service modified to the reservation.'], 201);
         } catch (\Exception $e) {
@@ -88,5 +156,47 @@ class ReservationServiceController extends Controller
             'consumptions_import' => $reservation->consumptions_import - $servicePrice * $serviceQuantity,
         ];
         $this->modelService->update($reservation, $editReservation);
+    }
+
+    private function validatePivot(int $reservationId, int $serviceId, bool $isPaid, bool $isFree): bool
+    {
+        return DB::table('reservation_service')
+            ->where('reservation_id', '=', $reservationId)
+            ->where('service_id', '=', $serviceId)
+            ->where('is_paid', '=', $isPaid)
+            ->where('is_free', '=', $isFree)
+            ->exists();
+    }
+
+    private function operatePivote(
+        bool $pivotExists,
+        Reservation $reservation,
+        int $serviceId,
+        float $price,
+        int $quantity,
+        bool $isPaid,
+        bool $isFree,
+    ) {
+        if ($pivotExists) {
+            DB::table('reservation_service')
+                ->where('reservation_id', $reservation->id)
+                ->where('service_id', $serviceId)
+                ->where('is_paid', $isPaid)
+                ->where('is_free', $isFree)
+                ->increment('quantity', $quantity, [
+                    'is_paid' => $isPaid,
+                    'is_free' => $isFree
+                ]);
+        } else {
+            $this->modelService->attach(
+                $reservation,
+                'services',
+                $serviceId,
+                $price,
+                $quantity,
+                $isPaid,
+                $isFree,
+            );
+        }
     }
 }

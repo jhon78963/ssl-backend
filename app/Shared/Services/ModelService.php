@@ -139,6 +139,31 @@ class ModelService
             ]);
     }
 
+    public function changeModel(
+        int $reservationId,
+        string $oldPivotTableName,
+        string $oldPivotIdName,
+        int $oldId,
+        string $newPivotTableName,
+        string $newPivotIdName,
+        int $newId,
+        float $price
+    ): void
+    {
+        DB::table($oldPivotTableName)
+            ->where('reservation_id', '=', $reservationId)
+            ->where($oldPivotIdName, '=', $oldId)
+            ->delete();
+
+        DB::table($newPivotTableName)->insert([
+            'reservation_id' => $reservationId,
+            $newPivotIdName => $newId,
+            'is_paid' => false,
+            'quantity' => 1,
+            'price' => $price
+        ]);
+    }
+
     public function create(Model $model, array $data): Model
     {
         $this->setCreationAuditFields($model);

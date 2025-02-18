@@ -39,6 +39,7 @@ Route::controller(ReservationLockerController::class)->group(function() {
     Route::post('/reservations/{reservation}/lockers/{locker}', 'add');
     Route::post('/reservations/{reservation}/lockers/{locker}/consumption/{consumption}', 'updateConsumptionReservationLocker');
     Route::post('/reservations/{reservation}/lockers/{locker}/new-lockers/{newLocker}', 'change');
+    Route::post('/reservations/{reservationId}/lockers/{lockerId}/new-rooms/{roomId}/price/{price}', 'changeToRoom');
     Route::patch('/reservations/{reservation}/lockers/{locker}', 'modify');
     Route::delete('/reservations/{reservation}/lockers/{locker}/price/{price}', 'remove');
 });
@@ -46,6 +47,7 @@ Route::controller(ReservationLockerController::class)->group(function() {
 Route::controller(ReservationRoomController::class)->group(function() {
     Route::post('/reservations/{reservation}/rooms/{room}', 'add');
     Route::post('/reservations/{reservation}/rooms/{room}/new-rooms/{newRoom}', 'change');
+    Route::post('/reservations/{reservationId}/rooms/{roomId}/new-lockers/{lockerId}/price/{price}', 'changeToLocker');
     Route::patch('/reservations/{reservation}/rooms/{room}', 'modify');
     Route::delete('/reservations/{reservation}/rooms/{room}/price/{price}', 'remove');
 });

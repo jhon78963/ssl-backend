@@ -46,6 +46,33 @@ class ReservationRoomController extends Controller
         }
     }
 
+    public function changeToLocker(
+        int $reservationId,
+        int $roomId,
+        int $lockerId,
+        float $price,
+    ): JsonResponse
+    {
+        DB::beginTransaction();
+        try {
+            $this->modelService->changeModel(
+                $reservationId,
+                'reservation_room',
+                'room_id',
+                $roomId,
+                'reservation_locker',
+                'locker_id',
+                $lockerId,
+                $price,
+            );
+            DB::commit();
+            return response()->json(['message' => 'Room changed to Locker.'], 201);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json($e->getMessage());
+        }
+    }
+
     public function modify(ModifyRequest $request, Reservation $reservation, Room $room): JsonResponse
     {
         DB::beginTransaction();

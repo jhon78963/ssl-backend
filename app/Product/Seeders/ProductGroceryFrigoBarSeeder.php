@@ -89,5 +89,23 @@ class ProductGroceryFrigoBarSeeder extends Seeder
         $product->price = 4;
         $product->product_type_id = 6;
         $product->save();
+
+        $product = new Product();
+        $product->name = 'Gaseosa gordita';
+        $product->price = 6;
+        $product->product_type_id = 6;
+        $product->save();
+
+        $product = new Product();
+        $product->name = 'Gaseosa jumbo';
+        $product->price = 6;
+        $product->product_type_id = 6;
+        $product->save();
+
+        $product = new Product();
+        $product->name = 'Fanta';
+        $product->price = 4;
+        $product->product_type_id = 6;
+        $product->save();
     }
 }

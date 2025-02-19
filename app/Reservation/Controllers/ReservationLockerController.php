@@ -52,20 +52,23 @@ class ReservationLockerController extends Controller
         int $reservationId,
         int $lockerId,
         int $roomId,
-        float $price,
+        float $newPrice,
+        float $oldPrice,
     ): JsonResponse
     {
         DB::beginTransaction();
         try {
             $this->modelService->changeModel(
                 $reservationId,
+                2,
                 'reservation_locker',
                 'locker_id',
                 $lockerId,
                 'reservation_room',
                 'room_id',
                 $roomId,
-                $price,
+                $newPrice,
+                $oldPrice,
             );
             DB::commit();
             return response()->json(['message' => 'Locker changed to Room.'], 201);

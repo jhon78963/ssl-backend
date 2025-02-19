@@ -2,6 +2,7 @@
 
 namespace App\Shared\Services;
 
+use App\Reservation\Models\Reservation;
 use App\User\Models\User;
 use DB;
 use Illuminate\Database\Eloquent\Model;
@@ -141,13 +142,15 @@ class ModelService
 
     public function changeModel(
         int $reservationId,
+        int $reservationTypeId,
         string $oldPivotTableName,
         string $oldPivotIdName,
         int $oldId,
         string $newPivotTableName,
         string $newPivotIdName,
         int $newId,
-        float $price
+        float $newPrice,
+        float $oldPrice,
     ): void
     {
         DB::table($oldPivotTableName)
@@ -160,8 +163,13 @@ class ModelService
             $newPivotIdName => $newId,
             'is_paid' => false,
             'quantity' => 1,
-            'price' => $price
+            'price' => $newPrice
         ]);
+
+        $reservation = Reservation::findOrFail($reservationId);
+        $reservation->reservation_type_id = $reservationTypeId;
+        $reservation->total = $reservation->total - $oldPrice + $newPrice;
+        $reservation->save();
     }
 
     public function create(Model $model, array $data): Model

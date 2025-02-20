@@ -79,6 +79,41 @@ class ReservationPaymentTypeController extends Controller
         }
     }
 
+    public function refund(
+        Reservation $reservation,
+        float $refundedAmount,
+    ): JsonResponse {
+        DB::beginTransaction();
+        try {
+            $this->modelService->attach(
+                $reservation,
+                'paymentTypes',
+                1,
+                null,
+                null,
+                null,
+                null,
+                -$refundedAmount,
+                0,
+                0
+            );
+            DB::commit();
+            $this->createCash(
+                $reservation,
+                1,
+                $refundedAmount,
+                'Devolución Locker/Hab',
+                true
+            );
+            $reservation->total_paid -= $refundedAmount;
+            $reservation->save();
+            return response()->json(['message' => 'Payment Type refunded from the reservation']);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json(['error' => $e->getMessage()]);
+        }
+    }
+
     private function updateReservationPaymentType(
         Reservation $reservation,
         int $paymentTypeId,

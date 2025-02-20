@@ -58,6 +58,11 @@ class ReservationLockerController extends Controller
     {
         DB::beginTransaction();
         try {
+            $lockers = DB::table('reservation_locker')
+                ->where('reservation_id', '=', $reservationId)
+                ->select('locker_id as id')
+                ->get();
+
             $this->modelService->changeModel(
                 $reservationId,
                 2,
@@ -71,6 +76,12 @@ class ReservationLockerController extends Controller
                 $oldPrice,
             );
             DB::commit();
+
+            foreach($lockers as $locker) {
+                DB::table('lockers')
+                ->where('id', '=', $locker->id)
+                ->update(['status' => 'AVAILABLE']);
+            }
             return response()->json(['message' => 'Locker changed to Room.'], 201);
         } catch (\Exception $e) {
             DB::rollback();

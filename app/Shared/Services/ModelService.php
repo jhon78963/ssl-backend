@@ -155,8 +155,9 @@ class ModelService
     {
         DB::table($oldPivotTableName)
             ->where('reservation_id', '=', $reservationId)
-            ->where($oldPivotIdName, '=', $oldId)
+            // ->where($oldPivotIdName, '=', $oldId)
             ->delete();
+
 
         DB::table($newPivotTableName)->insert([
             'reservation_id' => $reservationId,

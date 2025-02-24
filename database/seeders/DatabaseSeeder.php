@@ -11,6 +11,7 @@ use App\Gender\Seeders\GenderSeeder;
 use App\Inventory\Seeders\InventorySeeder;
 use App\Locker\Seeders\LockerSeeder;
 use App\PaymentType\Seeders\PaymentTypeSeeder;
+use App\Product\Seeders\ProductChildrenLockerSeeder;
 use App\Product\Seeders\ProductFoodAppetizersSeeder;
 use App\Product\Seeders\ProductFoodCocktailsSeeder;
 use App\Product\Seeders\ProductFoodDessertsSeeder;
@@ -59,6 +60,7 @@ class DatabaseSeeder extends Seeder
             ProductFoodCocktailsSeeder::class,
             ProductGroceryFrigoBarSeeder::class,
             ProductGroceryBasketSeeder::class,
+            ProductChildrenLockerSeeder::class,
             ServiceSeeder::class,
             ReservationTypeSeeder::class,
             RoomSeeder::class,

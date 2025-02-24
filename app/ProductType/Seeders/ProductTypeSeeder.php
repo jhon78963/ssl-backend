@@ -51,5 +51,10 @@ class ProductTypeSeeder extends Seeder
         $productType->description = "Barra";
         $productType->category_id = 2;
         $productType->save();
+
+        $productType = new ProductType();
+        $productType->description = "Niños";
+        $productType->category_id = 3;
+        $productType->save();
     }
 }

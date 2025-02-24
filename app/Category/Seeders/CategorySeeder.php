@@ -19,5 +19,9 @@ class CategorySeeder extends Seeder
         $category = new Category();
         $category->name = "Abarrotes";
         $category->save();
+
+        $category = new Category();
+        $category->name = "Lockers";
+        $category->save();
     }
 }

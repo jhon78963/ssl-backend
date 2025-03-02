@@ -159,7 +159,7 @@ class ReservationService
             ->when($nameFilter, function ($query) use ($nameFilter) {
                 $query->whereRaw('LOWER(name) LIKE ?', [strtolower("%{$nameFilter}%")]);
             })
-            ->select('id', 'name', 'price')
+            ->select('id', 'name', 'price', 'product_type_id')
             ->get()
             ->map(function (Product $product): Product {
                 $product->type = 'product';

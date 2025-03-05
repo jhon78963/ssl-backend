@@ -56,22 +56,26 @@ class ReservationPaymentTypeController extends Controller
         Reservation $reservation,
         int $paymentTypeId,
         float $payment,
+        string $cash,
     ): JsonResponse {
         DB::beginTransaction();
         try {
+            $cash = filter_var($cash, FILTER_VALIDATE_BOOLEAN);
             $this->updateReservationPaymentType(
                 $reservation,
                 $paymentTypeId,
                 $payment,
             );
             DB::commit();
-            $this->createCash(
-                $reservation,
-                $paymentTypeId,
-                $payment,
-                'Devolución Locker/Hab',
-                true
-            );
+            if ($cash) {
+                $this->createCash(
+                    $reservation,
+                    $paymentTypeId,
+                    $payment,
+                    'Devolución Locker/Hab',
+                    true
+                );
+            }
             return response()->json(['message' => 'Payment Type removed from the reservation']);
         } catch (\Exception $e) {
             DB::rollback();

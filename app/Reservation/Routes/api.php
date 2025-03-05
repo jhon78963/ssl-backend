@@ -56,7 +56,7 @@ Route::controller(ReservationPaymentTypeController::class)->group(function() {
     Route::post('/reservations/{reservation}/payment-types/{paymentType}', 'add');
     Route::post('/reservations/{reservation}/refunded-amount/{refundedAmount}', 'refund');
     Route::delete(
-        '/reservations/{reservation}/payment-types/{paymentTypeId}/payment/{payment}',
+        '/reservations/{reservation}/payment-types/{paymentTypeId}/payment/{payment}/create-cash/{cash}',
         'remove'
     );
 });

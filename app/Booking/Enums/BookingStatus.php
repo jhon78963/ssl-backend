@@ -6,7 +6,7 @@ enum BookingStatus: string
 {
     case Pending = 'PENDING';
     case InUse = 'IN_USE';
-    case Cancelled = 'CENCELLED';
+    case Cancelled = 'CANCELLED';
     case Completed = 'COMPLETED';
 
     public function label(): string

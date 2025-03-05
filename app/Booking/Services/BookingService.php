@@ -54,7 +54,7 @@ class BookingService {
                         ->where('end_date', '>=', $endDate);
                     });
                 })
-            ->where('status', '!=', 'COMPLETED')
+            ->where('status', '=', 'PENDING')
             ->whereHas('rooms', function ($query) use ($roomId) {
                 $query->where('room_id', $roomId);
             })->first();

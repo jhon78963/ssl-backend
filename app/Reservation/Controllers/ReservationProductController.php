@@ -57,79 +57,74 @@ class ReservationProductController extends Controller
             $isPaidBd = $request->input('isPaidBd');
             $quantity = $request->input('quantity');
 
-            $pivotExists = $this->validatePivot(
-                $reservation->id,
-                $product->id,
-                $request->input('isPaid'),
-                $request->input('isFree'),
-            );
+            // Buscar si existe un registro con el estado actual en BD
+            $existingPaid = DB::table('reservation_product')
+                ->where('reservation_id', $reservation->id)
+                ->where('product_id', $product->id)
+                ->where('is_paid', true)
+                ->where('is_free', $isFree)
+                ->first();
 
-            if ($pivotExists) {
-                if ($isPaid != $isPaidBd) {
+            $existingUnpaid = DB::table('reservation_product')
+                ->where('reservation_id', $reservation->id)
+                ->where('product_id', $product->id)
+                ->where('is_paid', false)
+                ->where('is_free', $isFree)
+                ->first();
+
+            if ($isPaidBd === false && $isPaid === true) {
+                if ($existingPaid) {
+                    // Si ya existe un producto con is_paid = true, sumamos la cantidad
                     DB::table('reservation_product')
                         ->where('reservation_id', $reservation->id)
                         ->where('product_id', $product->id)
-                        ->where('is_paid', $isPaid)
+                        ->where('is_paid', true)
                         ->where('is_free', $isFree)
-                        ->increment(
-                            'quantity', $quantity,
-                            [
-                                'is_paid' => $isPaid,
-                                'is_free' => $isFree
-                            ]);
-
-                    DB::table('reservation_product')
-                        ->where('reservation_id', $reservation->id)
-                        ->where('product_id', $product->id)
-                        ->where('is_paid', $isPaidBd)
-                        ->where('is_free', $isFree)
-                        ->delete();
+                        ->increment('quantity', $quantity);
                 } else {
-                    $reservationProduct = DB::table('reservation_product')
-                        ->where('reservation_id', $reservation->id)
-                        ->where('product_id', $product->id)
-                        ->where('is_paid', $isPaid)
-                        ->where('is_free', $isFree)
-                        ->first();
-
-                    $totalQuantity = $reservationProduct->quantity + $quantity;
-
+                    // Si no existe, actualizamos el existente con is_paid = false a true
                     DB::table('reservation_product')
                         ->where('reservation_id', $reservation->id)
                         ->where('product_id', $product->id)
-                        ->where('is_paid', $isPaidBd)
+                        ->where('is_paid', false)
                         ->where('is_free', $isFree)
-                        ->delete();
-
-                    DB::table('reservation_product')->insert([
-                        'reservation_id' => $reservation->id,
-                        'product_id' => $product->id,
-                        'is_paid' => $isPaid,
-                        'is_free' => $isFree,
-                        'quantity' => $totalQuantity,
-                        'price' => $product->price,
-                    ]);
+                        ->update(['is_paid' => true]);
                 }
-            } else {
+                // Eliminamos el registro con is_paid = false si existía
                 DB::table('reservation_product')
                     ->where('reservation_id', $reservation->id)
                     ->where('product_id', $product->id)
-                    ->where('is_paid', $isPaidBd)
+                    ->where('is_paid', false)
                     ->where('is_free', $isFree)
-                    ->increment(
-                        'quantity', $quantity,
-                        [
-                            'is_paid' => $isPaid,
-                            'is_free' => $isFree
-                        ]);
+                    ->delete();
+            } elseif ($existingUnpaid) {
+                // Si llega un false y ya existe un false, sumamos la cantidad
+                DB::table('reservation_product')
+                    ->where('reservation_id', $reservation->id)
+                    ->where('product_id', $product->id)
+                    ->where('is_paid', false)
+                    ->where('is_free', $isFree)
+                    ->increment('quantity', $quantity);
+            } else {
+                // Si no existe ni en true ni en false, insertamos un nuevo registro
+                DB::table('reservation_product')->insert([
+                    'reservation_id' => $reservation->id,
+                    'product_id' => $product->id,
+                    'is_paid' => $isPaid,
+                    'is_free' => $isFree,
+                    'quantity' => $quantity,
+                    'price' => $product->price,
+                ]);
             }
+
             DB::commit();
-            return response()->json(['message' => 'Product modified to the reservation.'], 201);
+            return response()->json(['message' => 'Product modified in the reservation.'], 201);
         } catch (\Exception $e) {
             DB::rollback();
-            return response()->json($e->getMessage());
+            return response()->json(['error' => $e->getMessage()], 500);
         }
     }
+
 
     public function remove(Reservation $reservation, Product $product, int $quantity): JsonResponse
     {

@@ -1,6 +1,6 @@
 version: '3'
 services:
-  db:
+  postgredb:
     image: postgres:15.3
     restart: always
     ports:
@@ -8,6 +8,6 @@ services:
     environment:
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: ${DB_DATABASE}
-    container_name: sslais_db
+    container_name: postgreSQL
     volumes:
       - ./postgres:/var/lib/postgresql/data
